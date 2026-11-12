@@ -2,23 +2,23 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, ShieldCheck, MapPin, Building2, ChevronDown } from 'lucide-react';
 import { COMPANY_INFO, IMAGES } from '../data/divipecaData';
+import { fadeUp, staggerContainer, scaleIn, buttonHover, buttonTap } from '../utils/motion';
 
 interface HeroSectionProps {
   onOpenContact: (source?: string) => void;
 }
-
-const easeApple = [0.16, 1, 0.3, 1] as const;
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
   return (
     <section id="inicio" className="relative pt-8 pb-16 lg:pt-14 lg:pb-24 overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Editorial Subheader / Trust Row (Zero-Pill discipline) */}
+        {/* Editorial Subheader / Trust Row */}
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: easeApple }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
           className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-neutral-500 mb-6"
         >
           <span className="font-semibold text-neutral-900 tracking-wide uppercase">
@@ -35,31 +35,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
         {/* 2-Column Split: Headline & Value Prop on Left, High-Stature Imagery on Right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-12">
           
-          {/* Left Column: Proposition and Actions */}
+          {/* Left Column: Proposition and Actions with staggerContainer */}
           <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: easeApple }}
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
             className="lg:col-span-7 flex flex-col justify-center"
           >
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl/tight font-extrabold tracking-tight text-neutral-950 mb-5 text-balance">
+            <motion.h1
+              variants={fadeUp}
+              className="text-3xl sm:text-4xl lg:text-5xl/tight font-extrabold tracking-tight text-neutral-950 mb-5 text-balance"
+            >
               Tu logística puntual, <br className="hidden sm:inline" />
               <span className="text-[#1B5E20]">tus ventas en crecimiento.</span>
-            </h1>
+            </motion.h1>
 
-            <p className="text-base sm:text-lg text-neutral-600 leading-relaxed mb-8 max-w-2xl font-normal">
+            <motion.p
+              variants={fadeUp}
+              className="text-base sm:text-lg text-neutral-600 leading-relaxed mb-8 max-w-2xl font-normal"
+            >
               Operador logístico 3PL y distribución exclusiva para consumo masivo y alimentos.
               Conectamos el eje centro-oriental y los llanos con <strong className="font-semibold text-neutral-900">+3.700 m²</strong> de
               almacenamiento en 3 sedes propias, flota dedicada de 5T a 12T y un índice de cumplimiento auditado del <strong className="font-semibold text-neutral-900">99.8% OTIF</strong>.
-            </p>
+            </motion.p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-4 mb-9">
+            <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 mb-9">
               <motion.button
                 onClick={() => onOpenContact('Hero CTA')}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.15, ease: easeApple }}
+                whileHover={buttonHover}
+                whileTap={buttonTap}
                 className="inline-flex items-center gap-2.5 px-6 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors shadow-xs hover:shadow-md hover:shadow-emerald-950/15 cursor-pointer whitespace-nowrap group"
               >
                 <span>Solicitar Alianza Logística</span>
@@ -68,19 +74,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
 
               <motion.a
                 href="#sedes"
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                transition={{ duration: 0.15, ease: easeApple }}
+                whileHover={buttonHover}
+                whileTap={buttonTap}
                 className="inline-flex items-center gap-2 px-5 py-3.5 text-sm font-semibold text-neutral-700 hover:text-neutral-950 bg-neutral-100 hover:bg-neutral-200/80 rounded-lg transition-colors whitespace-nowrap cursor-pointer"
               >
                 <span>Explorar Red de Sedes</span>
                 <ChevronDown className="w-4 h-4 text-neutral-500" />
               </motion.a>
-            </div>
+            </motion.div>
 
-            {/* Micro Trust Matrix with refined hover states */}
-            <div className="pt-6 border-t border-neutral-200/80 grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
+            {/* Micro Trust Matrix with stagger */}
+            <motion.div
+              variants={staggerContainer}
+              className="pt-6 border-t border-neutral-200/80 grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs"
+            >
               <motion.div
+                variants={fadeUp}
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.2 }}
                 className="flex items-start gap-2.5 p-2 rounded-lg transition-colors hover:bg-neutral-50"
@@ -93,6 +102,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
               </motion.div>
 
               <motion.div
+                variants={fadeUp}
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.2 }}
                 className="flex items-start gap-2.5 p-2 rounded-lg transition-colors hover:bg-neutral-50"
@@ -105,6 +115,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
               </motion.div>
 
               <motion.div
+                variants={fadeUp}
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.2 }}
                 className="flex items-start gap-2.5 p-2 rounded-lg transition-colors hover:bg-neutral-50 col-span-2 sm:col-span-1"
@@ -115,15 +126,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
                   <p className="text-neutral-500 leading-normal">Valle de la Pascua, Barcelona y Bolívar.</p>
                 </div>
               </motion.div>
-            </div>
+            </motion.div>
 
           </motion.div>
 
-          {/* Right Column: Hero High-Impact Image + Precision Telemetry Card */}
+          {/* Right Column: Hero High-Impact Image with scaleIn */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.97, y: 24 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: easeApple }}
+            variants={scaleIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
             className="lg:col-span-5 relative"
           >
             {/* Main Visual Asset Frame with enhanced presence */}
@@ -140,9 +152,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
 
               {/* High-Impact Overlaid Operational Card */}
               <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.35, ease: easeApple }}
+                variants={fadeUp}
                 whileHover={{ y: -3 }}
                 className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-white/90 backdrop-blur-md border border-white/60 shadow-lg transition-all duration-300"
               >
@@ -190,4 +200,5 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
     </section>
   );
 };
+
 

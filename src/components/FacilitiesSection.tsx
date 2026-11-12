@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { LOGISTICS_HUBS, FLEET_DETAILS } from '../data/divipecaData';
 import { MapPin, Warehouse, Truck, CheckCircle2 } from 'lucide-react';
+import { fadeUp, staggerContainer, scaleIn, cardHover, buttonHover, buttonTap } from '../utils/motion';
 
 interface FacilitiesSectionProps {
   onOpenContact: (source?: string) => void;
 }
-
-const easeApple = [0.16, 1, 0.3, 1] as const;
 
 export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenContact }) => {
   const [selectedHubId, setSelectedHubId] = useState<string>(LOGISTICS_HUBS[0].id);
@@ -19,10 +18,10 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
         
         {/* Editorial Section Header with Scroll Reveal */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: easeApple }}
+          variants={fadeUp}
           className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12"
         >
           <div className="max-w-3xl">
@@ -40,16 +39,23 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
           </div>
         </motion.div>
 
-        {/* Hub Selector Navigation (Segmented Bar with micro-interactions) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mb-9">
+        {/* Hub Selector Navigation (Segmented Bar with micro-interactions & stagger) */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-40px' }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mb-9"
+        >
           {LOGISTICS_HUBS.map((hub) => {
             const isSelected = hub.id === activeHub.id;
             return (
               <motion.button
                 key={hub.id}
+                variants={fadeUp}
                 onClick={() => setSelectedHubId(hub.id)}
-                whileHover={{ y: -2, scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={cardHover}
+                whileTap={buttonTap}
                 className={`p-4 sm:p-5 rounded-2xl border text-left transition-all duration-300 relative flex flex-col justify-between cursor-pointer ${
                   isSelected
                     ? 'bg-neutral-950 text-white border-neutral-950 shadow-md ring-1 ring-neutral-900/40'
@@ -75,20 +81,23 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
               </motion.button>
             );
           })}
-        </div>
+        </motion.div>
 
-        {/* Selected Hub Interactive Showcase with Enhanced Image Stature */}
+        {/* Selected Hub Interactive Showcase with Enhanced Image Stature & ScaleIn */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeHub.id}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -14 }}
-            transition={{ duration: 0.35, ease: easeApple }}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={staggerContainer}
             className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-20"
           >
-            {/* Real Hub Photography Frame (Heroic Dimension) */}
-            <div className="lg:col-span-7 flex flex-col">
+            {/* Real Hub Photography Frame (Heroic Dimension) with scaleIn */}
+            <motion.div
+              variants={scaleIn}
+              className="lg:col-span-7 flex flex-col"
+            >
               <div className="relative rounded-2xl overflow-hidden border border-neutral-200/90 shadow-lg bg-neutral-950 flex-1 min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] group">
                 <img
                   src={activeHub.image}
@@ -120,10 +129,13 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
                   </div>
                 </motion.div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Technical Specifications & Operating Scope */}
-            <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 bg-neutral-50 rounded-2xl border border-neutral-200">
+            {/* Technical Specifications & Operating Scope with fadeUp */}
+            <motion.div
+              variants={fadeUp}
+              className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 bg-neutral-50 rounded-2xl border border-neutral-200"
+            >
               <div>
                 <div className="flex items-center gap-2 text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1.5">
                   <MapPin className="w-3.5 h-3.5 text-[#1B5E20]" />
@@ -136,23 +148,28 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
                   {activeHub.description}
                 </p>
 
-                {/* Features Checklist */}
+                {/* Features Checklist with Stagger */}
                 <div className="space-y-2.5 mb-6">
                   <div className="text-xs font-bold uppercase tracking-wider text-neutral-900">
                     Equipamiento & Protocolos:
                   </div>
-                  {activeHub.features.map((feature, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: -6 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: i * 0.05 }}
-                      className="flex items-start gap-2.5 text-xs text-neutral-700"
-                    >
-                      <CheckCircle2 className="w-4 h-4 text-[#1B5E20] shrink-0 mt-0.5" />
-                      <span>{feature}</span>
-                    </motion.div>
-                  ))}
+                  <motion.div
+                    variants={staggerContainer}
+                    initial="hidden"
+                    animate="visible"
+                    className="space-y-2.5"
+                  >
+                    {activeHub.features.map((feature, i) => (
+                      <motion.div
+                        key={i}
+                        variants={fadeUp}
+                        className="flex items-start gap-2.5 text-xs text-neutral-700"
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-[#1B5E20] shrink-0 mt-0.5" />
+                        <span>{feature}</span>
+                      </motion.div>
+                    ))}
+                  </motion.div>
                 </div>
 
                 {/* Coverage Footprint */}
@@ -179,14 +196,14 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
                 </span>
                 <motion.button
                   onClick={() => onOpenContact(`Sede ${activeHub.city}`)}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
+                  whileHover={buttonHover}
+                  whileTap={buttonTap}
                   className="text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] px-4 py-2.5 rounded-lg transition-colors cursor-pointer shadow-xs"
                 >
                   Consultar Disponibilidad
                 </motion.button>
               </div>
-            </div>
+            </motion.div>
 
           </motion.div>
         </AnimatePresence>
@@ -194,10 +211,10 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
         {/* Dedicated Fleet Section with Scroll Animations & Card Lift */}
         <div id="flota" className="pt-10 border-t border-neutral-200/80">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, ease: easeApple }}
+            variants={fadeUp}
             className="max-w-2xl mb-8"
           >
             <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2 flex items-center gap-2">
@@ -213,15 +230,19 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {FLEET_DETAILS.map((fleet, idx) => (
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-3 gap-5"
+          >
+            {FLEET_DETAILS.map((fleet) => (
               <motion.div
                 key={fleet.model}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5, delay: idx * 0.08, ease: easeApple }}
-                whileHover={{ y: -4, scale: 1.01 }}
+                variants={fadeUp}
+                whileHover={cardHover}
+                whileTap={buttonTap}
                 className="p-5 sm:p-6 rounded-2xl border border-neutral-200 bg-neutral-50/70 hover:bg-neutral-50 hover:border-neutral-300 hover:shadow-md transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
@@ -257,7 +278,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
       </div>

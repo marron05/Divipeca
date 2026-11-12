@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { KEY_METRICS } from '../data/divipecaData';
 import { TrendingUp, CheckCircle, Shield } from 'lucide-react';
-
-const easeApple = [0.16, 1, 0.3, 1] as const;
+import { fadeUp, staggerContainer, cardHover } from '../utils/motion';
 
 export const StatsSection: React.FC = () => {
   const [selectedMetricId, setSelectedMetricId] = useState<string>(KEY_METRICS[0].id);
@@ -19,10 +18,10 @@ export const StatsSection: React.FC = () => {
         
         {/* Section Header with Human Editorial Framing & Scroll Animation */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: easeApple }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-neutral-800/80"
         >
           <div>
@@ -40,21 +39,24 @@ export const StatsSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* 5-Column High-Density KPI Grid with Stagger & Micro-lift */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 my-8">
-          {KEY_METRICS.map((metric, idx) => {
+        {/* 5-Column High-Density KPI Grid with staggerContainer & fadeUp */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 my-8"
+        >
+          {KEY_METRICS.map((metric) => {
             const isSelected = selectedMetric.id === metric.id;
             return (
               <motion.button
                 key={metric.id}
+                variants={fadeUp}
                 onClick={() => setSelectedMetricId(metric.id)}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5, delay: idx * 0.07, ease: easeApple }}
-                whileHover={{ y: -3, scale: 1.01 }}
+                whileHover={cardHover}
                 whileTap={{ scale: 0.98 }}
-                className={`text-left p-4 sm:p-5 rounded-xl border transition-all duration-300 relative flex flex-col justify-between cursor-pointer group ${
+                className={`text-left p-4 sm:p-5 rounded-xl border transition-colors duration-200 relative flex flex-col justify-between cursor-pointer group ${
                   isSelected
                     ? 'bg-neutral-900/90 border-emerald-500/80 ring-1 ring-emerald-500/40 shadow-lg shadow-emerald-950/20'
                     : 'bg-neutral-900/40 border-neutral-800/90 hover:border-neutral-700 hover:bg-neutral-900/70 hover:shadow-md'
@@ -91,14 +93,14 @@ export const StatsSection: React.FC = () => {
               </motion.button>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Contextual Metric Deep-Dive Panel with smooth spring transition */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-20px' }}
-          transition={{ duration: 0.6, delay: 0.3, ease: easeApple }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
           className="bg-neutral-900/60 border border-neutral-800/90 rounded-2xl p-5 sm:p-7 backdrop-blur-xs shadow-xl"
         >
           <AnimatePresence mode="wait">
@@ -107,7 +109,7 @@ export const StatsSection: React.FC = () => {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25, ease: easeApple }}
+              transition={{ duration: 0.25 }}
               className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center"
             >
               <div className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-neutral-800/80 pb-4 lg:pb-0 lg:pr-6">
@@ -171,4 +173,5 @@ export const StatsSection: React.FC = () => {
     </section>
   );
 };
+
 

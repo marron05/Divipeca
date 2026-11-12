@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TIMELINE_MILESTONES, IMAGES, CLIENT_PARTNERS } from '../data/divipecaData';
 import { History, Handshake } from 'lucide-react';
-
-const easeApple = [0.16, 1, 0.3, 1] as const;
+import { fadeUp, staggerContainer, scaleIn, cardHover, buttonHover, buttonTap } from '../utils/motion';
 
 export const HistorySection: React.FC = () => {
   const [activeMilestoneIndex, setActiveMilestoneIndex] = useState<number>(0);
@@ -18,10 +17,10 @@ export const HistorySection: React.FC = () => {
         
         {/* Editorial Section Header with Scroll Reveal */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: easeApple }}
+          variants={fadeUp}
           className="max-w-3xl mb-12 sm:mb-14"
         >
           <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2.5 flex items-center gap-2">
@@ -40,12 +39,12 @@ export const HistorySection: React.FC = () => {
         {/* Narrative & Archival Visual Split */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12 items-stretch">
           
-          {/* Heritage Archival Image Card with Subtle Zoom & Scrim */}
+          {/* Heritage Archival Image Card with scaleIn */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.98, y: 20 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.7, ease: easeApple }}
+            variants={scaleIn}
             className="lg:col-span-5 flex flex-col"
           >
             <div className="relative rounded-2xl overflow-hidden border border-neutral-200/90 bg-neutral-950 shadow-md flex-1 min-h-[320px] sm:min-h-[380px] group">
@@ -69,21 +68,21 @@ export const HistorySection: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Active Milestone Highlight Card */}
+          {/* Active Milestone Highlight Card with fadeUp */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.7, delay: 0.1, ease: easeApple }}
+            variants={fadeUp}
             className="lg:col-span-7 flex flex-col justify-between p-6 sm:p-8 bg-white rounded-2xl border border-neutral-200 shadow-sm"
           >
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeMilestone.year}
-                initial={{ opacity: 0, x: 10 }}
+                initial={{ opacity: 0, x: 12 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.25, ease: easeApple }}
+                exit={{ opacity: 0, x: -12 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="flex-1"
               >
                 <div className="flex items-center justify-between gap-4 mb-4">
@@ -143,8 +142,8 @@ export const HistorySection: React.FC = () => {
               <motion.button
                 disabled={activeMilestoneIndex === 0}
                 onClick={() => setActiveMilestoneIndex((prev) => Math.max(0, prev - 1))}
-                whileHover={activeMilestoneIndex > 0 ? { scale: 1.03 } : {}}
-                whileTap={activeMilestoneIndex > 0 ? { scale: 0.97 } : {}}
+                whileHover={activeMilestoneIndex > 0 ? buttonHover : {}}
+                whileTap={activeMilestoneIndex > 0 ? buttonTap : {}}
                 className="text-xs font-semibold px-3.5 py-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
               >
                 ← Anterior
@@ -168,8 +167,8 @@ export const HistorySection: React.FC = () => {
               <motion.button
                 disabled={activeMilestoneIndex === TIMELINE_MILESTONES.length - 1}
                 onClick={() => setActiveMilestoneIndex((prev) => Math.min(TIMELINE_MILESTONES.length - 1, prev + 1))}
-                whileHover={activeMilestoneIndex < TIMELINE_MILESTONES.length - 1 ? { scale: 1.03 } : {}}
-                whileTap={activeMilestoneIndex < TIMELINE_MILESTONES.length - 1 ? { scale: 0.97 } : {}}
+                whileHover={activeMilestoneIndex < TIMELINE_MILESTONES.length - 1 ? buttonHover : {}}
+                whileTap={activeMilestoneIndex < TIMELINE_MILESTONES.length - 1 ? buttonTap : {}}
                 className="text-xs font-semibold px-3.5 py-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
               >
                 Siguiente →
@@ -179,16 +178,23 @@ export const HistorySection: React.FC = () => {
 
         </div>
 
-        {/* Compact Scrubber Timeline Grid (All Milestones Quick Access with hover states) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
+        {/* Compact Scrubber Timeline Grid with Stagger & FadeUp */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-40px' }}
+          variants={staggerContainer}
+          className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5"
+        >
           {TIMELINE_MILESTONES.map((m, idx) => {
             const isCurrent = idx === activeMilestoneIndex;
             return (
               <motion.button
                 key={m.year}
+                variants={fadeUp}
                 onClick={() => setActiveMilestoneIndex(idx)}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={cardHover}
+                whileTap={buttonTap}
                 className={`p-3 rounded-xl border text-left transition-all duration-200 relative cursor-pointer ${
                   isCurrent
                     ? 'bg-white border-[#1B5E20] ring-1 ring-[#1B5E20] shadow-sm'
@@ -207,25 +213,29 @@ export const HistorySection: React.FC = () => {
               </motion.button>
             );
           })}
-        </div>
+        </motion.div>
 
-        {/* Strategic Partnerships Strip with hover lift */}
+        {/* Strategic Partnerships Strip with Stagger */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: '-20px' }}
-          transition={{ duration: 0.6, ease: easeApple }}
+          variants={fadeUp}
           className="mt-10 p-5 sm:p-6 bg-white rounded-2xl border border-neutral-200 shadow-sm"
         >
           <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-3 flex items-center gap-1.5">
             <Handshake className="w-3.5 h-3.5 text-[#1B5E20]" />
             <span>Alianzas Comerciales e Históricas</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <motion.div
+            variants={staggerContainer}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+          >
             {CLIENT_PARTNERS.map((client) => (
               <motion.div
                 key={client.name}
-                whileHover={{ y: -2, backgroundColor: '#fcfcfc' }}
+                variants={fadeUp}
+                whileHover={{ y: -3, backgroundColor: '#fcfcfc' }}
                 transition={{ duration: 0.2 }}
                 className="p-3.5 bg-neutral-50/80 rounded-xl border border-neutral-200/70 hover:border-neutral-300 transition-colors"
               >
@@ -237,7 +247,7 @@ export const HistorySection: React.FC = () => {
                 </p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
 
       </div>
