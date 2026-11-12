@@ -19,7 +19,7 @@ export const HistorySection: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
+          viewport={{ once: true, margin: '-40px' }}
           variants={fadeUp}
           className="max-w-3xl mb-12 sm:mb-14"
         >

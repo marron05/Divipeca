@@ -16,27 +16,27 @@ export const StatsSection: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Section Header with Human Editorial Framing & Scroll Animation */}
+        {/* Section Header with Stagger & Scroll Animation */}
         <motion.div
-          variants={fadeUp}
+          variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, margin: '-40px' }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-neutral-800/80"
         >
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-2">
+            <motion.div variants={fadeUp} className="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               <span>01. Capacidad y Desempeño Operacional</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+            </motion.div>
+            <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
               Cifras consolidadas que respaldan cada despacho.
-            </h2>
+            </motion.h2>
           </div>
-          <p className="text-sm text-neutral-400 max-w-md font-normal leading-relaxed">
+          <motion.p variants={fadeUp} className="text-sm text-neutral-400 max-w-md font-normal leading-relaxed">
             Medición continua bajo estándares FMCG. Indicadores auditados con trazabilidad
             por estiba, guía de despacho y punto de venta en los 4 estados.
-          </p>
+          </motion.p>
         </motion.div>
 
         {/* 5-Column High-Density KPI Grid with staggerContainer & fadeUp */}
@@ -44,7 +44,7 @@ export const StatsSection: React.FC = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, margin: '-40px' }}
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 my-8"
         >
           {KEY_METRICS.map((metric) => {
@@ -95,12 +95,12 @@ export const StatsSection: React.FC = () => {
           })}
         </motion.div>
 
-        {/* Contextual Metric Deep-Dive Panel with smooth spring transition */}
+        {/* Contextual Metric Deep-Dive Panel */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, margin: '-30px' }}
           className="bg-neutral-900/60 border border-neutral-800/90 rounded-2xl p-5 sm:p-7 backdrop-blur-xs shadow-xl"
         >
           <AnimatePresence mode="wait">
@@ -173,5 +173,3 @@ export const StatsSection: React.FC = () => {
     </section>
   );
 };
-
-

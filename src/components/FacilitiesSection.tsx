@@ -20,7 +20,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
+          viewport={{ once: true, margin: '-40px' }}
           variants={fadeUp}
           className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12"
         >
@@ -213,7 +213,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-60px' }}
+            viewport={{ once: true, margin: '-40px' }}
             variants={fadeUp}
             className="max-w-2xl mb-8"
           >
