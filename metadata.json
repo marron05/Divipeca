@@ -1,0 +1,6 @@
+{
+  "name": "DIVIPECA | Operador Logístico 3PL & Distribución",
+  "description": "Plataforma corporativa de DIVIPECA: operador logístico 3PL y distribución exclusiva en Oriente y Centro-Sur de Venezuela.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
