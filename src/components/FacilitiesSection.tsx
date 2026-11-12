@@ -13,14 +13,14 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
   const activeHub = LOGISTICS_HUBS.find((h) => h.id === selectedHubId) || LOGISTICS_HUBS[0];
 
   return (
-    <section id="sedes" className="py-20 sm:py-24 bg-white border-b border-neutral-200/80 overflow-hidden">
+    <section id="sedes" className="py-20 sm:py-24 bg-white border-b border-neutral-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Editorial Section Header with Scroll Reveal */}
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-40px' }}
+          viewport={{ once: true, amount: 0.2 }}
           variants={fadeUp}
           className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12"
         >
@@ -43,7 +43,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-40px' }}
+          viewport={{ once: true, amount: 0.2 }}
           variants={staggerContainer}
           className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mb-9"
         >
@@ -213,7 +213,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
+            viewport={{ once: true, amount: 0.2 }}
             variants={fadeUp}
             className="max-w-2xl mb-8"
           >

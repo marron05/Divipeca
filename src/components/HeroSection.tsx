@@ -10,7 +10,7 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
   return (
-    <section id="inicio" className="relative pt-8 pb-16 lg:pt-14 lg:pb-24 overflow-hidden bg-white">
+    <section id="inicio" className="relative pt-8 pb-16 lg:pt-14 lg:pb-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* 2-Column Split: Headline & Value Prop on Left, High-Stature Imagery on Right */}
@@ -21,7 +21,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-60px' }}
+            viewport={{ once: true, amount: 0.2 }}
             className="lg:col-span-7 flex flex-col justify-center"
           >
             {/* Editorial Subheader / Trust Badge Superior */}
@@ -119,7 +119,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
             variants={scaleIn}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
+            viewport={{ once: true, amount: 0.2 }}
             className="lg:col-span-5 relative"
           >
             {/* Main Visual Asset Frame with enhanced presence */}

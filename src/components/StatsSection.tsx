@@ -9,90 +9,97 @@ export const StatsSection: React.FC = () => {
   const selectedMetric = KEY_METRICS.find((m) => m.id === selectedMetricId) || KEY_METRICS[0];
 
   return (
-    <section id="indicadores" className="pt-16 pb-20 bg-neutral-950 text-white relative overflow-hidden">
-      {/* Background Subtle Gradient & Grid Texture */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(27,94,32,0.18),rgba(255,255,255,0))]" />
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]" />
+    <section id="indicadores" className="pt-16 pb-20 bg-neutral-950 text-white relative">
+      {/* Background Subtle Gradient & Grid Texture clipped safely in background wrapper */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(27,94,32,0.18),rgba(255,255,255,0))]" />
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Section Header with Stagger & Scroll Animation */}
+        {/* Main Animated Motion Container for Header and KPIs */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-40px' }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-neutral-800/80"
+          viewport={{ once: true, amount: 0.2 }}
         >
-          <div>
-            <motion.div variants={fadeUp} className="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <span>01. Capacidad y Desempeño Operacional</span>
-            </motion.div>
-            <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-              Cifras consolidadas que respaldan cada despacho.
-            </motion.h2>
-          </div>
-          <motion.p variants={fadeUp} className="text-sm text-neutral-400 max-w-md font-normal leading-relaxed">
-            Medición continua bajo estándares FMCG. Indicadores auditados con trazabilidad
-            por estiba, guía de despacho y punto de venta en los 4 estados.
-          </motion.p>
-        </motion.div>
-
-        {/* 5-Column High-Density KPI Grid with staggerContainer & fadeUp */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-40px' }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 my-8"
-        >
-          {KEY_METRICS.map((metric) => {
-            const isSelected = selectedMetric.id === metric.id;
-            return (
-              <motion.button
-                key={metric.id}
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-neutral-800/80">
+            <div>
+              <motion.div
                 variants={fadeUp}
-                onClick={() => setSelectedMetricId(metric.id)}
-                whileHover={cardHover}
-                whileTap={{ scale: 0.98 }}
-                className={`text-left p-4 sm:p-5 rounded-xl border transition-colors duration-200 relative flex flex-col justify-between cursor-pointer group ${
-                  isSelected
-                    ? 'bg-neutral-900/90 border-emerald-500/80 ring-1 ring-emerald-500/40 shadow-lg shadow-emerald-950/20'
-                    : 'bg-neutral-900/40 border-neutral-800/90 hover:border-neutral-700 hover:bg-neutral-900/70 hover:shadow-md'
-                }`}
+                className="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-2"
               >
-                <div>
-                  <div className="flex items-center justify-between text-xs text-neutral-400 mb-1.5">
-                    <span className="font-medium text-neutral-400 group-hover:text-neutral-300 transition-colors">
-                      {metric.unit}
-                    </span>
-                    {isSelected ? (
-                      <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-800/50">
-                        Activo
-                      </span>
-                    ) : (
-                      <span className="text-[10px] text-neutral-600 group-hover:text-neutral-400 transition-colors">
-                        Ver
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-mono tabular-nums transition-transform duration-200 group-hover:translate-x-0.5">
-                    {metric.value}
-                  </div>
-                </div>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span>01. Capacidad y Desempeño Operacional</span>
+              </motion.div>
+              <motion.h2
+                variants={fadeUp}
+                className="text-2xl sm:text-3xl font-bold tracking-tight text-white"
+              >
+                Cifras consolidadas que respaldan cada despacho.
+              </motion.h2>
+            </div>
+            <motion.p
+              variants={fadeUp}
+              className="text-sm text-neutral-400 max-w-md font-normal leading-relaxed"
+            >
+              Medición continua bajo estándares FMCG. Indicadores auditados con trazabilidad
+              por estiba, guía de despacho y punto de venta en los 4 estados.
+            </motion.p>
+          </div>
 
-                <div className="mt-3.5 pt-3 border-t border-neutral-800/80">
-                  <div className="text-xs font-semibold text-neutral-200 line-clamp-1 group-hover:text-white transition-colors">
-                    {metric.label}
+          {/* 5-Column High-Density KPI Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 my-8">
+            {KEY_METRICS.map((metric) => {
+              const isSelected = selectedMetric.id === metric.id;
+              return (
+                <motion.button
+                  key={metric.id}
+                  variants={fadeUp}
+                  onClick={() => setSelectedMetricId(metric.id)}
+                  whileHover={cardHover}
+                  whileTap={{ scale: 0.98 }}
+                  className={`text-left p-4 sm:p-5 rounded-xl border transition-colors duration-200 relative flex flex-col justify-between cursor-pointer group ${
+                    isSelected
+                      ? 'bg-neutral-900/90 border-emerald-500/80 ring-1 ring-emerald-500/40 shadow-lg shadow-emerald-950/20'
+                      : 'bg-neutral-900/40 border-neutral-800/90 hover:border-neutral-700 hover:bg-neutral-900/70 hover:shadow-md'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between text-xs text-neutral-400 mb-1.5">
+                      <span className="font-medium text-neutral-400 group-hover:text-neutral-300 transition-colors">
+                        {metric.unit}
+                      </span>
+                      {isSelected ? (
+                        <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-800/50">
+                          Activo
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-neutral-600 group-hover:text-neutral-400 transition-colors">
+                          Ver
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-mono tabular-nums transition-transform duration-200 group-hover:translate-x-0.5">
+                      {metric.value}
+                    </div>
                   </div>
-                  <div className="text-[11px] text-neutral-400 line-clamp-1 mt-0.5">
-                    {metric.trend}
+
+                  <div className="mt-3.5 pt-3 border-t border-neutral-800/80">
+                    <div className="text-xs font-semibold text-neutral-200 line-clamp-1 group-hover:text-white transition-colors">
+                      {metric.label}
+                    </div>
+                    <div className="text-[11px] text-neutral-400 line-clamp-1 mt-0.5">
+                      {metric.trend}
+                    </div>
                   </div>
-                </div>
-              </motion.button>
-            );
-          })}
+                </motion.button>
+              );
+            })}
+          </div>
         </motion.div>
 
         {/* Contextual Metric Deep-Dive Panel */}
@@ -100,7 +107,7 @@ export const StatsSection: React.FC = () => {
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-30px' }}
+          viewport={{ once: true, amount: 0.2 }}
           className="bg-neutral-900/60 border border-neutral-800/90 rounded-2xl p-5 sm:p-7 backdrop-blur-xs shadow-xl"
         >
           <AnimatePresence mode="wait">

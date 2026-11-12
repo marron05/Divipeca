@@ -9,9 +9,11 @@ export const HistorySection: React.FC = () => {
   const activeMilestone = TIMELINE_MILESTONES[activeMilestoneIndex];
 
   return (
-    <section id="historia" className="relative pt-20 pb-20 sm:pt-24 sm:pb-24 bg-neutral-50 border-b border-neutral-200/80 overflow-hidden">
+    <section id="historia" className="relative pt-20 pb-20 sm:pt-24 sm:pb-24 bg-neutral-50 border-b border-neutral-200/80">
       {/* Soft Top Ambient Gradient for smooth transition from dark Indicadores block */}
-      <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-neutral-900/5 to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-10 overflow-hidden pointer-events-none">
+        <div className="w-full h-full bg-gradient-to-b from-neutral-900/5 to-transparent" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -19,7 +21,7 @@ export const HistorySection: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-40px' }}
+          viewport={{ once: true, amount: 0.2 }}
           variants={fadeUp}
           className="max-w-3xl mb-12 sm:mb-14"
         >
@@ -43,7 +45,7 @@ export const HistorySection: React.FC = () => {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
+            viewport={{ once: true, amount: 0.2 }}
             variants={scaleIn}
             className="lg:col-span-5 flex flex-col"
           >
@@ -72,7 +74,7 @@ export const HistorySection: React.FC = () => {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
+            viewport={{ once: true, amount: 0.2 }}
             variants={fadeUp}
             className="lg:col-span-7 flex flex-col justify-between p-6 sm:p-8 bg-white rounded-2xl border border-neutral-200 shadow-sm"
           >
@@ -182,7 +184,7 @@ export const HistorySection: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-40px' }}
+          viewport={{ once: true, amount: 0.2 }}
           variants={staggerContainer}
           className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5"
         >
@@ -219,7 +221,7 @@ export const HistorySection: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-20px' }}
+          viewport={{ once: true, amount: 0.2 }}
           variants={fadeUp}
           className="mt-10 p-5 sm:p-6 bg-white rounded-2xl border border-neutral-200 shadow-sm"
         >
@@ -254,4 +256,3 @@ export const HistorySection: React.FC = () => {
     </section>
   );
 };
-
