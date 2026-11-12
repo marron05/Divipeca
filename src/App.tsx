@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AnimatePresence } from 'motion/react';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { StatsSection } from './components/StatsSection';
@@ -44,11 +45,15 @@ export default function App() {
       <Footer />
 
       {/* Interactive B2B Capacity & Routing Modal */}
-      <ContactModal
-        isOpen={isContactOpen}
-        onClose={handleCloseContact}
-        initialSource={contactSource}
-      />
+      <AnimatePresence>
+        {isContactOpen && (
+          <ContactModal
+            isOpen={isContactOpen}
+            onClose={handleCloseContact}
+            initialSource={contactSource}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -48,26 +48,26 @@ export const ContactModal: React.FC<ContactModalProps> = ({
     onClose();
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
+    >
       {/* Backdrop */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+      <div
         onClick={onClose}
         className="fixed inset-0 bg-neutral-950/70 backdrop-blur-sm"
       />
 
       {/* Modal Surface */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.96, y: 12 }}
+        initial={{ opacity: 0, scale: 0.96, y: 16 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.96, y: 12 }}
-        transition={{ duration: 0.2 }}
-        className="relative bg-white rounded-xl shadow-2xl border border-neutral-200 w-full max-w-xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8"
+        exit={{ opacity: 0, scale: 0.96, y: 16 }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        className="relative bg-white rounded-2xl shadow-2xl border border-neutral-200 w-full max-w-xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8"
       >
         <button
           onClick={onClose}
@@ -265,6 +265,6 @@ export const ContactModal: React.FC<ContactModalProps> = ({
           </div>
         )}
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
