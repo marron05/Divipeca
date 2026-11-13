@@ -11,6 +11,8 @@ export const COMPANY_INFO = {
   primaryColor: '#1B5E20',
   accentColor: '#2E7D32',
   phone: '+58 (238) 779-1120',
+  whatsappNumber: '584140000000',
+  whatsappDisplay: '+58 (414) 000-0000',
   email: 'operaciones@divipeca.com.ve',
   addressMatrix: 'Zona Industrial La Pascua, Av. Principal con Calle Los Cedros, Valle de la Pascua, Edo. Guárico, Venezuela.'
 };

@@ -24,6 +24,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
     { label: 'Historia', href: '#historia' },
     { label: 'Sedes e Infraestructura', href: '#sedes' },
     { label: 'Flota', href: '#flota' },
+    { label: 'Contacto', href: '#contacto' },
   ];
 
   return (

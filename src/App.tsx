@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
-import { AnimatePresence } from 'motion/react';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
+import { VirtuousCircleSection } from './components/VirtuousCircleSection';
 import { StatsSection } from './components/StatsSection';
 import { HistorySection } from './components/HistorySection';
 import { FacilitiesSection } from './components/FacilitiesSection';
+import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
-import { ContactModal } from './components/ContactModal';
 
 export default function App() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
   const [contactSource, setContactSource] = useState<string>('General');
 
   const handleOpenContact = (source?: string) => {
     setContactSource(source || 'General');
-    setIsContactOpen(true);
-  };
-
-  const handleCloseContact = () => {
-    setIsContactOpen(false);
+    const contactEl = document.getElementById('contacto');
+    if (contactEl) {
+      contactEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   return (
@@ -31,29 +29,24 @@ export default function App() {
         {/* Section 1: Hero */}
         <HeroSection onOpenContact={handleOpenContact} />
 
-        {/* Section 2: Stats / KPIs */}
+        {/* Section 2: Propuesta de Valor (Círculo Vicioso -> Virtuoso) */}
+        <VirtuousCircleSection onOpenContact={handleOpenContact} />
+
+        {/* Section 3: Stats / KPIs */}
         <StatsSection />
 
-        {/* Section 3: Historia & Línea de Tiempo (1982 - Hoy) */}
+        {/* Section 4: Historia & Línea de Tiempo (1982 - Hoy) */}
         <HistorySection />
 
-        {/* Section 4: Sedes e Infraestructura + Flota Propia */}
+        {/* Section 5: Sedes e Infraestructura + Flota Propia */}
         <FacilitiesSection onOpenContact={handleOpenContact} />
+
+        {/* Section 6: Conversión & Contacto Directo */}
+        <ContactSection selectedSource={contactSource} />
       </main>
 
       {/* Corporate B2B Footer */}
       <Footer />
-
-      {/* Interactive B2B Capacity & Routing Modal */}
-      <AnimatePresence>
-        {isContactOpen && (
-          <ContactModal
-            isOpen={isContactOpen}
-            onClose={handleCloseContact}
-            initialSource={contactSource}
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 }
