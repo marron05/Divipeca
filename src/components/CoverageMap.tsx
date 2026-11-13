@@ -37,11 +37,11 @@ const HUB_PINS: HubPinMeta[] = [
   },
   {
     hubId: 'barcelona-plc',
-    xPercent: (368 / 640) * 100,
-    yPercent: (121 / 543) * 100,
+    xPercent: (354 / 640) * 100,
+    yPercent: (125 / 543) * 100,
     shortLabel: 'Puerto La Cruz / Barcelona',
     stateLabel: 'Anzoátegui · Sucre',
-    pillPositionClass: 'bottom-full mb-2.5 left-1/2 -translate-x-1/2',
+    pillPositionClass: 'bottom-full mb-2.5 right-0 translate-x-4',
   },
   {
     hubId: 'ciudad-bolivar',
@@ -132,11 +132,10 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                 />
               ))}
 
-              {/* 4 Highlighted Active States in DIVIPECA Green */}
+              {/* 4 Highlighted Active States in DIVIPECA Green with distinct borders */}
               {VENEZUELA_ACTIVE_STATES.map((st) => {
                 const isHubSelected = st.hubId === selectedHubId;
-                const labelX = st.id === 'anzoategui' ? 364 : st.labelX;
-                const labelY = st.id === 'anzoategui' ? 185 : st.labelY;
+                const isSucre = st.id === 'sucre';
 
                 return (
                   <g
@@ -146,22 +145,30 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                   >
                     <path
                       d={st.path}
-                      fill={isHubSelected ? '#1B5E20' : '#2E7D32'}
-                      fillOpacity={isHubSelected ? 0.94 : 0.7}
+                      fill={
+                        isSucre
+                          ? isHubSelected
+                            ? '#256D29'
+                            : '#43A047'
+                          : isHubSelected
+                          ? '#1B5E20'
+                          : '#2E7D32'
+                      }
+                      fillOpacity={isHubSelected ? 0.94 : 0.72}
                       stroke="#FFFFFF"
-                      strokeWidth={isHubSelected ? '2.2' : '1.6'}
+                      strokeWidth="2.4"
                       strokeLinejoin="round"
                       className="transition-all duration-300 hover:fill-[#1B5E20] hover:fill-opacity-95"
                     />
                     <text
-                      x={labelX}
-                      y={labelY}
+                      x={st.labelX}
+                      y={st.labelY}
                       fill="#FFFFFF"
-                      fillOpacity={isHubSelected ? 0.96 : 0.88}
-                      fontSize={st.id === 'sucre' ? '8.5' : '11'}
+                      fillOpacity={isHubSelected ? 0.98 : 0.9}
+                      fontSize={isSucre ? '8.5' : st.id === 'anzoategui' ? '9' : '10.5'}
                       fontWeight="700"
                       textAnchor="middle"
-                      className="pointer-events-none select-none tracking-wide"
+                      className="pointer-events-none select-none tracking-tight"
                     >
                       {st.name}
                     </text>
@@ -169,9 +176,9 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                 );
               })}
 
-              {/* Gentle Trunk Logistics Arcs connecting the 3 Hubs */}
+              {/* Gentle Trunk Logistics Arcs connecting the 3 Hubs without crossing state labels */}
               <path
-                d="M 314,164 Q 336,136 368,121"
+                d="M 314,164 Q 328,136 354,125"
                 fill="none"
                 stroke="#A7F3D0"
                 strokeWidth="1.75"
@@ -180,7 +187,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                 className="pointer-events-none"
               />
               <path
-                d="M 368,121 Q 396,162 408,208"
+                d="M 354,125 Q 422,158 408,208"
                 fill="none"
                 stroke="#A7F3D0"
                 strokeWidth="1.75"
