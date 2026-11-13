@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, ShieldCheck, MapPin, Building2, ChevronDown } from 'lucide-react';
-import { COMPANY_INFO, IMAGES } from '../data/divipecaData';
+import { IMAGES } from '../data/divipecaData';
 import { fadeUp, staggerContainer, scaleIn } from '../utils/motion';
 
 interface HeroSectionProps {
@@ -10,11 +10,11 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
   return (
-    <section id="inicio" className="relative pt-8 pb-16 lg:pt-14 lg:pb-24 bg-white">
+    <section id="inicio" className="relative pt-10 pb-16 lg:pt-16 lg:pb-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* 2-Column Split: Headline & Value Prop on Left, High-Stature Imagery on Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
           {/* Left Column: Proposition and Actions with staggerContainer */}
           <motion.div
@@ -24,22 +24,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
             viewport={{ once: true, amount: 0.2 }}
             className="lg:col-span-7 flex flex-col justify-center"
           >
-            {/* Editorial Subheader / Trust Badge Superior */}
-            <motion.div
-              variants={fadeUp}
-              className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-neutral-500 mb-6"
-            >
-              <span className="font-semibold text-neutral-900 tracking-wide uppercase">
-                {COMPANY_INFO.legalName}
-              </span>
-              <span aria-hidden="true" className="text-neutral-300">·</span>
-              <span>RIF: {COMPANY_INFO.rif}</span>
-              <span aria-hidden="true" className="text-neutral-300">·</span>
-              <span>Operador Logístico 3PL & Distribución Exclusiva</span>
-              <span aria-hidden="true" className="text-neutral-300">·</span>
-              <span className="text-[#1B5E20] font-semibold">Desde 1982 en Venezuela</span>
-            </motion.div>
-
             {/* H1 Headline */}
             <motion.h1
               variants={fadeUp}
@@ -128,7 +112,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
                 src={IMAGES.heroFleet}
                 alt="Flota y andenes de carga de DIVIPECA en operación matutina"
                 referrerPolicy="no-referrer"
-                className="w-full h-[400px] sm:h-[480px] lg:h-[530px] object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                className="w-full h-[400px] sm:h-[480px] lg:h-[520px] object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 ease-out"
               />
 
               {/* Cinematic Bottom Gradient Scrim */}

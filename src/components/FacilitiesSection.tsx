@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { LOGISTICS_HUBS, FLEET_DETAILS } from '../data/divipecaData';
 import { MapPin, Warehouse, Truck, CheckCircle2 } from 'lucide-react';
 import { fadeUp, staggerContainer, scaleIn, cardHover, buttonHover, buttonTap } from '../utils/motion';
+import { CoverageMap } from './CoverageMap';
 
 interface FacilitiesSectionProps {
   onOpenContact: (source?: string) => void;
@@ -39,13 +40,22 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
           </div>
         </motion.div>
 
+        {/* Interactive Coverage Map (4 States + 3 Synchronized Hub Pins) */}
+        <CoverageMap
+          hubs={LOGISTICS_HUBS}
+          selectedHubId={selectedHubId}
+          onSelectHub={setSelectedHubId}
+          onOpenContact={onOpenContact}
+        />
+
         {/* Hub Selector Navigation (Segmented Bar with micro-interactions & stagger) */}
         <motion.div
+          id="sede-detalle"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mb-9"
+          className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mb-9 scroll-mt-24"
         >
           {LOGISTICS_HUBS.map((hub) => {
             const isSelected = hub.id === activeHub.id;

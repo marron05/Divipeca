@@ -35,22 +35,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-8 h-18">
-          {/* Zone 1: Brand wordmark with official emblem */}
+        <div className="flex items-center justify-between gap-3 sm:gap-8 h-20 sm:h-22">
+          {/* Zone 1: Brand wordmark with enlarged official emblem */}
           <motion.a
             href="#inicio"
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
-            className="flex items-center gap-3 text-neutral-900 group whitespace-nowrap shrink-0"
+            className="flex items-center gap-3 sm:gap-3.5 text-neutral-900 group whitespace-nowrap shrink-0"
           >
-            <div className="w-11 h-11 rounded-full p-0.5 bg-white shadow-xs border border-neutral-200/80 flex items-center justify-center group-hover:scale-105 group-hover:shadow-sm transition-all duration-300 ease-out">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-white shadow-xs border border-neutral-200/80 flex items-center justify-center group-hover:scale-105 group-hover:shadow-sm transition-all duration-300 ease-out shrink-0">
               <DivipecaLogo className="w-full h-full" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight text-neutral-950 transition-colors group-hover:text-[#1B5E20]">
+              <span className="text-2xl sm:text-[26px] font-black tracking-tight leading-none text-neutral-950 transition-colors group-hover:text-[#1B5E20]">
                 DIVIPECA
               </span>
-              <span className="text-[10px] tracking-widest text-neutral-500 uppercase font-medium">
+              <span className="text-[10px] tracking-[0.14em] text-neutral-400 uppercase font-medium mt-1">
                 Operador Logístico 3PL
               </span>
             </div>
@@ -71,16 +71,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
           </nav>
 
           {/* Zone 3: 1 Primary Action */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <motion.button
               onClick={() => onOpenContact('Navbar')}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors shadow-xs hover:shadow-md hover:shadow-emerald-950/10 whitespace-nowrap shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors shadow-xs hover:shadow-md hover:shadow-emerald-950/10 whitespace-nowrap shrink-0 cursor-pointer"
             >
-              <span>Solicitar Capacidad 3PL</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Solicitar Capacidad 3PL</span>
+              <span className="sm:hidden">Solicitar 3PL</span>
+              <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
             </motion.button>
           </div>
         </div>
