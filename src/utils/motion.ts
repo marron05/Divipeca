@@ -8,7 +8,7 @@ export const DUR_SLOW = 1.0;
 
 export const VIEWPORT_CONFIG = {
   once: true,
-  margin: '-10% 0px',
+  amount: 0.1,
 } as const;
 
 export const fadeUp: Variants = {
@@ -51,7 +51,7 @@ export const primaryButtonTap = {
 };
 
 export const secondaryButtonHover = {
-  y: -1,
+  y: -2,
   transition: { duration: DUR_FAST, ease: EASE_PREMIUM },
 };
 

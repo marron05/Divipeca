@@ -5,7 +5,6 @@ import { IMAGES } from '../data/divipecaData';
 import {
   EASE_PREMIUM,
   DUR_MED,
-  VIEWPORT_CONFIG,
   primaryButtonHover,
   primaryButtonTap,
   secondaryButtonHover,
@@ -212,8 +211,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Right Column: Clean single entrance opacity + y 16px */}
           <motion.div
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={VIEWPORT_CONFIG}
+            animate={
+              introReady
+                ? { opacity: 1, y: 0 }
+                : shouldReduceMotion
+                ? { opacity: 1 }
+                : { opacity: 0, y: 16 }
+            }
             transition={{
               duration: DUR_MED,
               delay: shouldReduceMotion ? 0 : 0.14,

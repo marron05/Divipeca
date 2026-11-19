@@ -263,23 +263,27 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <a
+                  <motion.a
                     href={submittedWhatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors shadow-xs"
+                    whileHover={primaryButtonHover}
+                    whileTap={primaryButtonTap}
+                    className="inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors duration-200 cursor-pointer"
                   >
                     <MessageCircle className="w-4 h-4" />
                     <span>Enviar ahora por WhatsApp</span>
-                  </a>
+                  </motion.a>
 
-                  <a
+                  <motion.a
                     href={submittedMailtoUrl}
-                    className="inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 rounded-lg transition-colors"
+                    whileHover={secondaryButtonHover}
+                    whileTap={secondaryButtonTap}
+                    className="inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-neutral-100 hover:bg-neutral-200/80 border border-neutral-200 hover:border-[#1B5E20] rounded-lg transition-colors duration-200 cursor-pointer"
                   >
                     <Mail className="w-4 h-4 text-[#1B5E20]" />
                     <span>Abrir en correo</span>
-                  </a>
+                  </motion.a>
 
                   <button
                     type="button"
