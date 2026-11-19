@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { MapPin, ArrowUpRight, Truck, Warehouse, CheckCircle2, Navigation } from 'lucide-react';
 import { LogisticsHub } from '../types';
 import {
   EASE_PREMIUM,
   DUR_MED,
-  VIEWPORT_CONFIG,
-  fadeUp,
+  BUTTON_TRANSITION_CLASS,
+  useStickyInView,
   primaryButtonHover,
   primaryButtonTap,
 } from '../utils/motion';
@@ -97,15 +97,17 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
   onOpenContact,
 }) => {
   const shouldReduceMotion = useReducedMotion();
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const mapRevealed = useStickyInView(mapRef);
   const activeHub = hubs.find((h) => h.id === selectedHubId) || hubs[0];
   const activePin = HUB_PINS.find((p) => p.hubId === selectedHubId) || HUB_PINS[0];
 
   return (
     <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={VIEWPORT_CONFIG}
-      variants={fadeUp}
+      ref={mapRef}
+      initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+      animate={mapRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+      transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
       className="mb-12 rounded-3xl border border-neutral-200 bg-neutral-50/70 p-4 sm:p-6 lg:p-8"
     >
       {/* Map Header Copy */}
@@ -269,14 +271,12 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                     aria-pressed={isActive}
                     className="relative flex items-center justify-center group cursor-pointer focus:outline-none"
                   >
-                    {/* Circular Pin Marker (max 1.08 scale on hover ONLY on the pin) */}
-                    <motion.span
-                      whileHover={{ scale: 1.08 }}
-                      transition={{ duration: 0.2, ease: EASE_PREMIUM }}
-                      className={`relative w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full flex items-center justify-center transition-colors duration-200 ${
+                    {/* Circular Pin Marker (no scale > 1.02, crisp ring/border hover) */}
+                    <span
+                      className={`relative w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full flex items-center justify-center ${BUTTON_TRANSITION_CLASS} ${
                         isActive
                           ? 'bg-white border-[2.5px] border-[#052E16] ring-4 ring-emerald-400/30'
-                          : 'bg-emerald-50 border-2 border-[#1B5E20]'
+                          : 'bg-emerald-50 border-2 border-[#1B5E20] group-hover:ring-4 group-hover:ring-emerald-400/25'
                       }`}
                     >
                       <span
@@ -284,7 +284,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                           isActive ? 'bg-[#1B5E20]' : 'bg-[#1B5E20]/80'
                         }`}
                       />
-                    </motion.span>
+                    </span>
 
                     {/* Static Rounded-Full Pill Label (Desktop / Tablet) */}
                     <span
@@ -408,7 +408,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                   onClick={() => onOpenContact(`Mapa - Sede ${activeHub.city}`)}
                   whileHover={primaryButtonHover}
                   whileTap={primaryButtonTap}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] px-4 py-2.5 rounded-lg transition-colors duration-200 cursor-pointer"
+                  className={`inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] px-4 py-2.5 rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                 >
                   <span>Consultar Disponibilidad</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />

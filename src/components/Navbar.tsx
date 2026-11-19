@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { DivipecaLogo } from './DivipecaLogo';
-import { primaryButtonHover, primaryButtonTap } from '../utils/motion';
+import {
+  BUTTON_TRANSITION_CLASS,
+  primaryButtonHover,
+  primaryButtonTap,
+} from '../utils/motion';
 
 interface NavbarProps {
   onOpenContact: (source?: string) => void;
@@ -76,14 +80,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
             ))}
           </nav>
 
-          {/* Zone 3: 1 Primary Action with global y:-2 hover & opacity tap */}
+          {/* Zone 3: 1 Primary Action with global y:-2 hover & y:0 tap */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <motion.button
               type="button"
               onClick={() => onOpenContact('Navbar')}
               whileHover={primaryButtonHover}
               whileTap={primaryButtonTap}
-              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20]/50"
+              className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20]/50`}
             >
               <span className="hidden sm:inline">Solicitar Capacidad 3PL</span>
               <span className="sm:hidden">Solicitar 3PL</span>

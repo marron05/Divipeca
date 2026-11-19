@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import {
   MessageCircle,
   Mail,
@@ -12,9 +12,10 @@ import {
 } from 'lucide-react';
 import { COMPANY_INFO } from '../data/divipecaData';
 import {
-  VIEWPORT_CONFIG,
-  fadeUp,
-  staggerContainer,
+  EASE_PREMIUM,
+  DUR_MED,
+  BUTTON_TRANSITION_CLASS,
+  useStickyInView,
   primaryButtonHover,
   primaryButtonTap,
   secondaryButtonHover,
@@ -28,6 +29,12 @@ interface ContactSectionProps {
 type OperationType = '3PL' | 'Distribución';
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource = 'General' }) => {
+  const shouldReduceMotion = useReducedMotion();
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const gridRef = useRef<HTMLDivElement | null>(null);
+  const headerRevealed = useStickyInView(headerRef);
+  const gridRevealed = useStickyInView(gridRef);
+
   const [operationType, setOperationType] = useState<OperationType>('3PL');
   const [name, setName] = useState('');
   const [company, setCompany] = useState('');
@@ -92,46 +99,36 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT_CONFIG}
+          ref={headerRef}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          animate={headerRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
           className="max-w-2xl mb-12"
         >
-          <motion.div
-            variants={fadeUp}
-            className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2.5 flex items-center gap-2"
-          >
+          <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2.5 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
             <span>Contacto Comercial y Operaciones</span>
-          </motion.div>
+          </div>
 
-          <motion.h2
-            variants={fadeUp}
-            className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 mb-3 text-balance"
-          >
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 mb-3 text-balance">
             Hablemos de su operación
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            variants={fadeUp}
-            className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal"
-          >
+          <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
             Cuéntenos su necesidad de 3PL o distribución. Respondemos con una propuesta clara.
-          </motion.p>
+          </p>
         </motion.div>
 
         {/* 2-Column Conversion Grid */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT_CONFIG}
+        <div
+          ref={gridRef}
           className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
         >
           {/* Left Column: Direct Channels + Corporate Contact Info */}
           <motion.div
-            variants={fadeUp}
+            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            animate={gridRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
             className="lg:col-span-5 space-y-6"
           >
             {/* Direct Fast Action Card */}
@@ -153,7 +150,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                   rel="noopener noreferrer"
                   whileHover={primaryButtonHover}
                   whileTap={primaryButtonTap}
-                  className="w-full inline-flex items-center justify-between px-5 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-xl transition-colors duration-200"
+                  className={`w-full inline-flex items-center justify-between px-5 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-xl ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                 >
                   <span className="inline-flex items-center gap-2.5">
                     <MessageCircle className="w-4 h-4 shrink-0" />
@@ -166,7 +163,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                   href={directMailtoUrl}
                   whileHover={secondaryButtonHover}
                   whileTap={secondaryButtonTap}
-                  className="w-full inline-flex items-center justify-between px-5 py-3.5 text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-neutral-50 hover:bg-neutral-100 border border-neutral-200 hover:border-[#1B5E20] rounded-xl transition-colors duration-200"
+                  className={`w-full inline-flex items-center justify-between px-5 py-3.5 text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-neutral-50 hover:bg-neutral-100 border border-neutral-200 hover:border-[#1B5E20] rounded-xl ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                 >
                   <span className="inline-flex items-center gap-2.5">
                     <Mail className="w-4 h-4 text-[#1B5E20] shrink-0" />
@@ -238,7 +235,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
 
           {/* Right Column: Minimal B2B Form */}
           <motion.div
-            variants={fadeUp}
+            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            animate={gridRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            transition={{ duration: DUR_MED, delay: shouldReduceMotion ? 0 : 0.06, ease: EASE_PREMIUM }}
             className="lg:col-span-7 rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-xs"
           >
             {submitted ? (
@@ -269,7 +268,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                     rel="noopener noreferrer"
                     whileHover={primaryButtonHover}
                     whileTap={primaryButtonTap}
-                    className="inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors duration-200 cursor-pointer"
+                    className={`inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                   >
                     <MessageCircle className="w-4 h-4" />
                     <span>Enviar ahora por WhatsApp</span>
@@ -279,7 +278,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                     href={submittedMailtoUrl}
                     whileHover={secondaryButtonHover}
                     whileTap={secondaryButtonTap}
-                    className="inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-neutral-100 hover:bg-neutral-200/80 border border-neutral-200 hover:border-[#1B5E20] rounded-lg transition-colors duration-200 cursor-pointer"
+                    className={`inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-neutral-100 hover:bg-neutral-200/80 border border-neutral-200 hover:border-[#1B5E20] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                   >
                     <Mail className="w-4 h-4 text-[#1B5E20]" />
                     <span>Abrir en correo</span>
@@ -410,7 +409,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                     type="submit"
                     whileHover={primaryButtonHover}
                     whileTap={primaryButtonTap}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors duration-200 cursor-pointer"
+                    className={`inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                   >
                     <Send className="w-4 h-4" />
                     <span>Enviar solicitud</span>
@@ -419,7 +418,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
               </form>
             )}
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

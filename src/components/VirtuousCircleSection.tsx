@@ -14,9 +14,8 @@ import {
   DUR_FAST,
   DUR_MED,
   DUR_SLOW,
-  VIEWPORT_CONFIG,
-  fadeUp,
-  staggerContainer,
+  BUTTON_TRANSITION_CLASS,
+  useStickyInView,
   primaryButtonHover,
   primaryButtonTap,
   secondaryButtonHover,
@@ -75,22 +74,34 @@ const CIRCLE_PAIRS: CirclePair[] = [
 const CountUpFiftyThree: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
   const ref = useRef<HTMLSpanElement | null>(null);
-  const inView = useInView(ref, VIEWPORT_CONFIG);
+  const inView = useStickyInView(ref);
+  const hasAnimatedRef = useRef(false);
   const [count, setCount] = useState(shouldReduceMotion ? 53 : 0);
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView || hasAnimatedRef.current) return;
+    hasAnimatedRef.current = true;
+
     if (shouldReduceMotion) {
       setCount(53);
       return;
     }
+
     const controls = animate(0, 53, {
       duration: DUR_SLOW,
       ease: EASE_PREMIUM,
       onUpdate: (latest) => setCount(Math.round(latest)),
       onComplete: () => setCount(53),
     });
-    return () => controls.stop();
+
+    const safetyTimer = window.setTimeout(() => {
+      setCount(53);
+    }, 1100);
+
+    return () => {
+      controls.stop();
+      window.clearTimeout(safetyTimer);
+    };
   }, [inView, shouldReduceMotion]);
 
   return (
@@ -107,7 +118,18 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
   onOpenContact,
 }) => {
   const shouldReduceMotion = useReducedMotion();
+  const headerRef = useRef<HTMLDivElement | null>(null);
   const gridRef = useRef<HTMLDivElement | null>(null);
+  const leftColRef = useRef<HTMLDivElement | null>(null);
+  const centerColRef = useRef<HTMLDivElement | null>(null);
+  const rightColRef = useRef<HTMLDivElement | null>(null);
+  const ctaRef = useRef<HTMLDivElement | null>(null);
+
+  const headerRevealed = useStickyInView(headerRef);
+  const leftRevealed = useStickyInView(leftColRef);
+  const centerRevealed = useStickyInView(centerColRef);
+  const rightRevealed = useStickyInView(rightColRef);
+  const ctaRevealed = useStickyInView(ctaRef);
   const isGridInView = useInView(gridRef, { once: false, amount: 0.15 });
 
   const [hoveredStep, setHoveredStep] = useState<number | null>(null);
@@ -151,57 +173,45 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
       className="relative py-16 sm:py-20 bg-neutral-50 border-y border-neutral-200/80"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Editorial Section Header */}
+        {/* Editorial Section Header (single clean reveal container, no parent/child conflict) */}
         <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT_CONFIG}
+          ref={headerRef}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          animate={headerRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
           className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-10 sm:mb-12"
         >
           <div className="max-w-3xl">
-            <motion.div
-              variants={fadeUp}
-              className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2 flex items-center gap-2"
-            >
+            <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
               <span>De la logística que frena a la logística que vende</span>
-            </motion.div>
+            </div>
 
-            <motion.h2
-              variants={fadeUp}
-              className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 mb-3 text-balance"
-            >
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 mb-3 text-balance">
               Qué cambia con DIVIPECA
-            </motion.h2>
+            </h2>
 
-            <motion.p
-              variants={fadeUp}
-              className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal"
-            >
+            <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
               Menos faltantes y reclamos. Más entregas a tiempo y recompra.
-            </motion.p>
+            </p>
           </div>
 
-          <motion.div
-            variants={fadeUp}
-            className="text-xs text-neutral-500 flex items-center gap-2 bg-white border border-neutral-200 px-3.5 py-2 rounded-lg self-start lg:self-auto"
-          >
+          <div className="text-xs text-neutral-500 flex items-center gap-2 bg-white border border-neutral-200 px-3.5 py-2 rounded-lg self-start lg:self-auto">
             <SlidersHorizontal className="w-3.5 h-3.5 text-[#1B5E20] shrink-0" />
             <span>Toca o pasa el cursor por cada paso para comparar el impacto</span>
-          </motion.div>
+          </div>
         </motion.div>
 
-        {/* Interactive 3-Column Comparison Grid (each column independently observes viewport so none ever gets stuck) */}
+        {/* Interactive 3-Column Comparison Grid */}
         <div
           ref={gridRef}
           className="grid grid-cols-1 lg:grid-cols-11 gap-5 lg:gap-4 items-stretch"
         >
           {/* LEFT COLUMN: ANTES (Círculo Vicioso) */}
           <motion.div
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={VIEWPORT_CONFIG}
+            ref={leftColRef}
+            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            animate={leftRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
             className="lg:col-span-4 flex flex-col"
           >
@@ -309,11 +319,14 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                         vectorEffect="non-scaling-stroke"
                         initial={
                           shouldReduceMotion
-                            ? { pathLength: 1, opacity: 0.7 }
+                            ? { pathLength: 1, opacity: 0.75 }
                             : { pathLength: 0, opacity: 0 }
                         }
-                        whileInView={{ pathLength: 1, opacity: 0.75 }}
-                        viewport={VIEWPORT_CONFIG}
+                        animate={
+                          leftRevealed
+                            ? { pathLength: 1, opacity: 0.75 }
+                            : { pathLength: 0, opacity: 0 }
+                        }
                         transition={{ duration: DUR_SLOW, ease: EASE_PREMIUM }}
                       />
                     </svg>
@@ -333,9 +346,9 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
 
           {/* CENTER BRIDGE: Punto de inflexión + Switch + Insight dinámico */}
           <motion.div
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={VIEWPORT_CONFIG}
+            ref={centerColRef}
+            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            animate={centerRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             transition={{ duration: DUR_MED, delay: shouldReduceMotion ? 0 : 0.06, ease: EASE_PREMIUM }}
             className="lg:col-span-3 flex flex-col justify-between text-center px-5 py-6 sm:p-6 rounded-2xl bg-neutral-950 text-white border border-neutral-800 relative"
           >
@@ -359,7 +372,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                 onClick={handleToggleModel}
                 whileHover={primaryButtonHover}
                 whileTap={primaryButtonTap}
-                className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold tracking-wide flex items-center justify-center gap-2 transition-colors duration-200 cursor-pointer border ${
+                className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold tracking-wide flex items-center justify-center gap-2 ${BUTTON_TRANSITION_CLASS} cursor-pointer border ${
                   isActivated
                     ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/60'
                     : 'bg-[#1B5E20] hover:bg-[#2E7D32] text-white border-emerald-500/40'
@@ -463,11 +476,11 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
 
           {/* RIGHT COLUMN: DESPUÉS (Círculo Virtuoso) */}
           <motion.div
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={VIEWPORT_CONFIG}
+            ref={rightColRef}
+            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            animate={rightRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             transition={{ duration: DUR_MED, delay: shouldReduceMotion ? 0 : 0.12, ease: EASE_PREMIUM }}
-            className={`lg:col-span-4 rounded-2xl border-2 bg-white p-6 sm:p-7 flex flex-col justify-between transition-colors duration-200 ${
+            className={`lg:col-span-4 rounded-2xl border-2 bg-white p-6 sm:p-7 flex flex-col justify-between ${BUTTON_TRANSITION_CLASS} ${
               isActivated
                 ? 'border-[#1B5E20] ring-2 ring-emerald-500/15'
                 : 'border-[#1B5E20]/30'
@@ -575,8 +588,11 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                           ? { pathLength: 1, opacity: 0.85 }
                           : { pathLength: 0, opacity: 0 }
                       }
-                      whileInView={{ pathLength: 1, opacity: 0.85 }}
-                      viewport={VIEWPORT_CONFIG}
+                      animate={
+                        rightRevealed
+                          ? { pathLength: 1, opacity: 0.85 }
+                          : { pathLength: 0, opacity: 0 }
+                      }
                       transition={{ duration: DUR_SLOW, ease: EASE_PREMIUM }}
                     />
                   </svg>
@@ -596,12 +612,12 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
           </motion.div>
         </div>
 
-        {/* Section Bottom CTAs with unified y:-2 hover */}
+        {/* Section Bottom CTAs with unified y:-2 hover + [0.22, 1, 0.36, 1] */}
         <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT_CONFIG}
+          ref={ctaRef}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          animate={ctaRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
           className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3.5"
         >
           <motion.button
@@ -609,7 +625,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
             onClick={() => onOpenContact('Círculo Virtuoso')}
             whileHover={primaryButtonHover}
             whileTap={primaryButtonTap}
-            className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors duration-200 cursor-pointer"
+            className={`inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
           >
             <span>Solicitar alianza logística</span>
             <ArrowRight className="w-4 h-4" />
@@ -621,7 +637,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
             rel="noopener noreferrer"
             whileHover={secondaryButtonHover}
             whileTap={secondaryButtonTap}
-            className="inline-flex items-center gap-2 px-5 py-3.5 text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-white border border-neutral-300 hover:border-[#1B5E20] rounded-lg transition-colors duration-200 cursor-pointer"
+            className={`inline-flex items-center gap-2 px-5 py-3.5 text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-white border border-neutral-300 hover:border-[#1B5E20] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
           >
             <MessageCircle className="w-4 h-4 text-[#1B5E20]" />
             <span>Hablar por WhatsApp</span>

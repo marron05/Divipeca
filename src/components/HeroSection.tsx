@@ -5,6 +5,7 @@ import { IMAGES } from '../data/divipecaData';
 import {
   EASE_PREMIUM,
   DUR_MED,
+  BUTTON_TRANSITION_CLASS,
   primaryButtonHover,
   primaryButtonTap,
   secondaryButtonHover,
@@ -142,7 +143,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 onClick={() => onOpenContact('Hero CTA')}
                 whileHover={primaryButtonHover}
                 whileTap={primaryButtonTap}
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors duration-200 cursor-pointer whitespace-nowrap"
+                className={`inline-flex items-center gap-2.5 px-6 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer whitespace-nowrap`}
               >
                 <span>Solicitar Alianza Logística</span>
                 <ArrowRight className="w-4 h-4" />
@@ -152,7 +153,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 href="#sedes"
                 whileHover={secondaryButtonHover}
                 whileTap={secondaryButtonTap}
-                className="inline-flex items-center gap-2 px-5 py-3.5 text-sm font-semibold text-neutral-700 hover:text-neutral-950 bg-neutral-100/80 border border-neutral-200 hover:border-[#1B5E20] rounded-lg transition-colors duration-200 whitespace-nowrap cursor-pointer"
+                className={`inline-flex items-center gap-2 px-5 py-3.5 text-sm font-semibold text-neutral-700 hover:text-neutral-950 bg-neutral-100/80 border border-neutral-200 hover:border-[#1B5E20] rounded-lg ${BUTTON_TRANSITION_CLASS} whitespace-nowrap cursor-pointer`}
               >
                 <span>Explorar Red de Sedes</span>
                 <ChevronDown className="w-4 h-4 text-neutral-500" />

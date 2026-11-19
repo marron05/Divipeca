@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useInView, animate, useReducedMotion } from 'motion/react';
+import { motion, AnimatePresence, animate, useReducedMotion } from 'motion/react';
 import {
   KEY_METRICS,
   LEAD_TIME_DATA,
@@ -20,9 +20,8 @@ import {
   DUR_FAST,
   DUR_MED,
   DUR_SLOW,
-  VIEWPORT_CONFIG,
-  fadeUp,
-  staggerContainer,
+  BUTTON_TRANSITION_CLASS,
+  useStickyInView,
   primaryButtonHover,
   primaryButtonTap,
   secondaryButtonHover,
@@ -41,34 +40,68 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
   const [hoveredLeadStep, setHoveredLeadStep] = useState<number | null>(null);
   const [pinnedLeadStep, setPinnedLeadStep] = useState<number>(0);
 
+  const headerRef = useRef<HTMLDivElement | null>(null);
   const leadBlockRef = useRef<HTMLDivElement | null>(null);
-  const leadInView = useInView(leadBlockRef, VIEWPORT_CONFIG);
+  const kpiGridRef = useRef<HTMLDivElement | null>(null);
+  const detailPanelRef = useRef<HTMLDivElement | null>(null);
+  const clarifiersRef = useRef<HTMLDivElement | null>(null);
+
+  const headerRevealed = useStickyInView(headerRef);
+  const leadInView = useStickyInView(leadBlockRef);
+  const kpiRevealed = useStickyInView(kpiGridRef);
+  const detailRevealed = useStickyInView(detailPanelRef);
+  const clarifiersRevealed = useStickyInView(clarifiersRef);
+
+  const hasStartedLeadRef = useRef(false);
+  const leadControlsRef = useRef<ReturnType<typeof animate> | null>(null);
   const [formattedLeadDisplay, setFormattedLeadDisplay] = useState<string>(
     shouldReduceMotion ? '0,70' : '1,00'
   );
   const [leadSettled, setLeadSettled] = useState<boolean>(Boolean(shouldReduceMotion));
 
   useEffect(() => {
-    if (!leadInView) return;
+    if (!leadInView || hasStartedLeadRef.current) return;
+    hasStartedLeadRef.current = true;
+
     if (shouldReduceMotion) {
       setFormattedLeadDisplay('0,70');
       setLeadSettled(true);
       return;
     }
 
-    const controls = animate(1.0, LEAD_TIME_DATA.value, {
+    leadControlsRef.current = animate(1.0, LEAD_TIME_DATA.value, {
       duration: DUR_SLOW,
       ease: EASE_PREMIUM,
       onUpdate: (latest) => {
-        setFormattedLeadDisplay(latest.toFixed(2).replace('.', ','));
+        const clamped = Math.max(0.7, Math.min(1.0, latest));
+        if (clamped <= 0.704) {
+          setFormattedLeadDisplay('0,70');
+        } else {
+          setFormattedLeadDisplay(clamped.toFixed(2).replace('.', ','));
+        }
       },
       onComplete: () => {
         setFormattedLeadDisplay('0,70');
         setLeadSettled(true);
       },
     });
-    return () => controls.stop();
+
+    // Guarantee final exact 0,70 state even if RAF is throttled or delayed
+    const safetyTimer = window.setTimeout(() => {
+      setFormattedLeadDisplay('0,70');
+      setLeadSettled(true);
+    }, 1080);
+
+    return () => {
+      window.clearTimeout(safetyTimer);
+    };
   }, [leadInView, shouldReduceMotion]);
+
+  useEffect(() => {
+    return () => {
+      leadControlsRef.current?.stop();
+    };
+  }, []);
 
   const activeLeadIndex = hoveredLeadStep !== null ? hoveredLeadStep : pinnedLeadStep;
   const activeLeadStep = LEAD_TIME_DATA.steps[activeLeadIndex];
@@ -90,45 +123,35 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
+        {/* Section Header (single clean reveal, no conflicting child variants) */}
         <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT_CONFIG}
+          ref={headerRef}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          animate={headerRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-neutral-800/80"
         >
           <div>
-            <motion.div
-              variants={fadeUp}
-              className="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-2"
-            >
+            <div className="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               <span>01. Capacidad, Lead Time y Desempeño Operacional</span>
-            </motion.div>
-            <motion.h2
-              variants={fadeUp}
-              className="text-2xl sm:text-3xl font-bold tracking-tight text-white text-balance"
-            >
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white text-balance">
               Cifras consolidadas que respaldan cada despacho.
-            </motion.h2>
+            </h2>
           </div>
-          <motion.p
-            variants={fadeUp}
-            className="text-sm text-neutral-400 max-w-md font-normal leading-relaxed"
-          >
+          <p className="text-sm text-neutral-400 max-w-md font-normal leading-relaxed">
             Medición continua bajo estándares FMCG. Indicadores auditados con trazabilidad
             por estiba, guía de despacho y punto de venta en los 4 estados.
-          </motion.p>
+          </p>
         </motion.div>
 
         {/* FEATURED INTERACTIVE MODULE: LEAD TIME ANIMADO (1,00 -> 0,70 exact, GPU scaleX + translateX) */}
         <motion.div
           ref={leadBlockRef}
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT_CONFIG}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          animate={leadInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
           className="my-8 rounded-2xl border border-neutral-800 bg-neutral-900/75 p-6 sm:p-8"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -345,7 +368,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
                   onClick={() => onOpenContact('Indicadores - Lead Time 0,70')}
                   whileHover={primaryButtonHover}
                   whileTap={primaryButtonTap}
-                  className="inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors duration-200 cursor-pointer"
+                  className={`inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                 >
                   <span>Solicitar alianza logística</span>
                   <ArrowRight className="w-4 h-4" />
@@ -357,7 +380,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
                   rel="noopener noreferrer"
                   whileHover={secondaryButtonHover}
                   whileTap={secondaryButtonTap}
-                  className="inline-flex items-center gap-2 px-4 py-3 text-xs sm:text-sm font-semibold text-neutral-200 hover:text-white bg-neutral-950 border border-neutral-700 hover:border-[#1B5E20] rounded-lg transition-colors duration-200 cursor-pointer"
+                  className={`inline-flex items-center gap-2 px-4 py-3 text-xs sm:text-sm font-semibold text-neutral-200 hover:text-white bg-neutral-950 border border-neutral-700 hover:border-[#1B5E20] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                 >
                   <MessageCircle className="w-4 h-4 text-emerald-400" />
                   <span>Hablar por WhatsApp</span>
@@ -367,28 +390,28 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
           </div>
         </motion.div>
 
-        {/* Main Animated Motion Container for 5 Consolidated KPI Cards (short stagger, calm 1px border hover) */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT_CONFIG}
-        >
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 my-8">
-            {KEY_METRICS.map((metric) => {
-              const isSelected = selectedMetric.id === metric.id;
-              return (
-                <motion.button
-                  key={metric.id}
-                  type="button"
-                  variants={fadeUp}
-                  onClick={() => setSelectedMetricId(metric.id)}
-                  className={`text-left p-4 sm:p-5 rounded-xl border transition-colors duration-200 relative flex flex-col justify-between cursor-pointer group ${
-                    isSelected
-                      ? 'bg-neutral-900/90 border-emerald-500/80 ring-1 ring-emerald-500/40'
-                      : 'bg-neutral-900/40 border-neutral-800/90 hover:border-emerald-500/45 hover:bg-neutral-900/70'
-                  }`}
-                >
+        {/* 5 Consolidated KPI Cards (direct reveal per card, zero parent stagger conflict) */}
+        <div ref={kpiGridRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 my-8">
+          {KEY_METRICS.map((metric, idx) => {
+            const isSelected = selectedMetric.id === metric.id;
+            return (
+              <motion.button
+                key={metric.id}
+                type="button"
+                initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                animate={kpiRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                transition={{
+                  duration: DUR_MED,
+                  delay: shouldReduceMotion ? 0 : idx * 0.05,
+                  ease: EASE_PREMIUM,
+                }}
+                onClick={() => setSelectedMetricId(metric.id)}
+                className={`text-left p-4 sm:p-5 rounded-xl border ${BUTTON_TRANSITION_CLASS} relative flex flex-col justify-between cursor-pointer group ${
+                  isSelected
+                    ? 'bg-neutral-900/90 border-emerald-500/80 ring-1 ring-emerald-500/40'
+                    : 'bg-neutral-900/40 border-neutral-800/90 hover:border-emerald-500/45 hover:bg-neutral-900/70'
+                }`}
+              >
                   <div>
                     <div className="flex items-center justify-between text-xs text-neutral-400 mb-1.5">
                       <span className="font-medium text-neutral-400 group-hover:text-neutral-300 transition-colors">
@@ -426,14 +449,13 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
               );
             })}
           </div>
-        </motion.div>
 
         {/* Contextual Metric Deep-Dive Panel */}
         <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT_CONFIG}
+          ref={detailPanelRef}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          animate={detailRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
           className="bg-neutral-900/60 border border-neutral-800/90 rounded-2xl p-5 sm:p-7 backdrop-blur-xs"
         >
           <AnimatePresence mode="wait">
@@ -506,10 +528,10 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
 
         {/* Clear Terminology Definitions Strip (3PL · OTIF · Lead time) */}
         <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT_CONFIG}
+          ref={clarifiersRef}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          animate={clarifiersRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
           className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3.5"
         >
           {TERMINOLOGY_CLARIFIERS.map((item) => (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { TIMELINE_MILESTONES, CLIENT_PARTNERS } from '../data/divipecaData';
 import { History, Handshake, Camera } from 'lucide-react';
@@ -6,14 +6,19 @@ import {
   EASE_PREMIUM,
   DUR_FAST,
   DUR_MED,
-  VIEWPORT_CONFIG,
-  fadeUp,
+  BUTTON_TRANSITION_CLASS,
+  useStickyInView,
   secondaryButtonHover,
   secondaryButtonTap,
 } from '../utils/motion';
 
 export const HistorySection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const splitRef = useRef<HTMLDivElement | null>(null);
+  const headerRevealed = useStickyInView(headerRef);
+  const splitRevealed = useStickyInView(splitRef);
+
   const [activeMilestoneIndex, setActiveMilestoneIndex] = useState<number>(0);
   const [imageErrorMap, setImageErrorMap] = useState<Record<string, boolean>>({});
   const activeMilestone = TIMELINE_MILESTONES[activeMilestoneIndex];
@@ -29,11 +34,11 @@ export const HistorySection: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Clean Section Header (simple fade + y, no excessive multi-element stagger) */}
+        {/* Clean Section Header */}
         <motion.div
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={VIEWPORT_CONFIG}
+          ref={headerRef}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+          animate={headerRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
           transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
           className="max-w-3xl mb-12 sm:mb-14"
         >
@@ -52,10 +57,10 @@ export const HistorySection: React.FC = () => {
 
         {/* Narrative & Stage-Synchronized Visual Split */}
         <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT_CONFIG}
-          variants={fadeUp}
+          ref={splitRef}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          animate={splitRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
           className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10 items-stretch"
         >
           {/* Dynamic Per-Stage Photography Card with 0.45s Smooth Crossfade */}
@@ -190,7 +195,7 @@ export const HistorySection: React.FC = () => {
                 onClick={() => setActiveMilestoneIndex((prev) => Math.max(0, prev - 1))}
                 whileHover={activeMilestoneIndex > 0 ? secondaryButtonHover : undefined}
                 whileTap={activeMilestoneIndex > 0 ? secondaryButtonTap : undefined}
-                className="text-xs font-semibold px-3.5 py-1.5 rounded-lg border border-neutral-200 hover:border-[#1B5E20] text-neutral-700 hover:text-neutral-950 disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer"
+                className={`text-xs font-semibold px-3.5 py-1.5 rounded-lg border border-neutral-200 hover:border-[#1B5E20] text-neutral-700 hover:text-neutral-950 disabled:opacity-40 disabled:cursor-not-allowed ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
               >
                 ← Anterior
               </motion.button>
@@ -229,7 +234,7 @@ export const HistorySection: React.FC = () => {
                     ? secondaryButtonTap
                     : undefined
                 }
-                className="text-xs font-semibold px-3.5 py-1.5 rounded-lg border border-neutral-200 hover:border-[#1B5E20] text-neutral-700 hover:text-neutral-950 disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer"
+                className={`text-xs font-semibold px-3.5 py-1.5 rounded-lg border border-neutral-200 hover:border-[#1B5E20] text-neutral-700 hover:text-neutral-950 disabled:opacity-40 disabled:cursor-not-allowed ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
               >
                 Siguiente →
               </motion.button>
