@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { DivipecaLogo } from './DivipecaLogo';
+import { EASE_PREMIUM, DUR_MED } from '../utils/motion';
 
 interface SplashIntroProps {
   onComplete: () => void;
@@ -10,7 +11,7 @@ export const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    const duration = shouldReduceMotion ? 350 : 1200;
+    const duration = shouldReduceMotion ? 200 : 1200;
     const timer = window.setTimeout(() => {
       onComplete();
     }, duration);
@@ -21,19 +22,25 @@ export const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
     <motion.div
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } }}
+      exit={{
+        opacity: 0,
+        transition: {
+          duration: shouldReduceMotion ? 0.12 : DUR_MED,
+          ease: EASE_PREMIUM,
+        },
+      }}
       onClick={onComplete}
       role="status"
       aria-label="Cargando DIVIPECA"
       className="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center px-6 select-none cursor-pointer"
     >
       <motion.div
-        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.92, y: 8 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
         className="flex flex-col items-center text-center"
       >
-        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-white shadow-md border border-neutral-200/80 mb-5">
+        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-white shadow-sm border border-neutral-200/80 mb-5">
           <DivipecaLogo className="w-full h-full" />
         </div>
 
@@ -49,9 +56,13 @@ export const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
 
         <div className="mt-6 w-28 h-0.5 bg-neutral-100 rounded-full overflow-hidden">
           <motion.div
-            initial={{ x: '-100%' }}
-            animate={{ x: '0%' }}
-            transition={{ duration: shouldReduceMotion ? 0.2 : 1.0, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            style={{ transformOrigin: 'left' }}
+            transition={{
+              duration: shouldReduceMotion ? 0.15 : 1.0,
+              ease: EASE_PREMIUM,
+            }}
             className="h-full w-full bg-[#1B5E20] rounded-full"
           />
         </div>

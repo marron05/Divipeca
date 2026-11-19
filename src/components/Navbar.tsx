@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { DivipecaLogo } from './DivipecaLogo';
+import { primaryButtonHover, primaryButtonTap } from '../utils/motion';
 
 interface NavbarProps {
   onOpenContact: (source?: string) => void;
@@ -29,22 +30,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-all duration-300 ${
+      className={`sticky top-0 z-40 transition-[background-color,border-color,backdrop-filter] duration-200 ease-out ${
         scrolled
-          ? 'bg-white/85 backdrop-blur-md border-b border-neutral-200/80 shadow-xs'
-          : 'bg-white/95 backdrop-blur-xs border-b border-neutral-200'
+          ? 'bg-white/88 backdrop-blur-md border-b border-neutral-200/80'
+          : 'bg-white/98 backdrop-blur-xs border-b border-neutral-200'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-3 sm:gap-8 h-20 sm:h-24">
-          {/* Zone 1: Brand wordmark in authoritative black with enlarged official emblem */}
-          <motion.a
+          {/* Zone 1: Calm static brand lockup in authoritative black */}
+          <a
             href="#inicio"
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
-            className="flex items-center gap-3 sm:gap-4 text-neutral-950 group whitespace-nowrap shrink-0"
+            className="flex items-center gap-3 sm:gap-4 text-neutral-950 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20]/40 rounded-lg"
           >
-            <div className="w-15 h-15 sm:w-20 sm:h-20 rounded-full p-0.5 bg-white shadow-xs border border-neutral-200/80 flex items-center justify-center group-hover:scale-105 group-hover:shadow-sm transition-all duration-300 ease-out shrink-0">
+            <div className="w-15 h-15 sm:w-20 sm:h-20 rounded-full p-0.5 bg-white shadow-2xs border border-neutral-200/80 flex items-center justify-center shrink-0">
               <DivipecaLogo className="w-full h-full" />
             </div>
             <div className="flex flex-col">
@@ -61,30 +60,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
                 </span>
               </div>
             </div>
-          </motion.a>
+          </a>
 
-          {/* Zone 2: Single-line navigation links with animated underline */}
-          <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-neutral-600">
+          {/* Zone 2: Single-line navigation links with calm opacity & subtle underline (no scale) */}
+          <nav className="hidden md:flex items-center gap-7 text-sm font-medium">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="relative py-1 text-neutral-600 hover:text-neutral-950 transition-colors duration-200 whitespace-nowrap shrink-0 group"
+                className="relative py-1 text-neutral-900/70 hover:text-neutral-950 transition-[color,opacity] duration-200 whitespace-nowrap shrink-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20]/40 rounded-sm"
               >
                 <span>{link.label}</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#1B5E20] group-hover:w-full transition-all duration-300 ease-out rounded-full" />
+                <span className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[#1B5E20] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-200 ease-out rounded-full" />
               </a>
             ))}
           </nav>
 
-          {/* Zone 3: 1 Primary Action */}
+          {/* Zone 3: 1 Primary Action with global y:-2 hover & opacity tap */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <motion.button
+              type="button"
               onClick={() => onOpenContact('Navbar')}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors shadow-xs hover:shadow-md hover:shadow-emerald-950/10 whitespace-nowrap shrink-0 cursor-pointer"
+              whileHover={primaryButtonHover}
+              whileTap={primaryButtonTap}
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20]/50"
             >
               <span className="hidden sm:inline">Solicitar Capacidad 3PL</span>
               <span className="sm:hidden">Solicitar 3PL</span>
@@ -96,4 +95,3 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
     </header>
   );
 };
-

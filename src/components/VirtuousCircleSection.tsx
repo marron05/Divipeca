@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useInView, animate } from 'motion/react';
+import { motion, AnimatePresence, useInView, animate, useReducedMotion } from 'motion/react';
 import {
   ArrowRight,
   ArrowDown,
@@ -9,7 +9,19 @@ import {
   SlidersHorizontal,
 } from 'lucide-react';
 import { COMPANY_INFO } from '../data/divipecaData';
-import { fadeUp, staggerContainer, buttonHover, buttonTap } from '../utils/motion';
+import {
+  EASE_PREMIUM,
+  DUR_FAST,
+  DUR_MED,
+  DUR_SLOW,
+  VIEWPORT_CONFIG,
+  fadeUp,
+  staggerContainer,
+  primaryButtonHover,
+  primaryButtonTap,
+  secondaryButtonHover,
+  secondaryButtonTap,
+} from '../utils/motion';
 
 interface VirtuousCircleSectionProps {
   onOpenContact: (source?: string) => void;
@@ -60,52 +72,57 @@ const CIRCLE_PAIRS: CirclePair[] = [
   },
 ];
 
-const CountUpFiftyThree: React.FC<{ triggerPop: boolean }> = ({ triggerPop }) => {
+const CountUpFiftyThree: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
   const ref = useRef<HTMLSpanElement | null>(null);
-  const inView = useInView(ref, { once: true, amount: 0.4 });
-  const [count, setCount] = useState(0);
+  const inView = useInView(ref, VIEWPORT_CONFIG);
+  const [count, setCount] = useState(shouldReduceMotion ? 53 : 0);
 
   useEffect(() => {
     if (!inView) return;
+    if (shouldReduceMotion) {
+      setCount(53);
+      return;
+    }
     const controls = animate(0, 53, {
-      duration: 1.35,
-      ease: [0.22, 1, 0.36, 1],
+      duration: DUR_SLOW,
+      ease: EASE_PREMIUM,
       onUpdate: (latest) => setCount(Math.round(latest)),
+      onComplete: () => setCount(53),
     });
     return () => controls.stop();
-  }, [inView]);
+  }, [inView, shouldReduceMotion]);
 
   return (
-    <motion.span
+    <span
       ref={ref}
-      animate={triggerPop ? { scale: [1, 1.14, 1] } : { scale: 1 }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      className="text-[11px] font-mono font-bold text-[#1B5E20] bg-white px-2.5 py-0.5 rounded-full border border-emerald-300 shadow-2xs shrink-0 tabular-nums"
+      className="text-[11px] font-mono font-bold text-[#1B5E20] bg-white px-2.5 py-0.5 rounded-full border border-emerald-300 shrink-0 tabular-nums"
     >
       +{count}%
-    </motion.span>
+    </span>
   );
 };
 
 export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
   onOpenContact,
 }) => {
+  const shouldReduceMotion = useReducedMotion();
   const gridRef = useRef<HTMLDivElement | null>(null);
-  const isGridInView = useInView(gridRef, { once: false, amount: 0.25 });
+  const isGridInView = useInView(gridRef, { once: false, amount: 0.2 });
 
   const [hoveredStep, setHoveredStep] = useState<number | null>(null);
   const [pinnedStep, setPinnedStep] = useState<number | null>(null);
   const [autoStep, setAutoStep] = useState<number>(0);
   const [isActivated, setIsActivated] = useState<boolean>(false);
 
-  // Subtle automatic cascade through steps 0..3 when visible and user is not hovering/pinning
+  // Subtle step advance when visible and idle (respects reduced motion)
   useEffect(() => {
-    if (!isGridInView || hoveredStep !== null || pinnedStep !== null) return;
+    if (shouldReduceMotion || !isGridInView || hoveredStep !== null || pinnedStep !== null) return;
     const interval = window.setInterval(() => {
       setAutoStep((prev) => (prev + 1) % CIRCLE_PAIRS.length);
-    }, 2800);
+    }, 3000);
     return () => window.clearInterval(interval);
-  }, [isGridInView, hoveredStep, pinnedStep]);
+  }, [shouldReduceMotion, isGridInView, hoveredStep, pinnedStep]);
 
   const activeIndex =
     hoveredStep !== null ? hoveredStep : pinnedStep !== null ? pinnedStep : autoStep;
@@ -119,11 +136,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
   const handleToggleModel = () => {
     setIsActivated((prev) => {
       const next = !prev;
-      if (next) {
-        setPinnedStep(1); // Highlight the +53% recompra impact briefly or let user explore
-      } else {
-        setPinnedStep(null);
-      }
+      setPinnedStep(next ? 1 : null);
       return next;
     });
   };
@@ -143,7 +156,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={VIEWPORT_CONFIG}
           className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-10 sm:mb-12"
         >
           <div className="max-w-3xl">
@@ -172,7 +185,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
 
           <motion.div
             variants={fadeUp}
-            className="text-xs text-neutral-500 flex items-center gap-2 bg-white border border-neutral-200 px-3.5 py-2 rounded-lg shadow-2xs self-start lg:self-auto"
+            className="text-xs text-neutral-500 flex items-center gap-2 bg-white border border-neutral-200 px-3.5 py-2 rounded-lg self-start lg:self-auto"
           >
             <SlidersHorizontal className="w-3.5 h-3.5 text-[#1B5E20] shrink-0" />
             <span>Toca o pasa el cursor por cada paso para comparar el impacto</span>
@@ -185,18 +198,15 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={VIEWPORT_CONFIG}
           className="grid grid-cols-1 lg:grid-cols-11 gap-5 lg:gap-4 items-stretch"
         >
           {/* LEFT COLUMN: ANTES (Círculo Vicioso) */}
           <motion.div
             variants={fadeUp}
-            animate={{
-              opacity: isActivated ? 0.55 : 1,
-              scale: isActivated ? 0.985 : 1,
-            }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-4 rounded-2xl border border-red-200/80 bg-white p-6 sm:p-7 shadow-2xs flex flex-col justify-between transition-shadow"
+            animate={{ opacity: isActivated ? 0.58 : 1 }}
+            transition={{ duration: DUR_FAST, ease: EASE_PREMIUM }}
+            className="lg:col-span-4 rounded-2xl border border-red-200/80 bg-white p-6 sm:p-7 flex flex-col justify-between transition-colors duration-200"
           >
             <div>
               <div className="flex items-center justify-between gap-2 pb-4 mb-5 border-b border-red-100">
@@ -212,7 +222,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                 Antes: círculo vicioso
               </h3>
 
-              {/* Steps + 4 -> 1 Visual Cycle Return Rail */}
+              {/* Steps + One-shot 4 -> 1 Visual Cycle Return Rail */}
               <div className="flex items-stretch gap-2.5">
                 <div className="flex-1 space-y-1.5">
                   {CIRCLE_PAIRS.map((pair, idx) => {
@@ -228,19 +238,20 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                           onFocus={() => setHoveredStep(idx)}
                           onBlur={() => setHoveredStep(null)}
                           onClick={() => handleStepClick(idx)}
-                          animate={{
-                            x: isActive && !isActivated ? 3 : 0,
-                            opacity: isDimmed ? 0.58 : 1,
+                          animate={{ opacity: isDimmed ? 0.6 : 1 }}
+                          transition={{
+                            duration: DUR_FAST,
+                            delay: idx * 0.05,
+                            ease: EASE_PREMIUM,
                           }}
-                          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                          className={`w-full text-left flex items-center gap-3 p-3 rounded-xl border transition-all cursor-pointer ${
+                          className={`w-full text-left flex items-center gap-3 p-3 rounded-xl border transition-colors duration-200 cursor-pointer ${
                             isActive && !isActivated
-                              ? 'bg-red-50/90 border-red-300 shadow-xs ring-1 ring-red-200/80'
+                              ? 'bg-red-50/90 border-red-300 ring-1 ring-red-200/80'
                               : 'bg-red-50/40 border-red-100/80 hover:border-red-200'
                           }`}
                         >
                           <span
-                            className={`w-6 h-6 rounded-full text-xs font-bold font-mono flex items-center justify-center shrink-0 transition-colors ${
+                            className={`w-6 h-6 rounded-full text-xs font-bold font-mono flex items-center justify-center shrink-0 transition-colors duration-200 ${
                               isActive && !isActivated
                                 ? 'bg-red-600 text-white'
                                 : 'bg-red-100 text-red-700'
@@ -249,7 +260,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                             {pair.step}
                           </span>
                           <span
-                            className={`text-sm font-medium transition-colors ${
+                            className={`text-sm font-medium transition-colors duration-200 ${
                               isActivated
                                 ? 'line-through text-neutral-400'
                                 : isActive
@@ -271,16 +282,14 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                   })}
                 </div>
 
-                {/* Return Loop 4 -> 1 (Vicious Cycle) */}
+                {/* One-shot Return Loop 4 -> 1 (Vicious Cycle) */}
                 <div
                   className="w-6 shrink-0 relative flex flex-col items-center justify-between py-4 select-none"
                   aria-hidden="true"
                 >
-                  {/* Top arrowhead returning into step 1 */}
                   <div className="w-4 h-4 rounded-full bg-red-50 border border-red-200 flex items-center justify-center text-red-500 z-10">
                     <RotateCcw className="w-2.5 h-2.5" />
                   </div>
-                  {/* Vertical curved SVG loop */}
                   <svg
                     className="absolute inset-0 w-full h-full pointer-events-none"
                     viewBox="0 0 24 100"
@@ -298,11 +307,16 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                       fill="none"
                       stroke="#EF4444"
                       strokeWidth="1.5"
-                      strokeDasharray="4 6"
+                      strokeDasharray="4 5"
                       vectorEffect="non-scaling-stroke"
-                      animate={{ strokeDashoffset: [0, -20] }}
-                      transition={{ duration: 2.2, repeat: Infinity, ease: 'linear' }}
-                      opacity={isActivated ? 0.25 : 0.7}
+                      initial={
+                        shouldReduceMotion
+                          ? { pathLength: 1, opacity: 0.65 }
+                          : { pathLength: 0, opacity: 0 }
+                      }
+                      whileInView={{ pathLength: 1, opacity: isActivated ? 0.25 : 0.75 }}
+                      viewport={VIEWPORT_CONFIG}
+                      transition={{ duration: DUR_SLOW, ease: EASE_PREMIUM }}
                     />
                   </svg>
                   <span className="text-[9px] font-mono font-bold text-red-400 bg-white px-0.5 z-10">
@@ -321,16 +335,11 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
           {/* CENTER BRIDGE: Punto de inflexión + Switch + Insight dinámico */}
           <motion.div
             variants={fadeUp}
-            className="lg:col-span-3 flex flex-col justify-between text-center px-5 py-6 sm:p-6 rounded-2xl bg-neutral-950 text-white shadow-md border border-neutral-800 relative"
+            className="lg:col-span-3 flex flex-col justify-between text-center px-5 py-6 sm:p-6 rounded-2xl bg-neutral-950 text-white border border-neutral-800 relative"
           >
-            {/* Top: Transformation Title & Interactive Switch */}
             <div>
               <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-emerald-400 mb-2">
-                <span
-                  className={`w-1.5 h-1.5 rounded-full ${
-                    isActivated ? 'bg-emerald-400 animate-ping' : 'bg-emerald-400'
-                  }`}
-                />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 <span>Punto de inflexión</span>
               </div>
 
@@ -342,20 +351,20 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                 “{COMPANY_INFO.mainClaim}”
               </p>
 
-              {/* Interactive Activation Button / Switch */}
+              {/* Interactive Activation Button (hover y:-2, no scale) */}
               <motion.button
                 type="button"
                 onClick={handleToggleModel}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer border ${
+                whileHover={primaryButtonHover}
+                whileTap={primaryButtonTap}
+                className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold tracking-wide flex items-center justify-center gap-2 transition-colors duration-200 cursor-pointer border ${
                   isActivated
-                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/60 shadow-inner'
-                    : 'bg-[#1B5E20] hover:bg-[#2E7D32] text-white border-emerald-500/40 shadow-sm shadow-emerald-950/40'
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/60'
+                    : 'bg-[#1B5E20] hover:bg-[#2E7D32] text-white border-emerald-500/40'
                 }`}
               >
                 <span
-                  className={`w-2 h-2 rounded-full transition-colors ${
+                  className={`w-2 h-2 rounded-full transition-colors duration-200 ${
                     isActivated ? 'bg-emerald-400' : 'bg-white'
                   }`}
                 />
@@ -363,16 +372,15 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                   {isActivated ? 'Modelo DIVIPECA activo' : 'Activar modelo DIVIPECA'}
                 </span>
                 <ArrowRight
-                  className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
                     isActivated ? 'translate-x-0.5 text-emerald-300' : ''
                   }`}
                 />
               </motion.button>
             </div>
 
-            {/* Middle: Dynamic Paired Micro-Insight (1<->1, 2<->2, 3<->3, 4<->4) */}
+            {/* Middle: Dynamic Paired Micro-Insight (clean opacity fade ~220ms) */}
             <div className="my-5 rounded-xl bg-neutral-900/90 border border-neutral-800 p-4 text-left">
-              {/* Step selector pills */}
               <div className="flex items-center justify-between gap-1 mb-3 pb-2.5 border-b border-neutral-800">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
                   Paso {activePair.step} de 4
@@ -388,14 +396,14 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                         onMouseEnter={() => setHoveredStep(idx)}
                         onMouseLeave={() => setHoveredStep(null)}
                         aria-label={`Ver paso ${pair.step}`}
-                        className={`relative px-2 py-0.5 rounded-md text-[10px] font-mono font-bold transition-colors cursor-pointer ${
+                        className={`relative px-2 py-0.5 rounded-md text-[10px] font-mono font-bold transition-colors duration-200 cursor-pointer ${
                           selected ? 'text-white' : 'text-neutral-400 hover:text-neutral-200'
                         }`}
                       >
                         {selected && (
                           <motion.span
                             layoutId="activeInsightPill"
-                            transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                            transition={{ duration: DUR_FAST, ease: EASE_PREMIUM }}
                             className="absolute inset-0 rounded-md bg-[#1B5E20]"
                           />
                         )}
@@ -409,10 +417,10 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activePair.step}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: DUR_FAST, ease: EASE_PREMIUM }}
                 >
                   <div className="flex flex-wrap items-center gap-1.5 text-[11px] mb-2">
                     <span className="text-red-300/90 line-through decoration-red-400/70">
@@ -435,20 +443,16 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
               </AnimatePresence>
             </div>
 
-            {/* Bottom Bridge Arrow */}
+            {/* Calm Static Bridge Arrow Indicator (no infinite bounce loop) */}
             <div className="flex flex-col items-center">
-              <motion.div
-                animate={
-                  isActivated
-                    ? { x: [0, 5, 0], scale: [1, 1.08, 1] }
-                    : { x: [0, 3, 0] }
-                }
-                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[#1B5E20] text-white shadow-xs ring-4 ring-emerald-500/15"
+              <div
+                className={`inline-flex items-center justify-center w-9 h-9 rounded-full bg-[#1B5E20] text-white transition-transform duration-200 ${
+                  isActivated ? 'translate-x-0.5 ring-4 ring-emerald-500/20' : ''
+                }`}
               >
                 <ArrowRight className="w-4 h-4 hidden lg:block" />
                 <ArrowDown className="w-4 h-4 lg:hidden" />
-              </motion.div>
+              </div>
               <span className="text-[10px] text-neutral-400 mt-2">
                 {isActivated ? 'Clic nuevamente para comparar' : 'Impacto directo en ventas'}
               </span>
@@ -458,14 +462,10 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
           {/* RIGHT COLUMN: DESPUÉS (Círculo Virtuoso) */}
           <motion.div
             variants={fadeUp}
-            animate={{
-              scale: isActivated ? 1.015 : 1,
-            }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className={`lg:col-span-4 rounded-2xl border-2 bg-white p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 ${
+            className={`lg:col-span-4 rounded-2xl border-2 bg-white p-6 sm:p-7 flex flex-col justify-between transition-colors duration-200 ${
               isActivated
-                ? 'border-[#1B5E20] shadow-lg shadow-emerald-950/10 ring-4 ring-emerald-500/10'
-                : 'border-[#1B5E20]/30 shadow-sm'
+                ? 'border-[#1B5E20] ring-2 ring-emerald-500/15'
+                : 'border-[#1B5E20]/30'
             }`}
           >
             <div>
@@ -482,7 +482,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                 Después: círculo virtuoso
               </h3>
 
-              {/* Steps + 4 -> 1 Visual Cycle Return Rail */}
+              {/* Steps + One-shot 4 -> 1 Visual Cycle Return Rail */}
               <div className="flex items-stretch gap-2.5">
                 <div className="flex-1 space-y-1.5">
                   {CIRCLE_PAIRS.map((pair, idx) => {
@@ -498,26 +498,23 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                           onFocus={() => setHoveredStep(idx)}
                           onBlur={() => setHoveredStep(null)}
                           onClick={() => handleStepClick(idx)}
-                          animate={{
-                            x: isActive || isActivated ? 3 : 0,
-                            opacity: isDimmed ? 0.62 : 1,
-                          }}
+                          animate={{ opacity: isDimmed ? 0.65 : 1 }}
                           transition={{
-                            duration: 0.25,
-                            delay: isActivated ? idx * 0.07 : 0,
-                            ease: [0.22, 1, 0.36, 1],
+                            duration: DUR_FAST,
+                            delay: isActivated ? idx * 0.05 : 0,
+                            ease: EASE_PREMIUM,
                           }}
-                          className={`w-full text-left flex items-center justify-between gap-3 p-3 rounded-xl border transition-all cursor-pointer ${
+                          className={`w-full text-left flex items-center justify-between gap-3 p-3 rounded-xl border transition-colors duration-200 cursor-pointer ${
                             isActivated || isActive
-                              ? 'bg-emerald-50/90 border-[#1B5E20]/45 shadow-xs ring-1 ring-emerald-500/20'
+                              ? 'bg-emerald-50/90 border-[#1B5E20]/45 ring-1 ring-emerald-500/20'
                               : 'bg-emerald-50/50 border-emerald-200/70 hover:border-emerald-300'
                           }`}
                         >
                           <div className="flex items-center gap-3">
                             <span
-                              className={`w-6 h-6 rounded-full text-xs font-bold font-mono flex items-center justify-center shrink-0 transition-colors ${
+                              className={`w-6 h-6 rounded-full text-xs font-bold font-mono flex items-center justify-center shrink-0 transition-colors duration-200 ${
                                 isActivated || isActive
-                                  ? 'bg-[#1B5E20] text-white shadow-2xs'
+                                  ? 'bg-[#1B5E20] text-white'
                                   : 'bg-[#1B5E20]/90 text-white'
                               }`}
                             >
@@ -532,7 +529,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                             </span>
                           </div>
 
-                          {pair.badge && <CountUpFiftyThree triggerPop={isActivated} />}
+                          {pair.badge && <CountUpFiftyThree />}
                         </motion.button>
 
                         {idx < CIRCLE_PAIRS.length - 1 && (
@@ -545,7 +542,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                   })}
                 </div>
 
-                {/* Return Loop 4 -> 1 (Virtuous Cycle) */}
+                {/* One-shot Return Loop 4 -> 1 (Virtuous Cycle) */}
                 <div
                   className="w-6 shrink-0 relative flex flex-col items-center justify-between py-4 select-none"
                   aria-hidden="true"
@@ -570,15 +567,16 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
                       fill="none"
                       stroke="#1B5E20"
                       strokeWidth="2"
-                      strokeDasharray="5 5"
+                      strokeDasharray="5 4"
                       vectorEffect="non-scaling-stroke"
-                      animate={{ strokeDashoffset: [0, -20] }}
-                      transition={{
-                        duration: isActivated ? 1.2 : 1.8,
-                        repeat: Infinity,
-                        ease: 'linear',
-                      }}
-                      opacity={isActivated ? 1 : 0.75}
+                      initial={
+                        shouldReduceMotion
+                          ? { pathLength: 1, opacity: 0.85 }
+                          : { pathLength: 0, opacity: 0 }
+                      }
+                      whileInView={{ pathLength: 1, opacity: isActivated ? 1 : 0.8 }}
+                      viewport={VIEWPORT_CONFIG}
+                      transition={{ duration: DUR_SLOW, ease: EASE_PREMIUM }}
                     />
                   </svg>
                   <span className="text-[9px] font-mono font-bold text-[#1B5E20] bg-white px-0.5 z-10">
@@ -597,20 +595,20 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
           </motion.div>
         </motion.div>
 
-        {/* Section Bottom CTAs */}
+        {/* Section Bottom CTAs with global hover/tap */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={VIEWPORT_CONFIG}
           className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3.5"
         >
           <motion.button
             type="button"
             onClick={() => onOpenContact('Círculo Virtuoso')}
-            whileHover={buttonHover}
-            whileTap={buttonTap}
-            className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors shadow-xs hover:shadow-md hover:shadow-emerald-950/15 cursor-pointer"
+            whileHover={primaryButtonHover}
+            whileTap={primaryButtonTap}
+            className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors duration-200 cursor-pointer"
           >
             <span>Solicitar alianza logística</span>
             <ArrowRight className="w-4 h-4" />
@@ -620,9 +618,9 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={buttonHover}
-            whileTap={buttonTap}
-            className="inline-flex items-center gap-2 px-5 py-3.5 text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-white border border-neutral-300 hover:border-neutral-400 rounded-lg transition-colors shadow-2xs cursor-pointer"
+            whileHover={secondaryButtonHover}
+            whileTap={secondaryButtonTap}
+            className="inline-flex items-center gap-2 px-5 py-3.5 text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-white border border-neutral-300 hover:border-[#1B5E20] rounded-lg transition-colors duration-200 cursor-pointer"
           >
             <MessageCircle className="w-4 h-4 text-[#1B5E20]" />
             <span>Hablar por WhatsApp</span>

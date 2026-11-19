@@ -1,8 +1,15 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { MapPin, ArrowUpRight, Truck, Warehouse, CheckCircle2, Navigation } from 'lucide-react';
 import { LogisticsHub } from '../types';
-import { fadeUp, scaleIn, buttonHover, buttonTap } from '../utils/motion';
+import {
+  EASE_PREMIUM,
+  DUR_MED,
+  VIEWPORT_CONFIG,
+  fadeUp,
+  primaryButtonHover,
+  primaryButtonTap,
+} from '../utils/motion';
 import {
   VENEZUELA_VIEWBOX,
   VENEZUELA_NEUTRAL_STATES,
@@ -89,6 +96,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
   onSelectHub,
   onOpenContact,
 }) => {
+  const shouldReduceMotion = useReducedMotion();
   const activeHub = hubs.find((h) => h.id === selectedHubId) || hubs[0];
   const activePin = HUB_PINS.find((p) => p.hubId === selectedHubId) || HUB_PINS[0];
 
@@ -96,9 +104,9 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={VIEWPORT_CONFIG}
       variants={fadeUp}
-      className="mb-12 rounded-3xl border border-neutral-200 bg-neutral-50/70 p-4 sm:p-6 lg:p-8 shadow-xs"
+      className="mb-12 rounded-3xl border border-neutral-200 bg-neutral-50/70 p-4 sm:p-6 lg:p-8"
     >
       {/* Map Header Copy */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 mb-6 border-b border-neutral-200/80">
@@ -119,7 +127,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
             <span className="font-medium">Estados cubiertos (4)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-white border-2 border-[#1B5E20] inline-block shadow-2xs" />
+            <span className="w-3 h-3 rounded-full bg-white border-2 border-[#1B5E20] inline-block" />
             <span className="font-medium">Sedes propias (3)</span>
           </div>
         </div>
@@ -128,11 +136,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
       {/* Interactive Split: Proportional Map Canvas (Left) + Synchronized Hub Ficha (Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Map Canvas Container */}
-        <motion.div
-          variants={scaleIn}
-          className="lg:col-span-7 relative rounded-2xl bg-white border border-neutral-200/90 p-4 sm:p-6 flex flex-col justify-between shadow-2xs"
-        >
-          {/* Top geographical context label */}
+        <div className="lg:col-span-7 relative rounded-2xl bg-white border border-neutral-200/90 p-4 sm:p-6 flex flex-col justify-between">
           <div className="flex items-center justify-between gap-2 mb-3">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
               Venezuela · Guárico, Anzoátegui, Sucre y Bolívar
@@ -163,7 +167,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                 />
               ))}
 
-              {/* 4 Highlighted Active States in DIVIPECA Green with distinct borders */}
+              {/* 4 Highlighted Active States in DIVIPECA Green (~0.4s color transition, no flash) */}
               {VENEZUELA_ACTIVE_STATES.map((st) => {
                 const isHubSelected = st.hubId === selectedHubId;
                 const isSucre = st.id === 'sucre';
@@ -189,7 +193,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                       stroke="#FFFFFF"
                       strokeWidth="2.4"
                       strokeLinejoin="round"
-                      className="transition-all duration-300 hover:fill-[#1B5E20] hover:fill-opacity-95"
+                      className="transition-[fill,fill-opacity] duration-[400ms] ease-out hover:fill-[#1B5E20] hover:fill-opacity-95"
                     />
                     <text
                       x={st.labelX}
@@ -207,7 +211,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                 );
               })}
 
-              {/* Outbound-only local distribution rays radiating strictly within the active hub's coverage zone */}
+              {/* Discrete one-shot local outbound coverage rays on hub selection (NO infinite loops, NO inter-hub lines) */}
               <g key={`outbound-${activePin.hubId}`} className="pointer-events-none">
                 {activePin.outboundVectors.map((vec, idx) => (
                   <g key={idx}>
@@ -217,30 +221,31 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                       x2={vec.toX}
                       y2={vec.toY}
                       stroke="#A7F3D0"
-                      strokeWidth="1.6"
+                      strokeWidth="1.5"
                       strokeDasharray="3 4"
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      animate={{ pathLength: 1, opacity: 0.85 }}
+                      initial={
+                        shouldReduceMotion
+                          ? { pathLength: 1, opacity: 0.75 }
+                          : { pathLength: 0, opacity: 0 }
+                      }
+                      animate={{ pathLength: 1, opacity: 0.8 }}
                       transition={{
-                        duration: 0.55,
-                        delay: idx * 0.08,
-                        ease: [0.22, 1, 0.36, 1],
+                        duration: DUR_MED,
+                        delay: shouldReduceMotion ? 0 : idx * 0.06,
+                        ease: EASE_PREMIUM,
                       }}
                     />
                     <motion.circle
-                      r="2.4"
+                      cx={vec.toX}
+                      cy={vec.toY}
+                      r="2.2"
                       fill="#ECFDF5"
-                      initial={{ cx: activePin.x, cy: activePin.y, opacity: 0.95 }}
-                      animate={{
-                        cx: [activePin.x, vec.toX],
-                        cy: [activePin.y, vec.toY],
-                        opacity: [0.95, 0],
-                      }}
+                      initial={shouldReduceMotion ? { opacity: 0.85 } : { opacity: 0 }}
+                      animate={{ opacity: 0.85 }}
                       transition={{
-                        duration: 1.8,
-                        delay: idx * 0.25,
-                        repeat: Infinity,
-                        ease: 'easeOut',
+                        duration: 0.25,
+                        delay: shouldReduceMotion ? 0 : 0.32 + idx * 0.06,
+                        ease: EASE_PREMIUM,
                       }}
                     />
                   </g>
@@ -248,7 +253,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
               </g>
             </svg>
 
-            {/* Interactive HTML Pill Pins positioned accurately over the SVG coordinates */}
+            {/* Interactive HTML Pill Pins (pin hover scale strictly <= 1.08, no infinite halos) */}
             {HUB_PINS.map((pin) => {
               const isActive = pin.hubId === selectedHubId;
               return (
@@ -264,22 +269,14 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                     aria-pressed={isActive}
                     className="relative flex items-center justify-center group cursor-pointer focus:outline-none"
                   >
-                    {/* Soft green glow ring on active pin */}
-                    {isActive && (
-                      <motion.span
-                        initial={{ opacity: 0, scale: 0.75 }}
-                        animate={{ opacity: [0.55, 0.2, 0.55], scale: [1, 1.55, 1] }}
-                        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-                        className="absolute w-7 h-7 rounded-full bg-emerald-400/55 blur-[1px] pointer-events-none"
-                      />
-                    )}
-
-                    {/* Pin Marker Circle */}
-                    <span
-                      className={`relative w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full flex items-center justify-center transition-all duration-200 shadow-sm ${
+                    {/* Circular Pin Marker (max 1.08 scale on hover ONLY on the pin) */}
+                    <motion.span
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ duration: 0.2, ease: EASE_PREMIUM }}
+                      className={`relative w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full flex items-center justify-center transition-colors duration-200 ${
                         isActive
-                          ? 'bg-white border-[2.5px] border-[#052E16] scale-110 ring-4 ring-emerald-400/35'
-                          : 'bg-emerald-50 border-2 border-[#1B5E20] group-hover:scale-110'
+                          ? 'bg-white border-[2.5px] border-[#052E16] ring-4 ring-emerald-400/30'
+                          : 'bg-emerald-50 border-2 border-[#1B5E20]'
                       }`}
                     >
                       <span
@@ -287,67 +284,62 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                           isActive ? 'bg-[#1B5E20]' : 'bg-[#1B5E20]/80'
                         }`}
                       />
-                    </span>
+                    </motion.span>
 
-                    {/* Rounded-Full Pill Label (Desktop / Tablet) */}
-                    <motion.span
-                      key={`${pin.hubId}-${isActive ? 'active' : 'idle'}`}
-                      initial={{ opacity: 0.85, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                      className={`hidden sm:inline-flex items-center gap-1.5 absolute whitespace-nowrap rounded-full px-3.5 py-1 text-[11px] font-semibold tracking-tight transition-all duration-200 ${
+                    {/* Static Rounded-Full Pill Label (Desktop / Tablet) */}
+                    <span
+                      className={`hidden sm:inline-flex items-center gap-1.5 absolute whitespace-nowrap rounded-full px-3.5 py-1 text-[11px] font-semibold tracking-tight transition-colors duration-200 ${
                         pin.pillPositionClass
                       } ${
                         isActive
-                          ? 'bg-[#1B5E20] text-white border border-emerald-300/40 shadow-md shadow-emerald-950/20'
-                          : 'bg-white/95 text-neutral-800 border border-neutral-300/80 shadow-xs hover:border-[#1B5E20]/50 hover:text-[#1B5E20]'
+                          ? 'bg-[#1B5E20] text-white border border-emerald-300/40 shadow-sm'
+                          : 'bg-white/95 text-neutral-800 border border-neutral-300/80 hover:border-[#1B5E20]/60 hover:text-[#1B5E20]'
                       }`}
                     >
                       {isActive && (
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 shrink-0" />
                       )}
                       <span>{pin.shortLabel}</span>
-                    </motion.span>
+                    </span>
                   </button>
                 </div>
               );
             })}
           </div>
 
-          {/* Quick-tap Pill Bar (Always clear on Mobile & quick access on Desktop) */}
+          {/* Quick-tap Pill Bar */}
           <div className="mt-4 pt-3.5 border-t border-neutral-100 flex flex-wrap gap-2">
             {HUB_PINS.map((pin) => {
               const isActive = pin.hubId === selectedHubId;
               return (
-                <motion.button
+                <button
                   key={pin.hubId}
                   type="button"
                   onClick={() => onSelectHub(pin.hubId)}
-                  whileTap={{ scale: 0.98 }}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer ${
                     isActive
-                      ? 'bg-[#1B5E20] text-white shadow-sm shadow-emerald-950/15 border border-emerald-700'
-                      : 'bg-neutral-100 text-neutral-700 border border-neutral-200/80 hover:bg-neutral-200/70'
+                      ? 'bg-[#1B5E20] text-white border border-emerald-700'
+                      : 'bg-neutral-100 text-neutral-700 border border-neutral-200/80 hover:border-[#1B5E20]/50'
                   }`}
                 >
                   <MapPin className="w-3.5 h-3.5 shrink-0" />
                   <span>{pin.shortLabel}</span>
-                </motion.button>
+                </button>
               );
             })}
           </div>
-        </motion.div>
+        </div>
 
-        {/* Synchronized Active Hub Ficha Card */}
+        {/* Synchronized Active Hub Ficha Card (fade + translateY 10px -> 0, durMed) */}
         <div className="lg:col-span-5 flex flex-col">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeHub.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="flex-1 rounded-2xl bg-white border border-neutral-200 p-5 sm:p-6 shadow-xs flex flex-col justify-between"
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
+              className="flex-1 rounded-2xl bg-white border border-neutral-200 p-5 sm:p-6 flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-3">
@@ -373,7 +365,6 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                   {activeHub.description}
                 </p>
 
-                {/* Quick Capacity Metrics */}
                 <div className="grid grid-cols-2 gap-3 mb-5">
                   <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/80">
                     <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5">
@@ -395,7 +386,6 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                   </div>
                 </div>
 
-                {/* Top Highlights */}
                 <div className="space-y-2 mb-5">
                   {activeHub.features.slice(0, 3).map((feat, idx) => (
                     <div key={idx} className="flex items-start gap-2 text-xs text-neutral-700">
@@ -409,15 +399,16 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
               <div className="pt-4 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-3">
                 <a
                   href="#sede-detalle"
-                  className="text-xs font-semibold text-neutral-600 hover:text-neutral-950 transition-colors"
+                  className="text-xs font-semibold text-neutral-600 hover:text-neutral-950 transition-colors duration-200"
                 >
                   Ver ficha y fotos ↓
                 </a>
                 <motion.button
+                  type="button"
                   onClick={() => onOpenContact(`Mapa - Sede ${activeHub.city}`)}
-                  whileHover={buttonHover}
-                  whileTap={buttonTap}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] px-4 py-2.5 rounded-lg transition-colors cursor-pointer shadow-xs"
+                  whileHover={primaryButtonHover}
+                  whileTap={primaryButtonTap}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] px-4 py-2.5 rounded-lg transition-colors duration-200 cursor-pointer"
                 >
                   <span>Consultar Disponibilidad</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />

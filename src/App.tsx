@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AnimatePresence } from 'motion/react';
+import { AnimatePresence, MotionConfig } from 'motion/react';
 import { Navbar } from './components/Navbar';
 import { SplashIntro } from './components/SplashIntro';
 import { HeroSection } from './components/HeroSection';
@@ -23,38 +23,40 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 text-neutral-900 flex flex-col font-sans selection:bg-[#1B5E20] selection:text-white">
-      {/* Clean non-blocking 1.2s brand intro */}
-      <AnimatePresence>
-        {showSplash && <SplashIntro onComplete={() => setShowSplash(false)} />}
-      </AnimatePresence>
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen bg-neutral-50 text-neutral-900 flex flex-col font-sans selection:bg-[#1B5E20] selection:text-white">
+        {/* Clean non-blocking 1.2s brand intro with softened exit */}
+        <AnimatePresence>
+          {showSplash && <SplashIntro onComplete={() => setShowSplash(false)} />}
+        </AnimatePresence>
 
-      {/* 1. Top Bar Navigation Contract */}
-      <Navbar onOpenContact={handleOpenContact} />
+        {/* 1. Top Bar Navigation Contract */}
+        <Navbar onOpenContact={handleOpenContact} />
 
-      {/* Main Corporate Sections */}
-      <main className="flex-1">
-        {/* Section 1: Hero */}
-        <HeroSection onOpenContact={handleOpenContact} />
+        {/* Main Corporate Sections */}
+        <main className="flex-1">
+          {/* Section 1: Hero */}
+          <HeroSection onOpenContact={handleOpenContact} introReady={!showSplash} />
 
-        {/* Section 2: Propuesta de Valor (Círculo Vicioso -> Virtuoso) */}
-        <VirtuousCircleSection onOpenContact={handleOpenContact} />
+          {/* Section 2: Propuesta de Valor (Círculo Vicioso -> Virtuoso) */}
+          <VirtuousCircleSection onOpenContact={handleOpenContact} />
 
-        {/* Section 3: Indicadores & Lead Time Animado */}
-        <StatsSection onOpenContact={handleOpenContact} />
+          {/* Section 3: Indicadores & Lead Time Animado */}
+          <StatsSection onOpenContact={handleOpenContact} />
 
-        {/* Section 4: Historia & Línea de Tiempo */}
-        <HistorySection />
+          {/* Section 4: Historia & Línea de Tiempo */}
+          <HistorySection />
 
-        {/* Section 5: Sedes e Infraestructura + Flota Propia */}
-        <FacilitiesSection onOpenContact={handleOpenContact} />
+          {/* Section 5: Sedes e Infraestructura + Flota Propia */}
+          <FacilitiesSection onOpenContact={handleOpenContact} />
 
-        {/* Section 6: Conversión & Contacto Directo */}
-        <ContactSection selectedSource={contactSource} />
-      </main>
+          {/* Section 6: Conversión & Contacto Directo */}
+          <ContactSection selectedSource={contactSource} />
+        </main>
 
-      {/* Corporate B2B Footer */}
-      <Footer />
-    </div>
+        {/* Corporate B2B Footer */}
+        <Footer />
+      </div>
+    </MotionConfig>
   );
 }

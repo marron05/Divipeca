@@ -11,7 +11,15 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import { COMPANY_INFO } from '../data/divipecaData';
-import { fadeUp, staggerContainer, buttonHover, buttonTap } from '../utils/motion';
+import {
+  VIEWPORT_CONFIG,
+  fadeUp,
+  staggerContainer,
+  primaryButtonHover,
+  primaryButtonTap,
+  secondaryButtonHover,
+  secondaryButtonTap,
+} from '../utils/motion';
 
 interface ContactSectionProps {
   selectedSource?: string;
@@ -87,7 +95,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={VIEWPORT_CONFIG}
           className="max-w-2xl mb-12"
         >
           <motion.div
@@ -118,7 +126,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={VIEWPORT_CONFIG}
           className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
         >
           {/* Left Column: Direct Channels + Corporate Contact Info */}
@@ -143,9 +151,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                   href={directWhatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={buttonHover}
-                  whileTap={buttonTap}
-                  className="w-full inline-flex items-center justify-between px-5 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-xl transition-colors shadow-xs hover:shadow-md hover:shadow-emerald-950/15"
+                  whileHover={primaryButtonHover}
+                  whileTap={primaryButtonTap}
+                  className="w-full inline-flex items-center justify-between px-5 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-xl transition-colors duration-200"
                 >
                   <span className="inline-flex items-center gap-2.5">
                     <MessageCircle className="w-4 h-4 shrink-0" />
@@ -156,9 +164,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
 
                 <motion.a
                   href={directMailtoUrl}
-                  whileHover={buttonHover}
-                  whileTap={buttonTap}
-                  className="w-full inline-flex items-center justify-between px-5 py-3.5 text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-neutral-50 hover:bg-neutral-100 border border-neutral-200 hover:border-neutral-300 rounded-xl transition-colors"
+                  whileHover={secondaryButtonHover}
+                  whileTap={secondaryButtonTap}
+                  className="w-full inline-flex items-center justify-between px-5 py-3.5 text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-neutral-50 hover:bg-neutral-100 border border-neutral-200 hover:border-[#1B5E20] rounded-xl transition-colors duration-200"
                 >
                   <span className="inline-flex items-center gap-2.5">
                     <Mail className="w-4 h-4 text-[#1B5E20] shrink-0" />
@@ -313,7 +321,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                       placeholder="Ej. Carlos Mendoza"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/30 focus:border-[#1B5E20] transition-shadow"
+                      className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/30 focus:border-[#1B5E20] transition-[box-shadow,border-color] duration-200"
                     />
                   </div>
 
@@ -328,7 +336,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                       placeholder="Ej. Alimentos del Centro C.A."
                       value={company}
                       onChange={(e) => setCompany(e.target.value)}
-                      className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/30 focus:border-[#1B5E20] transition-shadow"
+                      className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/30 focus:border-[#1B5E20] transition-[box-shadow,border-color] duration-200"
                     />
                   </div>
                 </div>
@@ -345,7 +353,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                       placeholder="+58 414 000 0000"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/30 focus:border-[#1B5E20] transition-shadow"
+                      className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/30 focus:border-[#1B5E20] transition-[box-shadow,border-color] duration-200"
                     />
                   </div>
 
@@ -385,7 +393,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                     placeholder="Indíquenos volumen estimado, estados de destino (Guárico, Anzoátegui, Bolívar, Sucre) o requerimiento de almacén..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/30 focus:border-[#1B5E20] transition-shadow resize-y"
+                    className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/30 focus:border-[#1B5E20] transition-[box-shadow,border-color] duration-200 resize-y"
                   />
                 </div>
 
@@ -396,9 +404,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
 
                   <motion.button
                     type="submit"
-                    whileHover={buttonHover}
-                    whileTap={buttonTap}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors shadow-xs hover:shadow-md hover:shadow-emerald-950/15 cursor-pointer"
+                    whileHover={primaryButtonHover}
+                    whileTap={primaryButtonTap}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors duration-200 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                     <span>Enviar solicitud</span>

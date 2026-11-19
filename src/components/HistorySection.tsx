@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { TIMELINE_MILESTONES, CLIENT_PARTNERS } from '../data/divipecaData';
 import { History, Handshake, Camera } from 'lucide-react';
-import { fadeUp, staggerContainer, scaleIn, cardHover, buttonHover, buttonTap } from '../utils/motion';
+import {
+  EASE_PREMIUM,
+  DUR_FAST,
+  DUR_MED,
+  VIEWPORT_CONFIG,
+  fadeUp,
+  secondaryButtonHover,
+  secondaryButtonTap,
+} from '../utils/motion';
 
 export const HistorySection: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
   const [activeMilestoneIndex, setActiveMilestoneIndex] = useState<number>(0);
   const [imageErrorMap, setImageErrorMap] = useState<Record<string, boolean>>({});
   const activeMilestone = TIMELINE_MILESTONES[activeMilestoneIndex];
@@ -20,12 +29,12 @@ export const HistorySection: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Editorial Section Header with Scroll Reveal */}
+        {/* Clean Section Header (simple fade + y, no excessive multi-element stagger) */}
         <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={fadeUp}
+          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={VIEWPORT_CONFIG}
+          transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
           className="max-w-3xl mb-12 sm:mb-14"
         >
           <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2.5 flex items-center gap-2">
@@ -42,23 +51,23 @@ export const HistorySection: React.FC = () => {
         </motion.div>
 
         {/* Narrative & Stage-Synchronized Visual Split */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12 items-stretch">
-          {/* Dynamic Per-Stage Photography Card with Smooth Crossfade */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={scaleIn}
-            className="lg:col-span-5 flex flex-col"
-          >
-            <div className="relative rounded-2xl overflow-hidden border border-neutral-200/90 bg-neutral-950 shadow-md flex-1 min-h-[340px] sm:min-h-[400px] group">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_CONFIG}
+          variants={fadeUp}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10 items-stretch"
+        >
+          {/* Dynamic Per-Stage Photography Card with 0.45s Smooth Crossfade */}
+          <div className="lg:col-span-5 flex flex-col">
+            <div className="relative rounded-2xl overflow-hidden border border-neutral-200/90 bg-neutral-950 flex-1 min-h-[340px] sm:min-h-[400px]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeMilestone.year}
-                  initial={{ opacity: 0, scale: 1.02 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.99 }}
-                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.45, ease: EASE_PREMIUM }}
                   className="absolute inset-0 w-full h-full"
                 >
                   {imageErrorMap[activeMilestone.year] ? (
@@ -79,7 +88,7 @@ export const HistorySection: React.FC = () => {
                       onError={() =>
                         setImageErrorMap((prev) => ({ ...prev, [activeMilestone.year]: true }))
                       }
-                      className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                      className="w-full h-full object-cover object-center"
                     />
                   )}
                 </motion.div>
@@ -90,11 +99,11 @@ export const HistorySection: React.FC = () => {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`caption-${activeMilestone.year}`}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute bottom-4 left-4 right-4 p-4 bg-white/95 backdrop-blur-md rounded-xl border border-white/60 text-xs text-neutral-800 shadow-sm z-10"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: DUR_FAST, ease: EASE_PREMIUM }}
+                  className="absolute bottom-4 left-4 right-4 p-4 bg-white/95 backdrop-blur-md rounded-xl border border-white/60 text-xs text-neutral-800 z-10"
                 >
                   <div className="font-semibold text-neutral-950 mb-0.5 flex items-center justify-between gap-2">
                     <span>{activeMilestone.imageLabel}</span>
@@ -108,23 +117,17 @@ export const HistorySection: React.FC = () => {
                 </motion.div>
               </AnimatePresence>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Active Milestone Highlight Card with fadeUp */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={fadeUp}
-            className="lg:col-span-7 flex flex-col justify-between p-6 sm:p-8 bg-white rounded-2xl border border-neutral-200 shadow-sm"
-          >
+          {/* Active Milestone Narrative Card with calm fade */}
+          <div className="lg:col-span-7 flex flex-col justify-between p-6 sm:p-8 bg-white rounded-2xl border border-neutral-200">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeMilestone.year}
-                initial={{ opacity: 0, x: 12 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -12 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: DUR_FAST, ease: EASE_PREMIUM }}
                 className="flex-1"
               >
                 <div className="flex items-center justify-between gap-4 mb-4">
@@ -138,7 +141,7 @@ export const HistorySection: React.FC = () => {
                     </span>
                   </div>
 
-                  <span className="text-xs text-neutral-400 font-mono">
+                  <span className="text-xs text-neutral-400 font-mono tabular-nums">
                     Hito {activeMilestoneIndex + 1} de {TIMELINE_MILESTONES.length}
                   </span>
                 </div>
@@ -154,7 +157,7 @@ export const HistorySection: React.FC = () => {
                   {activeMilestone.description}
                 </p>
 
-                <div className="p-4 bg-emerald-50/70 rounded-xl border border-emerald-100/90 mb-6 transition-all">
+                <div className="p-4 bg-emerald-50/70 rounded-xl border border-emerald-100/90 mb-6">
                   <div className="text-[11px] font-bold uppercase tracking-wider text-[#1B5E20] mb-1">
                     Logro Institucional
                   </div>
@@ -179,26 +182,28 @@ export const HistorySection: React.FC = () => {
               </motion.div>
             </AnimatePresence>
 
-            {/* Stepper Controls with Micro-interactions */}
+            {/* Stepper Controls */}
             <div className="pt-6 mt-6 border-t border-neutral-100 flex items-center justify-between">
               <motion.button
+                type="button"
                 disabled={activeMilestoneIndex === 0}
                 onClick={() => setActiveMilestoneIndex((prev) => Math.max(0, prev - 1))}
-                whileHover={activeMilestoneIndex > 0 ? buttonHover : {}}
-                whileTap={activeMilestoneIndex > 0 ? buttonTap : {}}
-                className="text-xs font-semibold px-3.5 py-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                whileHover={activeMilestoneIndex > 0 ? secondaryButtonHover : undefined}
+                whileTap={activeMilestoneIndex > 0 ? secondaryButtonTap : undefined}
+                className="text-xs font-semibold px-3.5 py-1.5 rounded-lg border border-neutral-200 hover:border-[#1B5E20] text-neutral-700 hover:text-neutral-950 disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer"
               >
                 ← Anterior
               </motion.button>
 
               <div className="flex items-center gap-1.5">
-                {TIMELINE_MILESTONES.map((_, idx) => (
+                {TIMELINE_MILESTONES.map((m, idx) => (
                   <button
-                    key={idx}
+                    key={m.year}
+                    type="button"
                     onClick={() => setActiveMilestoneIndex(idx)}
-                    className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    className={`h-1.5 rounded-full transition-colors duration-200 cursor-pointer ${
                       activeMilestoneIndex === idx
-                        ? 'w-6 bg-[#1B5E20]'
+                        ? 'w-5 bg-[#1B5E20]'
                         : 'w-2 bg-neutral-200 hover:bg-neutral-300'
                     }`}
                     aria-label={`Ver hito ${idx + 1}`}
@@ -207,6 +212,7 @@ export const HistorySection: React.FC = () => {
               </div>
 
               <motion.button
+                type="button"
                 disabled={activeMilestoneIndex === TIMELINE_MILESTONES.length - 1}
                 onClick={() =>
                   setActiveMilestoneIndex((prev) =>
@@ -214,43 +220,43 @@ export const HistorySection: React.FC = () => {
                   )
                 }
                 whileHover={
-                  activeMilestoneIndex < TIMELINE_MILESTONES.length - 1 ? buttonHover : {}
+                  activeMilestoneIndex < TIMELINE_MILESTONES.length - 1
+                    ? secondaryButtonHover
+                    : undefined
                 }
                 whileTap={
-                  activeMilestoneIndex < TIMELINE_MILESTONES.length - 1 ? buttonTap : {}
+                  activeMilestoneIndex < TIMELINE_MILESTONES.length - 1
+                    ? secondaryButtonTap
+                    : undefined
                 }
-                className="text-xs font-semibold px-3.5 py-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="text-xs font-semibold px-3.5 py-1.5 rounded-lg border border-neutral-200 hover:border-[#1B5E20] text-neutral-700 hover:text-neutral-950 disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer"
               >
                 Siguiente →
               </motion.button>
             </div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
 
-        {/* Compact Scrubber Timeline Grid with Stagger & FadeUp */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={staggerContainer}
-          className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5"
-        >
+        {/* Linear-style Scrubber Timeline Tabs with Animated Bottom Underline (no jumping pills) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 border-b border-neutral-200/80 pb-2">
           {TIMELINE_MILESTONES.map((m, idx) => {
             const isCurrent = idx === activeMilestoneIndex;
             return (
-              <motion.button
+              <button
                 key={m.year}
-                variants={fadeUp}
+                type="button"
                 onClick={() => setActiveMilestoneIndex(idx)}
-                whileHover={cardHover}
-                whileTap={buttonTap}
-                className={`p-3 rounded-xl border text-left transition-all duration-200 relative cursor-pointer ${
+                className={`relative p-3 rounded-xl border text-left transition-colors duration-200 cursor-pointer ${
                   isCurrent
-                    ? 'bg-white border-[#1B5E20] ring-1 ring-[#1B5E20] shadow-sm'
-                    : 'bg-white/70 border-neutral-200 hover:bg-white hover:border-neutral-300 hover:shadow-xs'
+                    ? 'bg-white border-neutral-300 text-neutral-950'
+                    : 'bg-white/60 border-neutral-200/80 text-neutral-600 hover:bg-white hover:border-neutral-300'
                 }`}
               >
-                <div className="text-xs font-bold font-mono text-[#1B5E20] mb-0.5">
+                <div
+                  className={`text-xs font-bold font-mono mb-0.5 transition-colors duration-200 ${
+                    isCurrent ? 'text-[#1B5E20]' : 'text-neutral-500'
+                  }`}
+                >
                   {m.year}
                 </div>
                 <div className="text-[11px] font-semibold text-neutral-900 line-clamp-1">
@@ -259,34 +265,29 @@ export const HistorySection: React.FC = () => {
                 <div className="text-[10px] text-neutral-500 line-clamp-1 mt-0.5">
                   {m.category}
                 </div>
-              </motion.button>
+                {isCurrent && (
+                  <motion.span
+                    layoutId="historyActiveUnderline"
+                    transition={{ duration: DUR_FAST, ease: EASE_PREMIUM }}
+                    className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#1B5E20] rounded-full"
+                  />
+                )}
+              </button>
             );
           })}
-        </motion.div>
+        </div>
 
         {/* Existing Strategic Partnerships Strip (Preserved as requested, no new logo carousel) */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={fadeUp}
-          className="mt-10 p-5 sm:p-6 bg-white rounded-2xl border border-neutral-200 shadow-sm"
-        >
+        <div className="mt-10 p-5 sm:p-6 bg-white rounded-2xl border border-neutral-200">
           <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-3 flex items-center gap-1.5">
             <Handshake className="w-3.5 h-3.5 text-[#1B5E20]" />
             <span>Alianzas Comerciales e Históricas</span>
           </div>
-          <motion.div
-            variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {CLIENT_PARTNERS.map((client) => (
-              <motion.div
+              <div
                 key={client.name}
-                variants={fadeUp}
-                whileHover={{ y: -3, backgroundColor: '#fcfcfc' }}
-                transition={{ duration: 0.2 }}
-                className="p-3.5 bg-neutral-50/80 rounded-xl border border-neutral-200/70 hover:border-neutral-300 transition-colors"
+                className="p-3.5 bg-neutral-50/80 rounded-xl border border-neutral-200/70 hover:border-neutral-300 transition-colors duration-200"
               >
                 <div className="text-xs font-bold text-neutral-950 mb-1">
                   {client.name}
@@ -294,10 +295,10 @@ export const HistorySection: React.FC = () => {
                 <p className="text-[11px] text-neutral-600 leading-normal">
                   {client.relationship}
                 </p>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );
