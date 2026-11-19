@@ -36,12 +36,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
             {/* Value Proposition Paragraph */}
             <motion.p
               variants={fadeUp}
-              className="text-base sm:text-lg text-neutral-600 leading-relaxed mb-8 max-w-2xl font-normal"
+              className="text-base sm:text-lg text-neutral-600 leading-relaxed mb-3 max-w-2xl font-normal"
             >
               Operador logístico 3PL y distribución exclusiva para consumo masivo y alimentos.
-              Conectamos el eje centro-oriental y los llanos con <strong className="font-semibold text-neutral-900">+3.700 m²</strong> de
-              almacenamiento en 3 sedes propias, flota dedicada de 5T a 12T y un índice de cumplimiento auditado del <strong className="font-semibold text-neutral-900">99.8% OTIF</strong>.
+              Conectamos los llanos, oriente y sur con <strong className="font-semibold text-neutral-900">+3.700 m²</strong> de
+              almacenamiento en 3 sedes propias, flota dedicada de 5T a 12T y un índice de cumplimiento auditado del <strong className="font-semibold text-neutral-900">99,8% OTIF</strong>.
             </motion.p>
+
+            {/* Single-line Lead Time + OTIF Micro-indicator */}
+            <motion.div
+              variants={fadeUp}
+              className="flex flex-wrap items-center gap-2 text-xs sm:text-sm font-semibold text-neutral-800 mb-7"
+            >
+              <span className="text-[#1B5E20]">Lead time &lt; 24 h</span>
+              <span className="text-neutral-300" aria-hidden="true">·</span>
+              <span>99,8% OTIF</span>
+              <span className="text-neutral-300 hidden sm:inline" aria-hidden="true">·</span>
+              <span className="text-xs font-normal text-neutral-500 hidden sm:inline">
+                Desde 1990 operando almacenamiento, preparación y distribución
+              </span>
+            </motion.div>
 
             {/* CTAs */}
             <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 mb-9">
@@ -142,7 +156,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenContact }) => {
                   </div>
                   <div>
                     <span className="text-[10px] uppercase tracking-wide text-neutral-500 block">Nivel OTIF</span>
-                    <span className="text-sm font-bold text-[#1B5E20] font-mono tabular-nums">99.8%</span>
+                    <span className="text-sm font-bold text-[#1B5E20] font-mono tabular-nums">99,8%</span>
                   </div>
                   <div>
                     <span className="text-[10px] uppercase tracking-wide text-neutral-500 block">Clientes</span>

@@ -2,6 +2,7 @@ export interface MetricItem {
   id: string;
   value: string;
   unit?: string;
+  subtitle?: string;
   label: string;
   detail: string;
   benchmark: string;
@@ -17,6 +18,9 @@ export interface TimelineMilestone {
   category: 'Origen' | 'Institucional' | 'Infraestructura' | 'Alianzas' | 'Expansión';
   partners?: string[];
   tag?: string;
+  image: string;
+  imageLabel: string;
+  imageCaption: string;
 }
 
 export interface LogisticsHub {

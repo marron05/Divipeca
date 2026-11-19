@@ -29,7 +29,7 @@ const CIRCLE_PAIRS: CirclePair[] = [
     step: 1,
     before: 'Retrasos y faltantes',
     after: 'Entrega a tiempo',
-    insightTitle: 'Puntualidad 99.8% OTIF',
+    insightTitle: 'Puntualidad 99,8% OTIF',
     insightBody:
       'Flota propia de 5T a 12T y rutas fijas desde 3 sedes aseguran mercancía completa en cada despacho.',
   },
@@ -591,7 +591,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
             <div className="mt-5 pt-3.5 border-t border-emerald-100 flex items-center justify-between text-[11px]">
               <span className="text-neutral-500">Ciclo continuo de recompra</span>
               <span className="font-mono font-bold text-[#1B5E20]">
-                {isActivated ? '99.8% OTIF Activo' : 'Crecimiento 3PL'}
+                {isActivated ? '99,8% OTIF Activo' : 'Crecimiento 3PL'}
               </span>
             </div>
           </motion.div>

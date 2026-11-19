@@ -16,40 +16,70 @@ interface CoverageMapProps {
   onOpenContact: (source?: string) => void;
 }
 
+interface OutboundVector {
+  toX: number;
+  toY: number;
+}
+
 interface HubPinMeta {
   hubId: string;
+  x: number;
+  y: number;
   xPercent: number;
   yPercent: number;
   shortLabel: string;
   stateLabel: string;
   pillPositionClass: string;
+  outboundVectors: OutboundVector[];
 }
 
-// Exact coordinates inside the 640x543 traced Venezuela map
+// Exact coordinates inside the 640x543 traced Venezuela map.
+// Outbound vectors radiate ONLY from each center into its own regional coverage (no inter-hub routes).
 const HUB_PINS: HubPinMeta[] = [
   {
     hubId: 'valle-pascua',
+    x: 314,
+    y: 164,
     xPercent: (314 / 640) * 100,
     yPercent: (164 / 543) * 100,
     shortLabel: 'Valle de la Pascua',
-    stateLabel: 'Guárico',
+    stateLabel: 'Estado Guárico',
     pillPositionClass: 'right-full mr-2.5 top-1/2 -translate-y-1/2',
+    outboundVectors: [
+      { toX: 274, toY: 168 },
+      { toX: 286, toY: 204 },
+      { toX: 298, toY: 136 },
+    ],
   },
   {
     hubId: 'barcelona-plc',
+    x: 354,
+    y: 125,
     xPercent: (354 / 640) * 100,
     yPercent: (125 / 543) * 100,
     shortLabel: 'Puerto La Cruz / Barcelona',
-    stateLabel: 'Anzoátegui · Sucre',
+    stateLabel: 'Anzoátegui y Sucre',
     pillPositionClass: 'bottom-full mb-2.5 right-0 translate-x-4',
+    outboundVectors: [
+      { toX: 406, toY: 112 },
+      { toX: 372, toY: 170 },
+      { toX: 354, toY: 192 },
+    ],
   },
   {
     hubId: 'ciudad-bolivar',
+    x: 408,
+    y: 208,
     xPercent: (408 / 640) * 100,
     yPercent: (208 / 543) * 100,
     shortLabel: 'Ciudad Bolívar',
-    stateLabel: 'Bolívar',
+    stateLabel: 'Estado Bolívar',
     pillPositionClass: 'top-full mt-2.5 left-1/2 -translate-x-1/2',
+    outboundVectors: [
+      { toX: 330, toY: 256 },
+      { toX: 410, toY: 278 },
+      { toX: 472, toY: 236 },
+    ],
   },
 ];
 
@@ -60,6 +90,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
   onOpenContact,
 }) => {
   const activeHub = hubs.find((h) => h.id === selectedHubId) || hubs[0];
+  const activePin = HUB_PINS.find((p) => p.hubId === selectedHubId) || HUB_PINS[0];
 
   return (
     <motion.div
@@ -77,7 +108,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
             <span>Cobertura operativa</span>
           </div>
           <p className="text-sm sm:text-base font-bold text-neutral-950">
-            3 centros propios · 4 estados · flota dedicada
+            3 centros propios · 4 estados · despacho local con flota dedicada
           </p>
         </div>
 
@@ -104,7 +135,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
           {/* Top geographical context label */}
           <div className="flex items-center justify-between gap-2 mb-3">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-              Venezuela · Eje Llanos, Oriente y Guayana
+              Venezuela · Guárico, Anzoátegui, Sucre y Bolívar
             </span>
             <span className="text-[11px] text-[#1B5E20] font-medium hidden sm:inline">
               Haz clic en un pin o estado
@@ -176,25 +207,45 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                 );
               })}
 
-              {/* Gentle Trunk Logistics Arcs connecting the 3 Hubs without crossing state labels */}
-              <path
-                d="M 314,164 Q 328,136 354,125"
-                fill="none"
-                stroke="#A7F3D0"
-                strokeWidth="1.75"
-                strokeDasharray="4 4"
-                strokeOpacity="0.9"
-                className="pointer-events-none"
-              />
-              <path
-                d="M 354,125 Q 422,158 408,208"
-                fill="none"
-                stroke="#A7F3D0"
-                strokeWidth="1.75"
-                strokeDasharray="4 4"
-                strokeOpacity="0.9"
-                className="pointer-events-none"
-              />
+              {/* Outbound-only local distribution rays radiating strictly within the active hub's coverage zone */}
+              <g key={`outbound-${activePin.hubId}`} className="pointer-events-none">
+                {activePin.outboundVectors.map((vec, idx) => (
+                  <g key={idx}>
+                    <motion.line
+                      x1={activePin.x}
+                      y1={activePin.y}
+                      x2={vec.toX}
+                      y2={vec.toY}
+                      stroke="#A7F3D0"
+                      strokeWidth="1.6"
+                      strokeDasharray="3 4"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: 0.85 }}
+                      transition={{
+                        duration: 0.55,
+                        delay: idx * 0.08,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                    />
+                    <motion.circle
+                      r="2.4"
+                      fill="#ECFDF5"
+                      initial={{ cx: activePin.x, cy: activePin.y, opacity: 0.95 }}
+                      animate={{
+                        cx: [activePin.x, vec.toX],
+                        cy: [activePin.y, vec.toY],
+                        opacity: [0.95, 0],
+                      }}
+                      transition={{
+                        duration: 1.8,
+                        delay: idx * 0.25,
+                        repeat: Infinity,
+                        ease: 'easeOut',
+                      }}
+                    />
+                  </g>
+                ))}
+              </g>
             </svg>
 
             {/* Interactive HTML Pill Pins positioned accurately over the SVG coordinates */}
@@ -238,7 +289,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                       />
                     </span>
 
-                    {/* Elegant Rounded-Full Pill Label (Desktop / Tablet) */}
+                    {/* Rounded-Full Pill Label (Desktop / Tablet) */}
                     <motion.span
                       key={`${pin.hubId}-${isActive ? 'active' : 'idle'}`}
                       initial={{ opacity: 0.85, scale: 0.98 }}
@@ -310,7 +361,9 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                 </div>
 
                 <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-950 mb-1">
-                  {activeHub.city}
+                  {activeHub.id === 'ciudad-bolivar'
+                    ? `${activeHub.city}, ${activeHub.state}`
+                    : activeHub.city}
                 </h3>
                 <p className="text-xs sm:text-sm font-semibold text-[#1B5E20] mb-3">
                   {activeHub.role}

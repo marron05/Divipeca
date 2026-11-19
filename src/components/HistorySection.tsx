@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { TIMELINE_MILESTONES, IMAGES, CLIENT_PARTNERS } from '../data/divipecaData';
-import { History, Handshake } from 'lucide-react';
+import { TIMELINE_MILESTONES, CLIENT_PARTNERS } from '../data/divipecaData';
+import { History, Handshake, Camera } from 'lucide-react';
 import { fadeUp, staggerContainer, scaleIn, cardHover, buttonHover, buttonTap } from '../utils/motion';
 
 export const HistorySection: React.FC = () => {
   const [activeMilestoneIndex, setActiveMilestoneIndex] = useState<number>(0);
+  const [imageErrorMap, setImageErrorMap] = useState<Record<string, boolean>>({});
   const activeMilestone = TIMELINE_MILESTONES[activeMilestoneIndex];
 
   return (
-    <section id="historia" className="relative pt-20 pb-20 sm:pt-24 sm:pb-24 bg-neutral-50 border-b border-neutral-200/80">
+    <section
+      id="historia"
+      className="relative pt-20 pb-20 sm:pt-24 sm:pb-24 bg-neutral-50 border-b border-neutral-200/80"
+    >
       {/* Soft Top Ambient Gradient for smooth transition from dark Indicadores block */}
       <div className="absolute top-0 left-0 right-0 h-10 overflow-hidden pointer-events-none">
         <div className="w-full h-full bg-gradient-to-b from-neutral-900/5 to-transparent" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
         {/* Editorial Section Header with Scroll Reveal */}
         <motion.div
           initial="hidden"
@@ -28,20 +31,19 @@ export const HistorySection: React.FC = () => {
           <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2.5 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
             <History className="w-3.5 h-3.5" />
-            <span>02. Trayectoria y Resiliencia Empresarial</span>
+            <span>02. Trayectoria y Continuidad · Desde 1990</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 mb-4 text-balance">
-            De una sola camioneta en 1982 al operador 3PL líder en el oriente y los llanos.
+            De una sola camioneta en 1982 a nuestra consolidación institucional desde 1990.
           </h2>
           <p className="text-base text-neutral-600 leading-relaxed font-normal">
-            Una historia forjada en carretera. El relevo generacional de Vito y Giuseppe Binaggia (“Vito y Peppe”) transformó el esfuerzo de su padre en un sistema logístico formal (RIF J-060038278), caracterizado por alianzas de más de 40 años con las principales marcas de alimentos de Venezuela.
+            Una historia forjada en carretera. El relevo generacional de Vito y Giuseppe Binaggia (“Vito y Peppe”) transformó el esfuerzo original de su padre en una empresa formal desde 1990 (RIF J-060038278), respaldada por alianzas de largo plazo en el oriente, los llanos y el Estado Bolívar.
           </p>
         </motion.div>
 
-        {/* Narrative & Archival Visual Split */}
+        {/* Narrative & Stage-Synchronized Visual Split */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12 items-stretch">
-          
-          {/* Heritage Archival Image Card with scaleIn */}
+          {/* Dynamic Per-Stage Photography Card with Smooth Crossfade */}
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -49,24 +51,62 @@ export const HistorySection: React.FC = () => {
             variants={scaleIn}
             className="lg:col-span-5 flex flex-col"
           >
-            <div className="relative rounded-2xl overflow-hidden border border-neutral-200/90 bg-neutral-950 shadow-md flex-1 min-h-[320px] sm:min-h-[380px] group">
-              <img
-                src={IMAGES.heritage1982}
-                alt="Orígenes de DIVIPECA en 1982, ruta Caracas a Valle de la Pascua"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-              />
+            <div className="relative rounded-2xl overflow-hidden border border-neutral-200/90 bg-neutral-950 shadow-md flex-1 min-h-[340px] sm:min-h-[400px] group">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeMilestone.year}
+                  initial={{ opacity: 0, scale: 1.02 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.99 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0 w-full h-full"
+                >
+                  {imageErrorMap[activeMilestone.year] ? (
+                    <div className="w-full h-full bg-gradient-to-br from-neutral-900 via-neutral-950 to-emerald-950/60 flex flex-col items-center justify-center p-6 text-center text-neutral-300">
+                      <Camera className="w-8 h-8 text-emerald-400 mb-3" />
+                      <div className="text-sm font-bold text-white mb-1">
+                        {activeMilestone.imageLabel}
+                      </div>
+                      <p className="text-xs text-neutral-400 max-w-xs">
+                        {activeMilestone.imageCaption}
+                      </p>
+                    </div>
+                  ) : (
+                    <img
+                      src={activeMilestone.image}
+                      alt={`${activeMilestone.title} — ${activeMilestone.imageLabel}`}
+                      referrerPolicy="no-referrer"
+                      onError={() =>
+                        setImageErrorMap((prev) => ({ ...prev, [activeMilestone.year]: true }))
+                      }
+                      className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                    />
+                  )}
+                </motion.div>
+              </AnimatePresence>
+
               <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/85 via-neutral-950/20 to-transparent pointer-events-none" />
-              
-              <div className="absolute bottom-4 left-4 right-4 p-4 bg-white/95 backdrop-blur-md rounded-xl border border-white/60 text-xs text-neutral-800 shadow-sm transition-transform duration-300 group-hover:translate-y-[-2px]">
-                <div className="font-semibold text-neutral-950 mb-0.5 flex items-center justify-between">
-                  <span>Valle de la Pascua, 1982</span>
-                  <span className="text-[10px] uppercase font-mono text-neutral-500 font-semibold tracking-wider">Archivo Histórico</span>
-                </div>
-                <p className="text-[11px] text-neutral-600 leading-normal">
-                  La ruta original transportaba mortadela Giacomello y Pastas Capri. Cuatro décadas después, la palabra empeñada y el compromiso siguen intactos.
-                </p>
-              </div>
+
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`caption-${activeMilestone.year}`}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute bottom-4 left-4 right-4 p-4 bg-white/95 backdrop-blur-md rounded-xl border border-white/60 text-xs text-neutral-800 shadow-sm z-10"
+                >
+                  <div className="font-semibold text-neutral-950 mb-0.5 flex items-center justify-between gap-2">
+                    <span>{activeMilestone.imageLabel}</span>
+                    <span className="text-[10px] uppercase font-mono text-[#1B5E20] font-bold tracking-wider shrink-0">
+                      {activeMilestone.category}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-neutral-600 leading-normal">
+                    {activeMilestone.imageCaption}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
             </div>
           </motion.div>
 
@@ -168,16 +208,23 @@ export const HistorySection: React.FC = () => {
 
               <motion.button
                 disabled={activeMilestoneIndex === TIMELINE_MILESTONES.length - 1}
-                onClick={() => setActiveMilestoneIndex((prev) => Math.min(TIMELINE_MILESTONES.length - 1, prev + 1))}
-                whileHover={activeMilestoneIndex < TIMELINE_MILESTONES.length - 1 ? buttonHover : {}}
-                whileTap={activeMilestoneIndex < TIMELINE_MILESTONES.length - 1 ? buttonTap : {}}
+                onClick={() =>
+                  setActiveMilestoneIndex((prev) =>
+                    Math.min(TIMELINE_MILESTONES.length - 1, prev + 1)
+                  )
+                }
+                whileHover={
+                  activeMilestoneIndex < TIMELINE_MILESTONES.length - 1 ? buttonHover : {}
+                }
+                whileTap={
+                  activeMilestoneIndex < TIMELINE_MILESTONES.length - 1 ? buttonTap : {}
+                }
                 className="text-xs font-semibold px-3.5 py-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
               >
                 Siguiente →
               </motion.button>
             </div>
           </motion.div>
-
         </div>
 
         {/* Compact Scrubber Timeline Grid with Stagger & FadeUp */}
@@ -217,7 +264,7 @@ export const HistorySection: React.FC = () => {
           })}
         </motion.div>
 
-        {/* Strategic Partnerships Strip with Stagger */}
+        {/* Existing Strategic Partnerships Strip (Preserved as requested, no new logo carousel) */}
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -251,7 +298,6 @@ export const HistorySection: React.FC = () => {
             ))}
           </motion.div>
         </motion.div>
-
       </div>
     </section>
   );

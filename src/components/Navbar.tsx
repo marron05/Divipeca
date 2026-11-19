@@ -36,24 +36,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-3 sm:gap-8 h-20 sm:h-22">
-          {/* Zone 1: Brand wordmark with enlarged official emblem */}
+        <div className="flex items-center justify-between gap-3 sm:gap-8 h-20 sm:h-24">
+          {/* Zone 1: Brand wordmark in authoritative black with enlarged official emblem */}
           <motion.a
             href="#inicio"
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
-            className="flex items-center gap-3 sm:gap-3.5 text-neutral-900 group whitespace-nowrap shrink-0"
+            className="flex items-center gap-3 sm:gap-4 text-neutral-950 group whitespace-nowrap shrink-0"
           >
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 bg-white shadow-xs border border-neutral-200/80 flex items-center justify-center group-hover:scale-105 group-hover:shadow-sm transition-all duration-300 ease-out shrink-0">
+            <div className="w-15 h-15 sm:w-20 sm:h-20 rounded-full p-0.5 bg-white shadow-xs border border-neutral-200/80 flex items-center justify-center group-hover:scale-105 group-hover:shadow-sm transition-all duration-300 ease-out shrink-0">
               <DivipecaLogo className="w-full h-full" />
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl sm:text-[26px] font-black tracking-tight leading-none text-neutral-950 transition-colors group-hover:text-[#1B5E20]">
+              <span className="text-2xl sm:text-[32px] font-black tracking-tight leading-none text-neutral-950">
                 DIVIPECA
               </span>
-              <span className="text-[10px] tracking-[0.14em] text-neutral-400 uppercase font-medium mt-1">
-                Operador Logístico 3PL
-              </span>
+              <div className="flex items-center gap-1.5 mt-1 sm:mt-1.5">
+                <span className="text-[11px] sm:text-xs font-bold tracking-tight text-[#1B5E20]">
+                  Desde 1990
+                </span>
+                <span className="text-neutral-300 text-xs" aria-hidden="true">·</span>
+                <span className="text-[10px] tracking-[0.11em] text-neutral-400 uppercase font-medium">
+                  Operador Logístico 3PL
+                </span>
+              </div>
             </div>
           </motion.a>
 

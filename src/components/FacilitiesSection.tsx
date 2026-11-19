@@ -32,11 +32,11 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
               <span>03. Red de Sedes e Infraestructura Física</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 text-balance">
-              3 centros logísticos interconectados. +3.700 m² bajo techo.
+              3 centros logísticos regionales. +3.700 m² bajo techo.
             </h2>
           </div>
           <div className="text-sm text-neutral-600 max-w-md font-normal leading-relaxed">
-            Infraestructura 100% propia, equipada para almacenamiento masivo, picking intensivo y cross-docking con conexión directa a los 4 estados de cobertura.
+            Infraestructura 100% propia, equipada para almacenamiento masivo, picking intensivo y despacho directo desde cada sede hacia los 4 estados de cobertura.
           </div>
         </motion.div>
 
