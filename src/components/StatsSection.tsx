@@ -5,6 +5,7 @@ import {
   LEAD_TIME_DATA,
   TERMINOLOGY_CLARIFIERS,
   COMPANY_INFO,
+  IMAGES,
 } from '../data/divipecaData';
 import {
   TrendingUp,
@@ -548,6 +549,37 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
             </div>
           ))}
         </motion.div>
+
+        {/* Compact Operational Support Photos (2 real operation frames) */}
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="relative rounded-2xl overflow-hidden border border-neutral-800/90 bg-neutral-900 h-48 sm:h-56">
+            <img
+              src={IMAGES.forkliftOps}
+              alt="Montacargas Toyota DIVIPECA movilizando estibas de alimentos en centro logístico"
+              loading="lazy"
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute bottom-3.5 left-4 right-4 flex items-center justify-between gap-2 text-xs">
+              <span className="font-semibold text-white">Manipulación y estibado mecanizado</span>
+              <span className="text-[11px] font-mono text-emerald-400">Picking & Cross-docking</span>
+            </div>
+          </div>
+
+          <div className="relative rounded-2xl overflow-hidden border border-neutral-800/90 bg-neutral-900 h-48 sm:h-56">
+            <img
+              src={IMAGES.warehouseRacks}
+              alt="Pasillo de almacenamiento paletizado en racks selectivos de DIVIPECA"
+              loading="lazy"
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute bottom-3.5 left-4 right-4 flex items-center justify-between gap-2 text-xs">
+              <span className="font-semibold text-white">Almacenamiento seco en racks selectivos</span>
+              <span className="text-[11px] font-mono text-emerald-400">Normas BPM · FMCG</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Gentle Architectural Transition Gradient toward the light Historia section */}

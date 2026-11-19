@@ -22,11 +22,14 @@ export const COMPANY_INFO = {
 
 export const IMAGES = {
   logo: '/divipeca_logo.svg',
-  heroFleet: '/images/hero-fleet.jpg',
-  warehouseValle: '/images/warehouse-valle.jpg',
-  hubBarcelona: '/images/hub-barcelona.jpg',
-  hubBolivar: '/images/hub-bolivar.jpg',
-  heritage1982: '/images/heritage-1982.jpg',
+  heroFleet: '/assets/aistudio/Fachada_09f64ac1.jpeg',
+  warehouseValle: '/assets/aistudio/Valle_de_la_Pascua_perfil_fe6fcbb0.jpeg',
+  hubBarcelona: '/assets/aistudio/Anzoategui_perfil_58bde3d1.jpeg',
+  hubBolivar: '/assets/aistudio/Bolivar_perfil_20c26f4b.jpeg',
+  fleetLineup: '/assets/aistudio/Perfil_de_los_camiones_df9a41d0.jpeg',
+  truckCloseup: '/assets/aistudio/Cami_n_c472f57c.jpeg',
+  forkliftOps: '/assets/aistudio/Monta_cargas_con_pacas_be3ad4ab.jpeg',
+  warehouseRacks: '/assets/aistudio/Mercancia_c11ec1ce.jpeg',
 };
 
 export interface LeadTimeStep {
@@ -160,10 +163,10 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
       'Primer flete regular de alimentos y génesis del modelo de distribución confiable que dio pie a DIVIPECA.',
     category: 'Origen',
     partners: ['Pastas Capri', 'Mortadela Giacomello'],
-    image: IMAGES.heritage1982,
+    image: IMAGES.truckCloseup,
     imageLabel: 'Valle de la Pascua, 1982 · Origen',
     imageCaption:
-      'Espacio destinado a la fotografía histórica de la camioneta original en ruta Caracas — Valle de la Pascua.',
+      'Continuidad de flota propia: del transporte pionero a las unidades pesadas identificadas con emblema DIVIPECA.',
   },
   {
     year: '1980s',
@@ -174,7 +177,7 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
     achievement: 'Red pionera de cobertura mayorista en los llanos centrales.',
     category: 'Alianzas',
     partners: ['Pastas Capri (+40 años)'],
-    image: IMAGES.heritage1982,
+    image: IMAGES.warehouseRacks,
     imageLabel: 'Años 80 · Guárico',
     imageCaption:
       'Consolidación comercial en los llanos centrales con entregas semanales directas al canal mayorista.',
@@ -201,7 +204,7 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
       'Adquisición y adecuación del almacén principal en Valle de la Pascua. Se ejecuta el plan de adquisición de flota propia para garantizar puntualidad y autonomía operativa sin depender de terceros.',
     achievement: 'Primer centro de acopio matriz con patio de maniobras y camiones propios.',
     category: 'Infraestructura',
-    image: IMAGES.warehouseValle,
+    image: IMAGES.fleetLineup,
     imageLabel: '1990 — 2000 · Almacén y Flota Propia',
     imageCaption:
       'Crecimiento de capacidad instalada y unidades propias en Valle de la Pascua, Estado Guárico.',
@@ -216,7 +219,7 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
       'El modelo 3PL de DIVIPECA se consolida como estándar de servicio para consumo masivo.',
     category: 'Alianzas',
     partners: ['Galletas Puig'],
-    image: IMAGES.hubBarcelona,
+    image: IMAGES.forkliftOps,
     imageLabel: '2004 — 2005 · Modelo 3PL & Alianzas',
     imageCaption:
       'Operación de almacén y preparación dedicada para marcas líderes de alimentos y consumo masivo.',

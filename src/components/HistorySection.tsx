@@ -89,7 +89,7 @@ export const HistorySection: React.FC = () => {
                     <img
                       src={activeMilestone.image}
                       alt={`${activeMilestone.title} — ${activeMilestone.imageLabel}`}
-                      referrerPolicy="no-referrer"
+                      loading="lazy"
                       onError={() =>
                         setImageErrorMap((prev) => ({ ...prev, [activeMilestone.year]: true }))
                       }

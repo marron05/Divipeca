@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { LOGISTICS_HUBS, FLEET_DETAILS } from '../data/divipecaData';
+import { LOGISTICS_HUBS, FLEET_DETAILS, IMAGES } from '../data/divipecaData';
 import { MapPin, Warehouse, Truck, CheckCircle2 } from 'lucide-react';
 import {
   EASE_PREMIUM,
@@ -117,7 +117,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
                 <img
                   src={activeHub.image}
                   alt={`Instalaciones de DIVIPECA en ${activeHub.city}`}
-                  referrerPolicy="no-referrer"
+                  loading="lazy"
                   className="w-full h-full object-cover object-center"
                 />
 
@@ -234,6 +234,37 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
             <p className="text-xs sm:text-sm text-neutral-600 mt-1.5 font-normal leading-relaxed">
               Flota vehicular bajo estricto programa de mantenimiento preventivo y seguimiento de ruta GPS.
             </p>
+          </div>
+
+          {/* Real Fleet Photography (Primary Lineup + JAC Búfalo Close-up, zero warehouse photos) */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 mb-7">
+            <div className="md:col-span-7 relative rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-950 h-60 sm:h-72">
+              <img
+                src={IMAGES.fleetLineup}
+                alt="Línea de camiones propios DIVIPECA — Unidades Encava y JAC Búfalo"
+                loading="lazy"
+                className="w-full h-full object-cover object-[center_40%]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/75 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-3.5 left-4 right-4 flex items-center justify-between gap-2 text-xs text-white">
+                <span className="font-semibold">Flota propia rotulada DIVIPECA</span>
+                <span className="text-[11px] font-mono text-emerald-300">Encava · JAC Búfalo</span>
+              </div>
+            </div>
+
+            <div className="md:col-span-5 relative rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-950 h-60 sm:h-72">
+              <img
+                src={IMAGES.truckCloseup}
+                alt="Unidad pesada JAC Búfalo de DIVIPECA con emblema institucional en puerta"
+                loading="lazy"
+                className="w-full h-full object-cover object-[center_40%]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/75 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-3.5 left-4 right-4 flex items-center justify-between gap-2 text-xs text-white">
+                <span className="font-semibold">JAC Búfalo 10–12T</span>
+                <span className="text-[11px] font-mono text-emerald-300">Cummins · Ruta Regional</span>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

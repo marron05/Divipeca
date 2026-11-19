@@ -229,8 +229,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="relative rounded-2xl overflow-hidden border border-neutral-200 shadow-lg bg-neutral-950">
               <img
                 src={IMAGES.heroFleet}
-                alt="Flota y andenes de carga de DIVIPECA en operación matutina"
-                referrerPolicy="no-referrer"
+                alt="Centro logístico DIVIPECA — Operador logístico 3PL desde 1990"
                 className="w-full h-[400px] sm:h-[480px] lg:h-[520px] object-cover object-center"
               />
 

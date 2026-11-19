@@ -348,9 +348,18 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                     ? `${activeHub.city}, ${activeHub.state}`
                     : activeHub.city}
                 </h3>
-                <p className="text-xs sm:text-sm font-semibold text-[#1B5E20] mb-3">
+                <p className="text-xs sm:text-sm font-semibold text-[#1B5E20] mb-3.5">
                   {activeHub.role}
                 </p>
+
+                <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-neutral-200 bg-neutral-100 mb-4">
+                  <img
+                    src={activeHub.image}
+                    alt={`Instalaciones de DIVIPECA en ${activeHub.city}`}
+                    loading="lazy"
+                    className="w-full h-full object-cover object-center"
+                  />
+                </div>
 
                 <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed mb-5">
                   {activeHub.description}
