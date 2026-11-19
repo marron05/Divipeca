@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import {
   MessageCircle,
   Mail,
@@ -12,10 +12,7 @@ import {
 } from 'lucide-react';
 import { COMPANY_INFO } from '../data/divipecaData';
 import {
-  EASE_PREMIUM,
-  DUR_MED,
   BUTTON_TRANSITION_CLASS,
-  useStickyInView,
   primaryButtonHover,
   primaryButtonTap,
   secondaryButtonHover,
@@ -29,12 +26,6 @@ interface ContactSectionProps {
 type OperationType = '3PL' | 'Distribución';
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource = 'General' }) => {
-  const shouldReduceMotion = useReducedMotion();
-  const headerRef = useRef<HTMLDivElement | null>(null);
-  const gridRef = useRef<HTMLDivElement | null>(null);
-  const headerRevealed = useStickyInView(headerRef);
-  const gridRevealed = useStickyInView(gridRef);
-
   const [operationType, setOperationType] = useState<OperationType>('3PL');
   const [name, setName] = useState('');
   const [company, setCompany] = useState('');
@@ -98,13 +89,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
-          ref={headerRef}
-          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          animate={headerRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
-          className="max-w-2xl mb-12"
-        >
+        <div className="max-w-2xl mb-12">
           <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2.5 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
             <span>Contacto Comercial y Operaciones</span>
@@ -117,20 +102,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
           <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
             Cuéntenos su necesidad de 3PL o distribución. Respondemos con una propuesta clara.
           </p>
-        </motion.div>
+        </div>
 
         {/* 2-Column Conversion Grid */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
-        >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Direct Channels + Corporate Contact Info */}
-          <motion.div
-            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            animate={gridRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
-            className="lg:col-span-5 space-y-6"
-          >
+          <div className="lg:col-span-5 space-y-6">
             {/* Direct Fast Action Card */}
             <div className="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-7 shadow-xs">
               <div className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">
@@ -231,15 +208,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Column: Minimal B2B Form */}
-          <motion.div
-            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            animate={gridRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            transition={{ duration: DUR_MED, delay: shouldReduceMotion ? 0 : 0.06, ease: EASE_PREMIUM }}
-            className="lg:col-span-7 rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-xs"
-          >
+          <div className="lg:col-span-7 rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-xs">
             {submitted ? (
               <div className="py-6 sm:py-8">
                 <div className="w-12 h-12 rounded-full bg-emerald-100 text-[#1B5E20] flex items-center justify-center mb-4">
@@ -417,7 +389,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                 </div>
               </form>
             )}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

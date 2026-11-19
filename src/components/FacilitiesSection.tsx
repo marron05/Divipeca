@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { LOGISTICS_HUBS, FLEET_DETAILS } from '../data/divipecaData';
 import { MapPin, Warehouse, Truck, CheckCircle2 } from 'lucide-react';
@@ -6,7 +6,6 @@ import {
   EASE_PREMIUM,
   DUR_MED,
   BUTTON_TRANSITION_CLASS,
-  useStickyInView,
   primaryButtonHover,
   primaryButtonTap,
 } from '../utils/motion';
@@ -18,16 +17,6 @@ interface FacilitiesSectionProps {
 
 export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenContact }) => {
   const shouldReduceMotion = useReducedMotion();
-  const headerRef = useRef<HTMLDivElement | null>(null);
-  const hubsRef = useRef<HTMLDivElement | null>(null);
-  const fleetHeaderRef = useRef<HTMLDivElement | null>(null);
-  const fleetGridRef = useRef<HTMLDivElement | null>(null);
-
-  const headerRevealed = useStickyInView(headerRef);
-  const hubsRevealed = useStickyInView(hubsRef);
-  const fleetHeaderRevealed = useStickyInView(fleetHeaderRef);
-  const fleetGridRevealed = useStickyInView(fleetGridRef);
-
   const [selectedHubId, setSelectedHubId] = useState<string>(LOGISTICS_HUBS[0].id);
   const activeHub = LOGISTICS_HUBS.find((h) => h.id === selectedHubId) || LOGISTICS_HUBS[0];
 
@@ -35,13 +24,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
     <section id="sedes" className="py-20 sm:py-24 bg-white border-b border-neutral-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Editorial Section Header */}
-        <motion.div
-          ref={headerRef}
-          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          animate={headerRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
-          className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12"
-        >
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
           <div className="max-w-3xl">
             <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2.5 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
@@ -55,7 +38,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
           <div className="text-sm text-neutral-600 max-w-md font-normal leading-relaxed">
             Infraestructura 100% propia, equipada para almacenamiento masivo, picking intensivo y despacho directo desde cada sede hacia los 4 estados de cobertura.
           </div>
-        </motion.div>
+        </div>
 
         {/* Interactive Coverage Map */}
         <CoverageMap
@@ -68,22 +51,14 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
         {/* Hub Selector Navigation (restrained 1px border hover, zero scale) */}
         <div
           id="sede-detalle"
-          ref={hubsRef}
           className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mb-9 scroll-mt-24"
         >
-          {LOGISTICS_HUBS.map((hub, idx) => {
+          {LOGISTICS_HUBS.map((hub) => {
             const isSelected = hub.id === activeHub.id;
             return (
-              <motion.button
+              <button
                 key={hub.id}
                 type="button"
-                initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-                animate={hubsRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-                transition={{
-                  duration: DUR_MED,
-                  delay: shouldReduceMotion ? 0 : idx * 0.06,
-                  ease: EASE_PREMIUM,
-                }}
                 onClick={() => setSelectedHubId(hub.id)}
                 className={`p-4 sm:p-5 rounded-2xl border text-left ${BUTTON_TRANSITION_CLASS} relative flex flex-col justify-between cursor-pointer ${
                   isSelected
@@ -121,7 +96,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
                 >
                   {hub.role}
                 </div>
-              </motion.button>
+              </button>
             );
           })}
         </div>
@@ -247,13 +222,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
 
         {/* Dedicated Fleet Section */}
         <div id="flota" className="pt-10 border-t border-neutral-200/80">
-          <motion.div
-            ref={fleetHeaderRef}
-            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            animate={fleetHeaderRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
-            className="max-w-2xl mb-8"
-          >
+          <div className="max-w-2xl mb-8">
             <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
               <Truck className="w-3.5 h-3.5" />
@@ -265,22 +234,12 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
             <p className="text-xs sm:text-sm text-neutral-600 mt-1.5 font-normal leading-relaxed">
               Flota vehicular bajo estricto programa de mantenimiento preventivo y seguimiento de ruta GPS.
             </p>
-          </motion.div>
+          </div>
 
-          <div
-            ref={fleetGridRef}
-            className="grid grid-cols-1 md:grid-cols-3 gap-5"
-          >
-            {FLEET_DETAILS.map((fleet, idx) => (
-              <motion.div
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {FLEET_DETAILS.map((fleet) => (
+              <div
                 key={fleet.model}
-                initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-                animate={fleetGridRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-                transition={{
-                  duration: DUR_MED,
-                  delay: shouldReduceMotion ? 0 : idx * 0.06,
-                  ease: EASE_PREMIUM,
-                }}
                 className={`p-5 sm:p-6 rounded-2xl border border-neutral-200 bg-neutral-50/70 hover:bg-neutral-50 hover:border-[#1B5E20]/40 ${BUTTON_TRANSITION_CLASS} flex flex-col justify-between`}
               >
                 <div>
@@ -314,7 +273,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
                   <span>Mantenimiento interno</span>
                   <span className="text-[#1B5E20] font-semibold">100% Operatividad</span>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

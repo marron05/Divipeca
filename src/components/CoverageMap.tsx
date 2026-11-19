@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { MapPin, ArrowUpRight, Truck, Warehouse, CheckCircle2, Navigation } from 'lucide-react';
 import { LogisticsHub } from '../types';
@@ -6,7 +6,6 @@ import {
   EASE_PREMIUM,
   DUR_MED,
   BUTTON_TRANSITION_CLASS,
-  useStickyInView,
   primaryButtonHover,
   primaryButtonTap,
 } from '../utils/motion';
@@ -97,19 +96,11 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
   onOpenContact,
 }) => {
   const shouldReduceMotion = useReducedMotion();
-  const mapRef = useRef<HTMLDivElement | null>(null);
-  const mapRevealed = useStickyInView(mapRef);
   const activeHub = hubs.find((h) => h.id === selectedHubId) || hubs[0];
   const activePin = HUB_PINS.find((p) => p.hubId === selectedHubId) || HUB_PINS[0];
 
   return (
-    <motion.div
-      ref={mapRef}
-      initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-      animate={mapRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-      transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
-      className="mb-12 rounded-3xl border border-neutral-200 bg-neutral-50/70 p-4 sm:p-6 lg:p-8"
-    >
+    <div className="mb-12 rounded-3xl border border-neutral-200 bg-neutral-50/70 p-4 sm:p-6 lg:p-8">
       {/* Map Header Copy */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 mb-6 border-b border-neutral-200/80">
         <div>
@@ -418,6 +409,6 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
           </AnimatePresence>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
