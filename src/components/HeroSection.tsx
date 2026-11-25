@@ -138,16 +138,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
 
-              <motion.button
-                type="button"
-                onClick={() => onOpenContact('Proyector Mensual (Solicitud de Capacidad)')}
+              <motion.a
+                href="#proyector"
+                onClick={(e) => {
+                  const target = document.getElementById('proyector');
+                  if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
                 whileHover={secondaryButtonHover}
                 whileTap={secondaryButtonTap}
                 className={`inline-flex items-center gap-2 px-5 py-3.5 text-sm font-semibold text-neutral-800 hover:text-neutral-950 bg-neutral-100/90 border border-neutral-200 hover:border-[#1B5E20] rounded-lg ${BUTTON_TRANSITION_CLASS} whitespace-nowrap cursor-pointer`}
               >
                 <Calculator className="w-4 h-4 text-[#1B5E20]" />
                 <span>Abrir Proyector Mensual</span>
-              </motion.button>
+              </motion.a>
             </motion.div>
 
             {/* Compact Trust Matrix */}

@@ -6,6 +6,7 @@ import { HeroSection } from './components/HeroSection';
 import { StatsSection } from './components/StatsSection';
 import { VirtuousCircleSection } from './components/VirtuousCircleSection';
 import { FacilitiesSection } from './components/FacilitiesSection';
+import { ProyectorSection } from './components/ProyectorSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 
@@ -32,7 +33,7 @@ export default function App() {
         {/* Top Bar Navigation */}
         <Navbar onOpenContact={handleOpenContact} />
 
-        {/* Main Executive Sections (Historia completely removed per Fase A) */}
+        {/* Main Executive Sections */}
         <main className="flex-1">
           {/* Hero */}
           <HeroSection onOpenContact={handleOpenContact} introReady={!showSplash} />
@@ -46,7 +47,10 @@ export default function App() {
           {/* 03. Cobertura y Sedes + 04. Respaldo Operativo */}
           <FacilitiesSection onOpenContact={handleOpenContact} />
 
-          {/* 05. Contacto Ejecutivo */}
+          {/* 05. Proyector Mensual de Capacidad */}
+          <ProyectorSection />
+
+          {/* 06. Contacto Ejecutivo */}
           <ContactSection selectedSource={contactSource} />
         </main>
 

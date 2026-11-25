@@ -88,7 +88,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
         <div className="max-w-2xl mb-12">
           <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2.5 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
-            <span>05. Contacto Ejecutivo · Capacidad 3PL</span>
+            <span>06. Contacto Ejecutivo · Capacidad 3PL</span>
           </div>
 
           <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 mb-3 text-balance">

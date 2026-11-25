@@ -32,7 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
     { label: 'Diagnóstico 3PL', href: '#diagnostico-3pl' },
     { label: 'Cobertura y Sedes', href: '#cobertura-sedes' },
     { label: 'Respaldo Operativo', href: '#respaldo-operativo' },
-    { label: 'Proyector Mensual', href: '#contacto', source: 'Proyector Mensual' },
+    { label: 'Proyector Mensual', href: '#proyector' },
     { label: 'Contacto Ejecutivo', href: '#contacto', source: 'Menú Contacto Ejecutivo' },
   ];
 

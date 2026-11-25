@@ -280,3 +280,45 @@ export const FLEET_DETAILS: FleetSpec[] = [
     ],
   },
 ];
+
+export interface ProyectorSedeOption {
+  id: string;
+  label: string;
+  paletasNominal: number;
+  nota: string;
+}
+
+// Constantes editables del Proyector Mensual de Capacidad (Fase C)
+// - PALETAS_POR_TON: estimación consumo masivo; ajustable cuando el cliente dé factor real.
+// - Reparto proporcional sobre el total validado de 1.200 paletas (sin desglose oficial por sede).
+export const PROYECTOR_CONFIG = {
+  otifObjetivoTexto: '99,5% OTIF (referencia de red)',
+  leadTimeRefTexto: '0,70 días (promedio de red)',
+  paletasTotalesRed: 1200,
+  m2TotalesRed: 3200,
+  paletasPorTon: 1.25, // Estimación consumo masivo; ajustable cuando el cliente dé factor real
+  tonMin: 5,
+  tonMax: 400,
+  tonStep: 5,
+  tonDefault: 40,
+  sedes: [
+    {
+      id: 'valle-pascua',
+      label: 'Valle de la Pascua (Guárico)',
+      paletasNominal: 528, // Centro matriz (reparto proporcional al total de 1.200 paletas)
+      nota: 'Centro matriz · Guárico',
+    },
+    {
+      id: 'barcelona-plc',
+      label: 'Puerto La Cruz / Barcelona (Anzoátegui)',
+      paletasNominal: 480, // Nodo costero oriente (reparto proporcional al total de 1.200 paletas)
+      nota: 'Nodo costero · Anzoátegui y Sucre',
+    },
+    {
+      id: 'ciudad-bolivar',
+      label: 'Ciudad Bolívar (Bolívar)',
+      paletasNominal: 192, // Nodo sur (reparto proporcional al total de 1.200 paletas)
+      nota: 'Nodo sur · Bolívar',
+    },
+  ] as ProyectorSedeOption[],
+};
