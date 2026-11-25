@@ -9,26 +9,11 @@ export interface MetricItem {
   trend: string;
 }
 
-export interface TimelineMilestone {
-  year: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  achievement: string;
-  category: 'Origen' | 'Institucional' | 'Infraestructura' | 'Alianzas' | 'Expansión';
-  partners?: string[];
-  tag?: string;
-  image: string;
-  imageLabel: string;
-  imageCaption: string;
-}
-
 export interface LogisticsHub {
   id: string;
   city: string;
   state: string;
-  area: string;
-  areaNumber: number;
+  zoneTag: string;
   role: string;
   description: string;
   coverage: string[];

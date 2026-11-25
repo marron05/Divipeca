@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { LOGISTICS_HUBS, FLEET_DETAILS, IMAGES } from '../data/divipecaData';
-import { MapPin, Warehouse, Truck, CheckCircle2 } from 'lucide-react';
+import { LOGISTICS_HUBS, FLEET_DETAILS, IMAGES, COMPANY_INFO } from '../data/divipecaData';
+import { MapPin, Warehouse, Truck, CheckCircle2, ArrowRight, MessageCircle } from 'lucide-react';
 import {
   EASE_PREMIUM,
   DUR_MED,
   BUTTON_TRANSITION_CLASS,
   primaryButtonHover,
   primaryButtonTap,
+  secondaryButtonHover,
+  secondaryButtonTap,
 } from '../utils/motion';
 import { CoverageMap } from './CoverageMap';
 
@@ -83,7 +85,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
                         isSelected ? 'text-white' : 'text-neutral-950'
                       }`}
                     >
-                      {hub.area}
+                      {hub.zoneTag}
                     </span>
                   </div>
                   <div className="text-base sm:text-lg font-bold tracking-tight">
@@ -129,10 +131,10 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
                 <div className="absolute bottom-4 left-4 right-4 p-4 bg-white/95 backdrop-blur-md rounded-xl border border-white/60 text-xs flex items-center justify-between">
                   <div>
                     <span className="text-[10px] uppercase font-bold text-neutral-400 block tracking-wider">
-                      Capacidad Activa
+                      Red Propia Integrada
                     </span>
                     <span className="text-sm font-bold text-neutral-900 font-mono">
-                      {activeHub.area} techados
+                      3.200 m² · +1.200 paletas
                     </span>
                   </div>
                   <div>
@@ -225,18 +227,44 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
 
         {/* Dedicated Operational Backing & Fleet Section */}
         <div id="respaldo-operativo" className="pt-10 border-t border-neutral-200/80 scroll-mt-24">
-          <div className="max-w-2xl mb-8">
-            <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
-              <Truck className="w-3.5 h-3.5" />
-              <span>04. Respaldo Operativo · Flota Propia y Sanidad</span>
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
+            <div className="max-w-2xl">
+              <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
+                <Truck className="w-3.5 h-3.5" />
+                <span>04. Respaldo Operativo · Flota Propia y Sanidad</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-neutral-950">
+                Flota propia de 5 a 12 Toneladas para consumo masivo y alimentos.
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 mt-1.5 font-normal leading-relaxed">
+                Unidades NPR, Encava ET-5 y JAC Búfalo con monitoreo en ruta, operación continua desde 1990 y protocolos de sanidad vigentes en Guárico, Anzoátegui, Sucre y Bolívar.
+              </p>
             </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-neutral-950">
-              Flota propia de 5 a 12 Toneladas y protocolos de sanidad vigentes.
-            </h3>
-            <p className="text-xs sm:text-sm text-neutral-600 mt-1.5 font-normal leading-relaxed">
-              Unidades dedicadas con mantenimiento preventivo, GPS en ruta y estrictos protocolos BPM para alimentos y consumo masivo.
-            </p>
+
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+              <motion.button
+                type="button"
+                onClick={() => onOpenContact('Respaldo Operativo - Flota Propia')}
+                whileHover={primaryButtonHover}
+                whileTap={primaryButtonTap}
+                className={`inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
+              >
+                <span>Solicitar Evaluación Logística</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </motion.button>
+              <motion.a
+                href={COMPANY_INFO.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={secondaryButtonHover}
+                whileTap={secondaryButtonTap}
+                className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-semibold text-neutral-800 hover:text-neutral-950 bg-neutral-50 border border-neutral-200 hover:border-[#1B5E20] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-[#1B5E20]" />
+                <span>WhatsApp</span>
+              </motion.a>
+            </div>
           </div>
 
           {/* Real Fleet Photography (Primary Lineup + JAC Búfalo Close-up, zero warehouse photos) */}

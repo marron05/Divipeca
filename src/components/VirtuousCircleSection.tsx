@@ -186,11 +186,11 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
             </div>
 
             <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 mb-3 text-balance">
-              Qué cambia con DIVIPECA
+              Diagnóstico 3PL: de cuellos de botella a continuidad comercial
             </h2>
 
             <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
-              Menos faltantes y reclamos. Más entregas a tiempo y recompra.
+              Protegemos sus ventas y participación de mercado conectando 3 centros propios (3.200 m² · +1.200 paletas), lead time de 0,70 días y 99,5% OTIF en Guárico, Anzoátegui, Sucre y Bolívar.
             </p>
           </div>
 

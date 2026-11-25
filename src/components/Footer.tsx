@@ -64,7 +64,7 @@ export const Footer: React.FC = () => {
                     <span>
                       {hub.city} ({hub.state})
                     </span>
-                    <span className="font-mono text-emerald-400">{hub.area}</span>
+                    <span className="font-mono text-emerald-400">{hub.zoneTag}</span>
                   </div>
                   <div className="text-[11px] text-neutral-500">{hub.role}</div>
                 </div>

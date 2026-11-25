@@ -250,7 +250,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
                         className="absolute top-0 left-0 -translate-x-1/2 flex flex-col items-center"
                       >
                         <span className="whitespace-nowrap text-[11px] font-bold text-white bg-[#1B5E20] border border-emerald-400/50 px-2.5 py-0.5 rounded-md font-mono tabular-nums">
-                          {LEAD_TIME_DATA.displayValue} · {LEAD_TIME_DATA.recentLabel}
+                          {LEAD_TIME_DATA.displayWithUnit} · {LEAD_TIME_DATA.label}
                         </span>
                         <span className="w-0.5 h-2.5 bg-emerald-400 mt-0.5" />
                       </motion.div>
@@ -522,11 +522,11 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
               <div className="lg:col-span-3 flex flex-col justify-center bg-neutral-950/90 p-4 rounded-xl border border-neutral-800/90">
                 <div className="text-[11px] font-semibold text-neutral-200 mb-1 flex items-center gap-1.5">
                   <Shield className="w-3.5 h-3.5 text-emerald-400" />
-                  Garantía Operativa DIVIPECA
+                  Respaldo Operativo DIVIPECA
                 </div>
                 <p className="text-[11px] text-neutral-400 leading-relaxed font-normal">
-                  Cero tolerancia a roturas y control de mermas menor al 0.02%. Política de
-                  reposición inmediata en caso de incidencia.
+                  Despacho auditado desde 3 centros propios (3.200 m² y +1.200 paletas) con
+                  protocolos de sanidad y trazabilidad por lote.
                 </p>
               </div>
             </motion.div>

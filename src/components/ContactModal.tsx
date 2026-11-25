@@ -169,7 +169,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                   <input
                     type="tel"
                     required
-                    placeholder="+58 414 1234567"
+                    placeholder="+58 416-5480517"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/40 focus:border-[#1B5E20]"
@@ -203,10 +203,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                     onChange={(e) => setFormData({ ...formData, monthlyVolume: e.target.value })}
                     className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/40 focus:border-[#1B5E20] bg-white"
                   >
-                    <option value="< 50 Tn/mes">Menos de 50 Tn/mes</option>
-                    <option value="50 - 150 Tn/mes">50 a 150 Tn/mes</option>
-                    <option value="150 - 400 Tn/mes">150 a 400 Tn/mes</option>
-                    <option value="+ 400 Tn/mes">+ 400 Tn/mes (Escala Industrial)</option>
+                    <option value="< 50 Tn/mes">Menos de 50 Ton/Mes</option>
+                    <option value="50 - 150 Tn/mes">50 a 150 Ton/Mes</option>
+                    <option value="150 - 550 Tn/mes">150 a 550 Ton/Mes</option>
+                    <option value="+ 550 Tn/mes">+550 Ton/Mes (Escala Regional)</option>
                   </select>
                 </div>
               </div>
