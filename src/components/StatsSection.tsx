@@ -111,12 +111,13 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
   const scaleMax = 1.25;
   const benchmarkPercent = (1.0 / scaleMax) * 100; // 80%
 
-  const whatsappUrl = `https://wa.me/${COMPANY_INFO.whatsappNumber}?text=${encodeURIComponent(
-    'Hola DIVIPECA, me interesa conocer cómo operan con Lead time 0,70 (<24h) y 99,8% OTIF.'
-  )}`;
+  const whatsappUrl = COMPANY_INFO.whatsappUrl;
 
   return (
-    <section id="indicadores" className="pt-16 pb-20 bg-neutral-950 text-white relative">
+    <section
+      id="trayectoria-kpis"
+      className="pt-16 pb-20 bg-neutral-950 text-white relative scroll-mt-20"
+    >
       {/* Background Subtle Gradient & Grid Texture clipped safely in background wrapper */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(27,94,32,0.18),rgba(255,255,255,0))]" />
@@ -135,7 +136,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
           <div>
             <div className="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <span>01. Capacidad, Lead Time y Desempeño Operacional</span>
+              <span>01. Trayectoria y KPIs · Desde 1990</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white text-balance">
               Cifras consolidadas que respaldan cada despacho.
@@ -143,7 +144,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
           </div>
           <p className="text-sm text-neutral-400 max-w-md font-normal leading-relaxed">
             Medición continua bajo estándares FMCG. Indicadores auditados con trazabilidad
-            por estiba, guía de despacho y punto de venta en los 4 estados.
+            por paleta, guía de despacho y punto de venta en los 4 estados.
           </p>
         </motion.div>
 
@@ -171,15 +172,20 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
 
                 {/* A) Big Animated Number (1,00 -> 0,70 exact) */}
                 <div className="flex flex-wrap items-baseline gap-4 mb-3">
-                  <div className="text-5xl sm:text-6xl font-black tracking-tight text-white font-mono tabular-nums leading-none">
-                    {formattedLeadDisplay}
+                  <div className="flex items-baseline gap-2">
+                    <div className="text-5xl sm:text-6xl font-black tracking-tight text-white font-mono tabular-nums leading-none">
+                      {formattedLeadDisplay}
+                    </div>
+                    <span className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                      días
+                    </span>
                   </div>
                   <div className="space-y-0.5">
                     <div className="text-sm font-bold text-emerald-400">
                       {LEAD_TIME_DATA.message}
                     </div>
                     <div className="text-xs text-neutral-400">
-                      {LEAD_TIME_DATA.scaleLabel} · Referencia promedio reciente
+                      {LEAD_TIME_DATA.scaleLabel} · Referencia promedio real
                     </div>
                   </div>
                 </div>
@@ -366,12 +372,12 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
               <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-neutral-800/80">
                 <motion.button
                   type="button"
-                  onClick={() => onOpenContact('Indicadores - Lead Time 0,70')}
+                  onClick={() => onOpenContact('Trayectoria y KPIs - Lead Time 0,70 días')}
                   whileHover={primaryButtonHover}
                   whileTap={primaryButtonTap}
                   className={`inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                 >
-                  <span>Solicitar alianza logística</span>
+                  <span>Solicitar Evaluación Logística</span>
                   <ArrowRight className="w-4 h-4" />
                 </motion.button>
 
@@ -582,7 +588,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
         </div>
       </div>
 
-      {/* Gentle Architectural Transition Gradient toward the light Historia section */}
+      {/* Gentle Architectural Transition Gradient toward the light Diagnóstico 3PL section */}
       <div className="w-full h-10 mt-14 bg-gradient-to-b from-neutral-950 to-neutral-900/40 pointer-events-none" />
     </section>
   );

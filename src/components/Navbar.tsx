@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
-import { ArrowUpRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ArrowUpRight, Menu, X, MessageCircle } from 'lucide-react';
 import { DivipecaLogo } from './DivipecaLogo';
+import { COMPANY_INFO } from '../data/divipecaData';
 import {
+  EASE_PREMIUM,
+  DUR_FAST,
   BUTTON_TRANSITION_CLASS,
   primaryButtonHover,
   primaryButtonTap,
@@ -14,6 +17,7 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,55 +28,60 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
   }, []);
 
   const navLinks = [
-    { label: 'Inicio', href: '#inicio' },
-    { label: 'Indicadores', href: '#indicadores' },
-    { label: 'Historia', href: '#historia' },
-    { label: 'Sedes e Infraestructura', href: '#sedes' },
-    { label: 'Flota', href: '#flota' },
-    { label: 'Contacto', href: '#contacto' },
+    { label: 'Trayectoria y KPIs', href: '#trayectoria-kpis' },
+    { label: 'Diagnóstico 3PL', href: '#diagnostico-3pl' },
+    { label: 'Cobertura y Sedes', href: '#cobertura-sedes' },
+    { label: 'Respaldo Operativo', href: '#respaldo-operativo' },
+    { label: 'Proyector Mensual', href: '#contacto', source: 'Proyector Mensual' },
+    { label: 'Contacto Ejecutivo', href: '#contacto', source: 'Menú Contacto Ejecutivo' },
   ];
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+    source?: string
+  ) => {
+    setMobileMenuOpen(false);
+    if (href === '#contacto') {
+      e.preventDefault();
+      onOpenContact(source || 'Menú');
+    }
+  };
 
   return (
     <header
       className={`sticky top-0 z-40 transition-[background-color,border-color,backdrop-filter] duration-200 ease-out ${
         scrolled
-          ? 'bg-white/88 backdrop-blur-md border-b border-neutral-200/80'
+          ? 'bg-white/92 backdrop-blur-md border-b border-neutral-200/85'
           : 'bg-white/98 backdrop-blur-xs border-b border-neutral-200'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-3 sm:gap-8 h-20 sm:h-24">
-          {/* Zone 1: Calm static brand lockup in authoritative black */}
+        <div className="flex items-center justify-between gap-3 h-20">
+          {/* Zone 1: Official uncropped DIVIPECA plaque + subtle text mark */}
           <a
             href="#inicio"
-            className="flex items-center gap-3 sm:gap-4 text-neutral-950 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20]/40 rounded-lg"
+            className="flex items-center gap-3 text-neutral-950 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20]/40 rounded-lg"
           >
-            <div className="w-15 h-15 sm:w-20 sm:h-20 rounded-full p-0.5 bg-white shadow-2xs border border-neutral-200/80 flex items-center justify-center shrink-0">
-              <DivipecaLogo className="w-full h-full" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl sm:text-[32px] font-black tracking-tight leading-none text-neutral-950">
+            <DivipecaLogo className="h-10 xl:h-12 w-auto" />
+            <div className="hidden 2xl:flex flex-col border-l border-neutral-200 pl-3">
+              <span className="text-xs font-extrabold tracking-tight text-neutral-950 leading-none">
                 DIVIPECA
               </span>
-              <div className="flex items-center gap-1.5 mt-1 sm:mt-1.5">
-                <span className="text-[11px] sm:text-xs font-bold tracking-tight text-[#1B5E20]">
-                  Desde 1990
-                </span>
-                <span className="text-neutral-300 text-xs" aria-hidden="true">·</span>
-                <span className="text-[10px] tracking-[0.11em] text-neutral-400 uppercase font-medium">
-                  Operador Logístico 3PL
-                </span>
-              </div>
+              <span className="text-[10px] font-medium text-neutral-500 tracking-wide uppercase mt-1">
+                Operador Logístico 3PL
+              </span>
             </div>
           </a>
 
-          {/* Zone 2: Single-line navigation links with calm opacity & subtle underline (no scale) */}
-          <nav className="hidden md:flex items-center gap-7 text-sm font-medium">
+          {/* Zone 2: Desktop Navigation (6 Gemini items) */}
+          <nav className="hidden lg:flex items-center gap-3.5 xl:gap-5 2xl:gap-6 text-[12px] xl:text-[13px] font-medium">
             {navLinks.map((link) => (
               <a
-                key={link.href}
+                key={link.label}
                 href={link.href}
-                className="relative py-1 text-neutral-900/70 hover:text-neutral-950 transition-[color,opacity] duration-200 whitespace-nowrap shrink-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20]/40 rounded-sm"
+                onClick={(e) => handleNavClick(e, link.href, link.source)}
+                className="relative py-1 text-neutral-900/75 hover:text-neutral-950 transition-[color,opacity] duration-200 whitespace-nowrap shrink-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20]/40 rounded-sm"
               >
                 <span>{link.label}</span>
                 <span className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[#1B5E20] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-200 ease-out rounded-full" />
@@ -80,22 +89,84 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact }) => {
             ))}
           </nav>
 
-          {/* Zone 3: 1 Primary Action with global y:-2 hover & y:0 tap */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* Zone 3: Executive CTA + Mobile Hamburger */}
+          <div className="flex items-center gap-2 shrink-0">
             <motion.button
               type="button"
-              onClick={() => onOpenContact('Navbar')}
+              onClick={() => onOpenContact('Header - Evaluación Logística')}
               whileHover={primaryButtonHover}
               whileTap={primaryButtonTap}
-              className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20]/50`}
+              className={`inline-flex items-center gap-1.5 px-3 py-2 xl:px-4 xl:py-2.5 text-[11px] xl:text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20]/50`}
             >
-              <span className="hidden sm:inline">Solicitar Capacidad 3PL</span>
-              <span className="sm:hidden">Solicitar 3PL</span>
+              <span className="hidden sm:inline">Solicitar Evaluación Logística</span>
+              <span className="sm:hidden">Evaluación 3PL</span>
               <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
             </motion.button>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú de navegación'}
+              aria-expanded={mobileMenuOpen}
+              className="lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg border border-neutral-200 text-neutral-800 hover:bg-neutral-100 transition-colors cursor-pointer"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Drawer Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: DUR_FAST, ease: EASE_PREMIUM }}
+            className="lg:hidden border-t border-neutral-200 bg-white px-4 py-4 shadow-lg"
+          >
+            <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 mb-2 px-2">
+              DIVIPECA · Operador Logístico 3PL
+            </div>
+            <nav className="flex flex-col space-y-1">
+              {navLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href, link.source)}
+                  className="px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-800 hover:bg-neutral-100 hover:text-[#1B5E20] transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+            <div className="mt-4 pt-3 border-t border-neutral-100 flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenContact('Menú Mobile - Evaluación Logística');
+                }}
+                className="w-full py-2.5 px-4 text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Solicitar Evaluación Logística</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </button>
+              <a
+                href={COMPANY_INFO.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full py-2.5 px-4 text-xs font-semibold text-neutral-800 bg-neutral-50 border border-neutral-200 rounded-lg flex items-center justify-center gap-2"
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-[#1B5E20]" />
+                <span>WhatsApp {COMPANY_INFO.whatsappDisplay}</span>
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

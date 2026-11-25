@@ -1,4 +1,4 @@
-import { MetricItem, TimelineMilestone, LogisticsHub, FleetSpec } from '../types';
+import { MetricItem, LogisticsHub, FleetSpec } from '../types';
 
 export const COMPANY_INFO = {
   name: 'DIVIPECA',
@@ -7,21 +7,25 @@ export const COMPANY_INFO = {
   foundedOrigin: 1982,
   foundedFormal: 1990,
   traditionLabel: 'Desde 1990',
-  mainClaim: 'Tu logística puntual, tus ventas en crecimiento.',
+  experienceBadge: 'Trayectoria ininterrumpida desde 1990 · +36 años de experiencia',
+  mainClaim:
+    'Eliminamos cuellos de botella logísticos para proteger sus ventas y participación de mercado.',
   description:
-    'Operador logístico 3PL integral y distribución exclusiva con trayectoria desde 1990 y orígenes en 1982. Especialistas en consumo masivo y alimentos secos en los estados Anzoátegui, Bolívar, Guárico y Sucre.',
+    'Operador logístico 3PL integral y distribución exclusiva desde 1990 respaldando fabricantes, importadores y marcas en Guárico, Anzoátegui, Sucre y Bolívar con 3.200 m², +1.200 posiciones de paleta, flota propia y protocolos de sanidad.',
   primaryColor: '#1B5E20',
   accentColor: '#2E7D32',
-  phone: '+58 (238) 779-1120',
-  whatsappNumber: '584140000000',
-  whatsappDisplay: '+58 (414) 000-0000',
-  email: 'operaciones@divipeca.com.ve',
+  phone: '+58 416-5480517',
+  whatsappNumber: '584165480517',
+  whatsappDisplay: '+58 416-5480517',
+  whatsappUrl:
+    'https://wa.me/584165480517?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20capacidad%203PL%20con%20DIVIPECA',
+  email: 'Info@divipeca.com.ve',
   addressMatrix:
     'Zona Industrial La Pascua, Av. Principal con Calle Los Cedros, Valle de la Pascua, Edo. Guárico, Venezuela.',
 };
 
 export const IMAGES = {
-  logo: '/divipeca_logo.svg',
+  logoPlaque: '/assets/aistudio/Divipeca_fondo_blanco_15da3550.png',
   heroFleet: '/assets/aistudio/Fachada_09f64ac1.jpeg',
   warehouseValle: '/assets/aistudio/Valle_de_la_Pascua_perfil_fe6fcbb0.jpeg',
   hubBarcelona: '/assets/aistudio/Anzoategui_perfil_58bde3d1.jpeg',
@@ -42,15 +46,16 @@ export interface LeadTimeStep {
 export const LEAD_TIME_DATA = {
   value: 0.7,
   displayValue: '0,70',
-  label: 'Lead time',
+  displayWithUnit: '0,70 días',
+  label: 'Lead time promedio',
   scaleLabel: '1,0 = 24 horas',
   benchmarkLabel: 'Óptimo 24 h',
-  recentLabel: 'DIVIPECA (promedio reciente)',
+  recentLabel: 'DIVIPECA (promedio real)',
   definition:
-    'Tiempo promedio desde que se recibe la orden/factura hasta la entrega en el punto de venta.',
+    'Tiempo promedio desde que se recibe la orden/factura hasta la entrega en el punto de venta (0,70 días).',
   message: 'Operamos de forma consistente por debajo de 24 horas.',
   microcopy:
-    'Mientras el indicador se mantiene bajo 1, la mayoría de las entregas ocurren en menos de 24 horas.',
+    'Mientras el indicador se mantiene bajo 1,0, las entregas ocurren en menos de 24 horas (0,70 días promedio).',
   steps: [
     {
       step: 1,
@@ -61,24 +66,24 @@ export const LEAD_TIME_DATA = {
     },
     {
       step: 2,
-      title: 'Preparación en centro (picking / consolidación)',
+      title: 'Preparación en centro (picking / estiba)',
       detail:
-        'Picking por lote, verificación de unidades y estibado en nuestros 3 centros propios para despacho sin faltantes.',
+        'Picking por lote, verificación de unidades y estibado sobre +1.200 paletas en 3.200 m² distribuidos en 3 centros propios.',
       segmentShare: 'Fase 2 · Almacén',
     },
     {
       step: 3,
       title: 'Despacho con flota propia',
       detail:
-        'Salida programada desde cada centro hacia su zona de cobertura en unidades propias de 5T a 12T monitoreadas por GPS.',
-      segmentShare: 'Fase 3 · Ruta local',
+        'Salida programada desde cada centro hacia Guárico, Anzoátegui, Sucre y Bolívar en unidades propias de 5T a 12T con GPS.',
+      segmentShare: 'Fase 3 · Ruta regional',
     },
     {
       step: 4,
       title: 'Entrega en punto de venta',
       detail:
-        'Recepción conforme en anaquel o depósito del cliente por debajo de las 24 horas, completando un flujo 99,8% OTIF.',
-      segmentShare: 'Fase 4 · Cierre < 24 h',
+        'Recepción conforme en anaquel o depósito en 0,70 días promedio, alcanzando un cumplimiento auditado de 99,5% OTIF.',
+      segmentShare: 'Fase 4 · Cierre 0,70 días',
     },
   ] as LeadTimeStep[],
 };
@@ -86,173 +91,69 @@ export const LEAD_TIME_DATA = {
 export const TERMINOLOGY_CLARIFIERS = [
   {
     term: '3PL',
-    summary: 'Operamos almacenamiento, preparación y distribución por usted.',
+    summary: 'Operamos almacenamiento, estiba en paletas, preparación y distribución por usted.',
   },
   {
-    term: 'OTIF',
-    summary: 'Pedidos entregados a tiempo y completos.',
+    term: 'OTIF (99,5%)',
+    summary: 'Pedidos entregados a tiempo y completos en los 4 estados de cobertura.',
   },
   {
-    term: 'Lead time',
-    summary: 'De la factura a la entrega en el punto de venta.',
+    term: 'Lead time (0,70 días)',
+    summary: 'Tiempo promedio desde la factura hasta la entrega en el punto de venta.',
   },
 ];
 
 export const KEY_METRICS: MetricItem[] = [
   {
-    id: 'tons',
-    value: '+400',
-    unit: 'Tn / mes',
-    label: 'Toneladas despachadas',
-    detail:
-      'Carga de alimentos y consumo masivo movilizada mensualmente con trazabilidad por lote.',
-    benchmark: 'Crecimiento sostenido desde 2024',
-    trend: '+18% vs período anterior',
-  },
-  {
     id: 'otif',
-    value: '99,8%',
+    value: '99,5%',
     unit: 'OTIF',
     subtitle: 'On Time In Full — a tiempo y completo',
-    label: 'Nivel de servicio y puntualidad',
+    label: 'Cumplimiento de entrega',
     detail:
-      'Entregas a tiempo y completas (On Time In Full — a tiempo y completo) en todos los canales mayoristas e independientes.',
-    benchmark: 'Estándar multinacional auditado',
-    trend: 'Consistente en los 4 estados',
+      'Entregas a tiempo y completas (On Time In Full) en cadenas regionales, supermercados y canales mayoristas.',
+    benchmark: 'Estándar auditado en ruta',
+    trend: 'Guárico, Anzoátegui, Sucre y Bolívar',
+  },
+  {
+    id: 'tons',
+    value: '+550',
+    unit: 'Ton / Mes',
+    label: 'Volumen movilizado',
+    detail:
+      'Carga de alimentos y consumo masivo despachada mensualmente con trazabilidad por lote y guía.',
+    benchmark: 'Operación continua desde 1990',
+    trend: 'Flota propia dedicada',
   },
   {
     id: 'clients',
-    value: '+820',
+    value: '+850',
     unit: 'Clientes',
-    label: 'Puntos de venta activos',
+    label: 'Clientes atendidos',
     detail:
-      'Supermercados, cadenas regionales, abastos mayoristas y distribuidores atendidos con frecuencia semanal.',
-    benchmark: 'Cobertura directa certificada',
-    trend: 'Guárico, Anzoátegui, Bolívar y Sucre',
-  },
-  {
-    id: 'boxes',
-    value: '+29.000',
-    unit: 'Cajas / mes',
-    label: 'Cajas rotadas en almacén',
-    detail:
-      'Flujo continuo de picking, cross-docking y paletizado bajo normas BPM estrictas.',
-    benchmark: 'Capacidad de respuesta en <24h',
-    trend: 'Alta rotación de secos',
+      'Supermercados, cadenas regionales, abastos mayoristas y puntos de venta atendidos con frecuencia semanal.',
+    benchmark: 'Cobertura directa en 4 estados',
+    trend: 'Guárico, Anzoátegui, Sucre y Bolívar',
   },
   {
     id: 'storage',
-    value: '+3.700',
-    unit: 'm² techados',
-    label: 'Infraestructura de almacenamiento',
+    value: '3.200',
+    unit: 'm² propios',
+    label: 'Infraestructura total',
     detail:
-      'Capacidad consolidada en 3 centros de distribución estratégicos con control de temperatura y seguridad 24/7.',
-    benchmark: '100% de propiedad operativa',
-    trend: '3 sedes dedicadas por región',
-  },
-];
-
-export const TIMELINE_MILESTONES: TimelineMilestone[] = [
-  {
-    year: '1982',
-    title: 'El origen: Una sola camioneta y una promesa',
-    subtitle: 'Ruta Caracas — Valle de la Pascua',
-    description:
-      'El padre fundador inicia las operaciones de transporte terrestre con una sola camioneta, trasladando mortadela Giacomello y Pastas Capri desde la capital hasta el corazón de los Llanos en Valle de la Pascua.',
-    achievement:
-      'Primer flete regular de alimentos y génesis del modelo de distribución confiable que dio pie a DIVIPECA.',
-    category: 'Origen',
-    partners: ['Pastas Capri', 'Mortadela Giacomello'],
-    image: IMAGES.truckCloseup,
-    imageLabel: 'Valle de la Pascua, 1982 · Origen',
-    imageCaption:
-      'Continuidad de flota propia: del transporte pionero a las unidades pesadas identificadas con emblema DIVIPECA.',
+      'Capacidad consolidada en 3 centros logísticos propios estratégicamente ubicados y equipados con protocolos de sanidad.',
+    benchmark: '3 centros propios',
+    trend: 'Valle de la Pascua · Barcelona · Bolívar',
   },
   {
-    year: '1980s',
-    title: 'Distribución exclusiva de Pastas Capri',
-    subtitle: 'Consolidación en todo el Estado Guárico',
-    description:
-      'Se concreta el acuerdo de distribución exclusiva de Pastas Capri para todo el territorio de Guárico. Es el inicio de una alianza estratégica ininterrumpida que supera los 40 años de vigencia comercial.',
-    achievement: 'Red pionera de cobertura mayorista en los llanos centrales.',
-    category: 'Alianzas',
-    partners: ['Pastas Capri (+40 años)'],
-    image: IMAGES.warehouseRacks,
-    imageLabel: 'Años 80 · Guárico',
-    imageCaption:
-      'Consolidación comercial en los llanos centrales con entregas semanales directas al canal mayorista.',
-  },
-  {
-    year: 'Desde 1990',
-    title: 'Fundación formal y relevo generacional',
-    subtitle: 'Nace DIVIPECA: “Vito y Peppe”',
-    description:
-      'Vito Binaggia y Giuseppe Binaggia asumen la conducción ejecutiva del negocio familiar. En 1990 se constituye formalmente DIVIPECA (Distribuidora Vito y Peppe, C.A.), institucionalizando la estructura corporativa que perdura hasta hoy.',
-    achievement:
-      'Formalización empresarial con RIF J-060038278 y continuidad operativa desde 1990.',
-    category: 'Institucional',
-    image: IMAGES.warehouseValle,
-    imageLabel: 'Desde 1990 · Consolidación Institucional',
-    imageCaption:
-      'Base operativa matriz en Valle de la Pascua, pilar del crecimiento estructurado desde 1990.',
-  },
-  {
-    year: '1990 — 2000',
-    title: 'Infraestructura propia y flota vehicular',
-    subtitle: 'Independencia logística y solidez patrimonial',
-    description:
-      'Adquisición y adecuación del almacén principal en Valle de la Pascua. Se ejecuta el plan de adquisición de flota propia para garantizar puntualidad y autonomía operativa sin depender de terceros.',
-    achievement: 'Primer centro de acopio matriz con patio de maniobras y camiones propios.',
-    category: 'Infraestructura',
-    image: IMAGES.fleetLineup,
-    imageLabel: '1990 — 2000 · Almacén y Flota Propia',
-    imageCaption:
-      'Crecimiento de capacidad instalada y unidades propias en Valle de la Pascua, Estado Guárico.',
-  },
-  {
-    year: '2004 — 2005',
-    title: 'El salto al modelo 3PL dedicado',
-    subtitle: 'Alianza transformadora con Galletas Puig',
-    description:
-      'DIVIPECA propone e implementa un modelo de Operador Logístico Tercerizado (3PL) dedicado para Galletas Puig en la región central y oriental, optimizando inventarios, preparación y rotación en anaquel.',
-    achievement:
-      'El modelo 3PL de DIVIPECA se consolida como estándar de servicio para consumo masivo.',
-    category: 'Alianzas',
-    partners: ['Galletas Puig'],
-    image: IMAGES.forkliftOps,
-    imageLabel: '2004 — 2005 · Modelo 3PL & Alianzas',
-    imageCaption:
-      'Operación de almacén y preparación dedicada para marcas líderes de alimentos y consumo masivo.',
-  },
-  {
-    year: '2006 — 2023',
-    title: 'Expansión regional: Oriente y Estado Bolívar',
-    subtitle: 'Nuevas sedes en Ciudad Bolívar y Puerto La Cruz / Barcelona',
-    description:
-      'Se inauguran los centros logísticos de Ciudad Bolívar (Estado Bolívar) y Puerto La Cruz / Barcelona (Anzoátegui y Sucre). Se incorpora Café Fama de América y se amplía la cobertura regional.',
-    achievement:
-      'Cobertura integrada de 4 estados: Guárico, Anzoátegui, Bolívar y Sucre.',
-    category: 'Expansión',
-    partners: ['Fama de América', 'Galletas Puig'],
-    image: IMAGES.hubBolivar,
-    imageLabel: '2006 — 2023 · Expansión a 4 Estados',
-    imageCaption:
-      'Infraestructura propia en Ciudad Bolívar (Estado Bolívar) y eje costero de Anzoátegui y Sucre.',
-  },
-  {
-    year: '2024 — Hoy',
-    title: 'Escala industrial y Lead time bajo 24 horas',
-    subtitle: 'Alimentos Botalón y modernización operativa',
-    description:
-      'Incorporación al portafolio de Alimentos Botalón, superando las 400 toneladas despachadas al mes con 99,8% de efectividad OTIF y un Lead time promedio de 0,70 sobre 24 horas.',
-    achievement:
-      '+820 puntos de venta atendidos con precisión, continuidad desde 1990 y solidez patrimonial.',
-    category: 'Expansión',
-    partners: ['Alimentos Botalón', 'Galletas Puig', 'Pastas Capri'],
-    image: IMAGES.heroFleet,
-    imageLabel: '2024 — Hoy · Operación Actual',
-    imageCaption:
-      'Flota activa y centros operando por debajo de 24 horas en los 4 estados de cobertura.',
+    id: 'pallets',
+    value: '+1.200',
+    unit: 'Paletas',
+    label: 'Capacidad de estiba',
+    detail:
+      'Más de 1.200 posiciones de paleta en racks selectivos y áreas de pre-despacho bajo normas BPM e inocuidad.',
+    benchmark: 'Control estricto BPM',
+    trend: 'Rotación ágil de inventario',
   },
 ];
 
@@ -261,11 +162,11 @@ export const LOGISTICS_HUBS: LogisticsHub[] = [
     id: 'valle-pascua',
     city: 'Valle de la Pascua',
     state: 'Estado Guárico',
-    area: '1.400 m²',
-    areaNumber: 1400,
+    area: '1.200 m²',
+    areaNumber: 1200,
     role: 'Centro Matriz de Operaciones y Consolidación',
     description:
-      'El corazón operativo e histórico de DIVIPECA desde 1990. Almacén de alta capacidad para recepción de planta, acopio central, paletizado y despacho directo hacia los Llanos Centrales en todo el Estado Guárico.',
+      'El corazón operativo e histórico de DIVIPECA desde 1990. Almacén de alta capacidad para recepción de planta, acopio central, estiba en paletas y despacho directo hacia todo el Estado Guárico.',
     coverage: [
       'Valle de la Pascua',
       'San Juan de los Morros',
@@ -275,10 +176,10 @@ export const LOGISTICS_HUBS: LogisticsHub[] = [
       'Tucupido',
     ],
     features: [
-      'Almacenamiento techado con altura útil de 8.5 metros',
-      'Racks selectivos para +1.200 posiciones de estibas',
-      'Patio de maniobras y descarga simultánea para unidades de carga',
-      'Taller central de mantenimiento preventivo de flota',
+      'Almacenamiento techado con protocolo sanitario BPM vigente',
+      'Racks selectivos y áreas de pre-despacho señalizadas',
+      'Patio de maniobras y descarga simultánea para flota propia',
+      'Taller central de mantenimiento preventivo vehicular',
       'Seguridad física perimetral y circuito cerrado 24 horas',
     ],
     fleetStationed: '12 unidades asignadas',
@@ -289,11 +190,11 @@ export const LOGISTICS_HUBS: LogisticsHub[] = [
     id: 'barcelona-plc',
     city: 'Puerto La Cruz / Barcelona',
     state: 'Anzoátegui y Sucre',
-    area: '1.300 m²',
-    areaNumber: 1300,
+    area: '1.100 m²',
+    areaNumber: 1100,
     role: 'Centro Logístico Costero Oriente',
     description:
-      'Ubicación estratégica en el principal nodo industrial y comercial de Anzoátegui. Diseñado para rotación rápida, atención directa a cadenas de supermercados costeras y cobertura regular hacia Sucre.',
+      'Ubicación estratégica en el principal nodo industrial y comercial de Anzoátegui. Diseñado para rotación rápida, atención directa a cadenas costeras y cobertura regular hacia el Estado Sucre.',
     coverage: [
       'Barcelona',
       'Puerto La Cruz',
@@ -306,24 +207,24 @@ export const LOGISTICS_HUBS: LogisticsHub[] = [
     ],
     features: [
       'Andenes elevados para carga y descarga rápida',
-      'Módulos de picking intensivo para entregas menores a 24h',
+      'Módulos de picking intensivo para lead time de 0,70 días',
       'Cobertura directa hacia los estados Anzoátegui y Sucre',
-      'Control de humedad y ventilación para productos secos',
-      'Área dedicada de logística inversa y verificación de devoluciones',
+      'Control de humedad, ventilación y sanidad para secos',
+      'Área dedicada de logística inversa y verificación',
     ],
     fleetStationed: '10 unidades asignadas',
-    dispatchFrequency: 'Rutas fijas 3 veces por semana por zona',
+    dispatchFrequency: 'Rutas fijas semanales por zona',
     image: IMAGES.hubBarcelona,
   },
   {
     id: 'ciudad-bolivar',
     city: 'Ciudad Bolívar',
     state: 'Estado Bolívar',
-    area: '1.000 m²',
-    areaNumber: 1000,
+    area: '900 m²',
+    areaNumber: 900,
     role: 'Centro de Distribución Estado Bolívar',
     description:
-      'Sede propia ubicada en Ciudad Bolívar, Estado Bolívar. Garantiza almacenamiento seco y despacho local programado hacia los principales canales mayoristas y puntos de venta del Estado Bolívar con estricto cumplimiento horario.',
+      'Sede propia ubicada en Ciudad Bolívar, Estado Bolívar. Garantiza almacenamiento seco con mezzanine operativo y despacho local programado hacia los principales canales mayoristas del Estado Bolívar.',
     coverage: [
       'Ciudad Bolívar',
       'Upata',
@@ -332,10 +233,10 @@ export const LOGISTICS_HUBS: LogisticsHub[] = [
       'Canales del Estado Bolívar',
     ],
     features: [
-      'Bodega de almacenamiento seco con piso epóxico de alta resistencia',
-      'Rampas niveladoras mecánicas de alta durabilidad',
-      'Planta eléctrica de respaldo 100% autónoma',
-      'Sistema de trazabilidad por bulto y número de lote',
+      'Bodega de almacenamiento seco con mezzanine y control BPM',
+      'Rampas de carga y descarga para unidades dedicadas',
+      'Planta eléctrica de respaldo operativa',
+      'Sistema de trazabilidad por bulto, paleta y número de lote',
       'Flota local asignada para salidas directas en el Estado Bolívar',
     ],
     fleetStationed: '8 unidades asignadas',
@@ -346,7 +247,7 @@ export const LOGISTICS_HUBS: LogisticsHub[] = [
 
 export const FLEET_DETAILS: FleetSpec[] = [
   {
-    model: 'Chevrolet NPR Turbo Diésel',
+    model: 'Chevrolet NPR / Furgón Urbano',
     payloadCapacity: '5.0 a 6.5 Toneladas',
     category: 'Distribución Urbana & Suburbana',
     useCase:
@@ -354,15 +255,15 @@ export const FLEET_DETAILS: FleetSpec[] = [
     features: [
       'Furgones de aluminio termoaislados',
       'Monitoreo satelital GPS en tiempo real',
-      'Compensación de carga para cero mermas',
+      'Protocolos sanitarios y fumigación al día',
     ],
   },
   {
-    model: 'Encava Serie D',
+    model: 'Encava ET-5 / Serie Media',
     payloadCapacity: '7.5 a 8.5 Toneladas',
     category: 'Distribución Regional Media',
     useCase:
-      'Salidas desde cada centro hacia mayoristas medianos en sus zonas asignadas de cobertura.',
+      'Salidas desde cada centro hacia mayoristas medianos en Guárico, Anzoátegui, Sucre y Bolívar.',
     features: [
       'Chasis reforzado para carreteras troncales',
       'Sistema de amarre de carga con rieles logísticos',
@@ -377,15 +278,8 @@ export const FLEET_DETAILS: FleetSpec[] = [
       'Despacho de pedidos de alto tonelaje hacia cadenas y mayoristas dentro de cada zona regional.',
     features: [
       'Frenos de aire y control de estabilidad',
-      'Capacidad para 18 a 22 estibas estándar',
+      'Capacidad estibada de alto volumen',
       'Conductores senior certificados en ruta',
     ],
   },
-];
-
-export const CLIENT_PARTNERS = [
-  { name: 'Pastas Capri', relationship: 'Alianza exclusiva de distribución desde los años 80 (+40 años)' },
-  { name: 'Galletas Puig', relationship: 'Operación 3PL dedicada desde 2004 en oriente y centro' },
-  { name: 'Café Fama de América', relationship: 'Contrato de distribución regional desde 2006' },
-  { name: 'Alimentos Botalón', relationship: 'Incorporación estratégica 2024 para gran escala' },
 ];

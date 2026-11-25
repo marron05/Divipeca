@@ -39,18 +39,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
     }
   }, [selectedSource]);
 
-  const directWhatsappUrl = `https://wa.me/${COMPANY_INFO.whatsappNumber}?text=${encodeURIComponent(
-    `Hola DIVIPECA, nos interesa conversar sobre una operación de ${operationType}.${
-      selectedSource && selectedSource !== 'General' ? ` (Consulta desde: ${selectedSource})` : ''
-    }`
-  )}`;
+  const directWhatsappUrl = COMPANY_INFO.whatsappUrl;
 
   const directMailtoUrl = `mailto:${COMPANY_INFO.email}?subject=${encodeURIComponent(
-    `Solicitud de operación ${operationType} — DIVIPECA`
+    `Solicitud de evaluación logística ${operationType} — DIVIPECA`
   )}`;
 
   const filledSummaryText = [
-    `Hola DIVIPECA, solicito información sobre operación ${operationType}.`,
+    `Hola DIVIPECA, solicito evaluación logística y capacidad ${operationType}.`,
     `• Nombre: ${name}`,
     `• Empresa: ${company}`,
     `• Teléfono / WhatsApp: ${phone}`,
@@ -65,7 +61,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
   )}`;
 
   const submittedMailtoUrl = `mailto:${COMPANY_INFO.email}?subject=${encodeURIComponent(
-    `Solicitud ${operationType} — ${company || name}`
+    `Evaluación ${operationType} — ${company || name}`
   )}&body=${encodeURIComponent(filledSummaryText)}`;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -92,15 +88,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
         <div className="max-w-2xl mb-12">
           <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2.5 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
-            <span>Contacto Comercial y Operaciones</span>
+            <span>05. Contacto Ejecutivo · Capacidad 3PL</span>
           </div>
 
           <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 mb-3 text-balance">
-            Hablemos de su operación
+            Contacto Ejecutivo
           </h2>
 
           <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
-            Cuéntenos su necesidad de 3PL o distribución. Respondemos con una propuesta clara.
+            Cuéntenos su necesidad de almacenamiento en paletas, operación 3PL o distribución regional. Respondemos con una evaluación logística clara.
           </p>
         </div>
 
@@ -159,13 +155,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                 </div>
                 <div>
                   <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
-                    Teléfono / WhatsApp
+                    WhatsApp Ejecutivo
                   </div>
-                  <div className="text-sm font-semibold text-neutral-900 mt-0.5">
-                    {COMPANY_INFO.phone}
-                  </div>
+                  <a
+                    href={directWhatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-semibold text-neutral-900 hover:text-[#1B5E20] transition-colors mt-0.5 inline-block"
+                  >
+                    {COMPANY_INFO.whatsappDisplay}
+                  </a>
                   <div className="text-xs text-neutral-500">
-                    WhatsApp Comercial: {COMPANY_INFO.whatsappDisplay}
+                    Atención directa 3PL y rutas regionales
                   </div>
                 </div>
               </div>
@@ -270,10 +271,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                 <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-neutral-100">
                   <div>
                     <h3 className="text-lg font-bold text-neutral-950">
-                      Solicitud rápida de propuesta
+                      Solicitud de evaluación logística / capacidad 3PL
                     </h3>
                     <p className="text-xs text-neutral-500 mt-0.5">
-                      Complete los datos clave y le contactaremos con disponibilidad y esquema de ruta.
+                      Complete los datos clave para validar posiciones de paleta, volumen mensual y frecuencias de entrega.
                     </p>
                   </div>
                   {selectedSource && selectedSource !== 'General' && (
@@ -287,13 +288,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="contact-name" className="text-xs font-semibold text-neutral-700 block mb-1.5">
-                      Nombre *
+                      Nombre y cargo *
                     </label>
                     <input
                       id="contact-name"
                       type="text"
                       required
-                      placeholder="Ej. Carlos Mendoza"
+                      placeholder="Ej. Carlos Mendoza — Gerente de Operaciones"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/30 focus:border-[#1B5E20] transition-[box-shadow,border-color] duration-200"
@@ -302,7 +303,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
 
                   <div>
                     <label htmlFor="contact-company" className="text-xs font-semibold text-neutral-700 block mb-1.5">
-                      Empresa *
+                      Empresa / Marca *
                     </label>
                     <input
                       id="contact-company"
@@ -325,7 +326,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                       id="contact-phone"
                       type="tel"
                       required
-                      placeholder="+58 414 000 0000"
+                      placeholder="+58 416-5480517"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/30 focus:border-[#1B5E20] transition-[box-shadow,border-color] duration-200"
@@ -334,7 +335,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
 
                   <div>
                     <span className="text-xs font-semibold text-neutral-700 block mb-1.5">
-                      Tipo de servicio
+                      Alcance de capacidad 3PL
                     </span>
                     <div className="grid grid-cols-2 gap-2">
                       {(['3PL', 'Distribución'] as const).map((type) => {
@@ -360,12 +361,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
 
                 <div>
                   <label htmlFor="contact-message" className="text-xs font-semibold text-neutral-700 block mb-1.5">
-                    Mensaje
+                    Requerimiento operativo (paletas, toneladas/mes, estados)
                   </label>
                   <textarea
                     id="contact-message"
                     rows={3}
-                    placeholder="Indíquenos volumen estimado, estados de destino (Guárico, Anzoátegui, Bolívar, Sucre) o requerimiento de almacén..."
+                    placeholder="Indíquenos volumen estimado en Ton/Mes, cantidad de paletas o estados de destino (Guárico, Anzoátegui, Sucre, Bolívar)..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/30 focus:border-[#1B5E20] transition-[box-shadow,border-color] duration-200 resize-y"
@@ -384,7 +385,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedSource =
                     className={`inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                   >
                     <Send className="w-4 h-4" />
-                    <span>Enviar solicitud</span>
+                    <span>Solicitar Evaluación Logística</span>
                   </motion.button>
                 </div>
               </form>

@@ -11,7 +11,7 @@ export const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    const duration = shouldReduceMotion ? 200 : 1200;
+    const duration = shouldReduceMotion ? 200 : 1100;
     const timer = window.setTimeout(() => {
       onComplete();
     }, duration);
@@ -40,27 +40,23 @@ export const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
         transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
         className="flex flex-col items-center text-center"
       >
-        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-white shadow-sm border border-neutral-200/80 mb-5">
-          <DivipecaLogo className="w-full h-full" />
+        <div className="mb-5 flex items-center justify-center">
+          <DivipecaLogo className="h-24 sm:h-28 w-auto" />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-neutral-950 leading-none">
-          DIVIPECA
-        </h1>
-
-        <div className="mt-2.5 flex items-center gap-2 text-xs sm:text-sm">
+        <div className="flex items-center gap-2 text-xs sm:text-sm">
           <span className="font-bold text-[#1B5E20]">Desde 1990</span>
           <span className="text-neutral-300" aria-hidden="true">·</span>
-          <span className="text-neutral-500 font-medium">Operador Logístico 3PL</span>
+          <span className="text-neutral-600 font-semibold">Operador Logístico 3PL</span>
         </div>
 
-        <div className="mt-6 w-28 h-0.5 bg-neutral-100 rounded-full overflow-hidden">
+        <div className="mt-5 w-32 h-0.5 bg-neutral-100 rounded-full overflow-hidden">
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             style={{ transformOrigin: 'left' }}
             transition={{
-              duration: shouldReduceMotion ? 0.15 : 1.0,
+              duration: shouldReduceMotion ? 0.15 : 0.9,
               ease: EASE_PREMIUM,
             }}
             className="h-full w-full bg-[#1B5E20] rounded-full"

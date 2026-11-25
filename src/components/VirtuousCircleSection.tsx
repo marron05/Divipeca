@@ -40,9 +40,9 @@ const CIRCLE_PAIRS: CirclePair[] = [
     step: 1,
     before: 'Retrasos y faltantes',
     after: 'Entrega a tiempo',
-    insightTitle: 'Puntualidad 99,8% OTIF',
+    insightTitle: 'Puntualidad 99,5% OTIF',
     insightBody:
-      'Flota propia de 5T a 12T y rutas fijas desde 3 sedes aseguran mercancía completa en cada despacho.',
+      'Flota propia de 5T a 12T y rutas fijas desde 3 centros propios aseguran mercancía completa en 0,70 días promedio.',
   },
   {
     step: 2,
@@ -67,7 +67,7 @@ const CIRCLE_PAIRS: CirclePair[] = [
     after: 'Crecimiento sostenible',
     insightTitle: 'Expansión en 4 estados',
     insightBody:
-      'Más de 820 puntos de venta abastecidos de forma continua convierten la logística en motor comercial.',
+      'Más de 850 clientes atendidos de forma continua en Guárico, Anzoátegui, Sucre y Bolívar convierten la logística en motor comercial.',
   },
 ];
 
@@ -163,14 +163,12 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
     });
   };
 
-  const whatsappUrl = `https://wa.me/${COMPANY_INFO.whatsappNumber}?text=${encodeURIComponent(
-    'Hola DIVIPECA, me interesa conocer más sobre sus servicios 3PL y distribución.'
-  )}`;
+  const whatsappUrl = COMPANY_INFO.whatsappUrl;
 
   return (
     <section
-      id="propuesta-valor"
-      className="relative py-16 sm:py-20 bg-neutral-50 border-y border-neutral-200/80"
+      id="diagnostico-3pl"
+      className="relative py-16 sm:py-20 bg-neutral-50 border-y border-neutral-200/80 scroll-mt-20"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Editorial Section Header (single clean reveal container, no parent/child conflict) */}
@@ -184,7 +182,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
           <div className="max-w-3xl">
             <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
-              <span>De la logística que frena a la logística que vende</span>
+              <span>02. Diagnóstico 3PL · De la logística que frena a la logística que vende</span>
             </div>
 
             <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 mb-3 text-balance">
@@ -363,7 +361,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
               </p>
 
               <p className="text-sm sm:text-base font-bold text-white leading-snug max-w-[24ch] mx-auto mb-5">
-                “{COMPANY_INFO.mainClaim}”
+                “Tu logística puntual, tus ventas en crecimiento.”
               </p>
 
               {/* Interactive Activation Button (hover y:-2, no scale) */}
@@ -606,7 +604,7 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
             <div className="mt-5 pt-3.5 border-t border-emerald-100 flex items-center justify-between text-[11px]">
               <span className="text-neutral-500">Ciclo continuo de recompra</span>
               <span className="font-mono font-bold text-[#1B5E20]">
-                {isActivated ? '99,8% OTIF Activo' : 'Crecimiento 3PL'}
+                {isActivated ? '99,5% OTIF Activo' : 'Crecimiento 3PL'}
               </span>
             </div>
           </motion.div>
@@ -622,12 +620,12 @@ export const VirtuousCircleSection: React.FC<VirtuousCircleSectionProps> = ({
         >
           <motion.button
             type="button"
-            onClick={() => onOpenContact('Círculo Virtuoso')}
+            onClick={() => onOpenContact('Diagnóstico 3PL')}
             whileHover={primaryButtonHover}
             whileTap={primaryButtonTap}
             className={`inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
           >
-            <span>Solicitar alianza logística</span>
+            <span>Solicitar Evaluación Logística</span>
             <ArrowRight className="w-4 h-4" />
           </motion.button>
 

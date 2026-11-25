@@ -3,9 +3,8 @@ import { AnimatePresence, MotionConfig } from 'motion/react';
 import { Navbar } from './components/Navbar';
 import { SplashIntro } from './components/SplashIntro';
 import { HeroSection } from './components/HeroSection';
-import { VirtuousCircleSection } from './components/VirtuousCircleSection';
 import { StatsSection } from './components/StatsSection';
-import { HistorySection } from './components/HistorySection';
+import { VirtuousCircleSection } from './components/VirtuousCircleSection';
 import { FacilitiesSection } from './components/FacilitiesSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
@@ -25,32 +24,29 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       <div className="min-h-screen bg-neutral-50 text-neutral-900 flex flex-col font-sans selection:bg-[#1B5E20] selection:text-white">
-        {/* Clean non-blocking 1.2s brand intro with softened exit */}
+        {/* Clean non-blocking brand intro */}
         <AnimatePresence>
           {showSplash && <SplashIntro onComplete={() => setShowSplash(false)} />}
         </AnimatePresence>
 
-        {/* 1. Top Bar Navigation Contract */}
+        {/* Top Bar Navigation */}
         <Navbar onOpenContact={handleOpenContact} />
 
-        {/* Main Corporate Sections */}
+        {/* Main Executive Sections (Historia completely removed per Fase A) */}
         <main className="flex-1">
-          {/* Section 1: Hero */}
+          {/* Hero */}
           <HeroSection onOpenContact={handleOpenContact} introReady={!showSplash} />
 
-          {/* Section 2: Propuesta de Valor (Círculo Vicioso -> Virtuoso) */}
-          <VirtuousCircleSection onOpenContact={handleOpenContact} />
-
-          {/* Section 3: Indicadores & Lead Time Animado */}
+          {/* 01. Trayectoria y KPIs */}
           <StatsSection onOpenContact={handleOpenContact} />
 
-          {/* Section 4: Historia & Línea de Tiempo */}
-          <HistorySection />
+          {/* 02. Diagnóstico 3PL */}
+          <VirtuousCircleSection onOpenContact={handleOpenContact} />
 
-          {/* Section 5: Sedes e Infraestructura + Flota Propia */}
+          {/* 03. Cobertura y Sedes + 04. Respaldo Operativo */}
           <FacilitiesSection onOpenContact={handleOpenContact} />
 
-          {/* Section 6: Conversión & Contacto Directo */}
+          {/* 05. Contacto Ejecutivo */}
           <ContactSection selectedSource={contactSource} />
         </main>
 

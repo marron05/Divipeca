@@ -21,7 +21,10 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
   const activeHub = LOGISTICS_HUBS.find((h) => h.id === selectedHubId) || LOGISTICS_HUBS[0];
 
   return (
-    <section id="sedes" className="py-20 sm:py-24 bg-white border-b border-neutral-200/80">
+    <section
+      id="cobertura-sedes"
+      className="py-20 sm:py-24 bg-white border-b border-neutral-200/80 scroll-mt-20"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Editorial Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
@@ -29,14 +32,14 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
             <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2.5 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
               <Warehouse className="w-3.5 h-3.5" />
-              <span>03. Red de Sedes e Infraestructura Física</span>
+              <span>03. Cobertura y Sedes · Infraestructura Propia</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 text-balance">
-              3 centros logísticos regionales. +3.700 m² bajo techo.
+              3 centros logísticos propios. 3.200 m² y +1.200 paletas.
             </h2>
           </div>
           <div className="text-sm text-neutral-600 max-w-md font-normal leading-relaxed">
-            Infraestructura 100% propia, equipada para almacenamiento masivo, picking intensivo y despacho directo desde cada sede hacia los 4 estados de cobertura.
+            Infraestructura 100% propia equipada para almacenamiento masivo, estiba en paletas y despacho directo desde cada centro hacia Guárico, Anzoátegui, Sucre y Bolívar.
           </div>
         </div>
 
@@ -220,19 +223,19 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenCont
           </motion.div>
         </AnimatePresence>
 
-        {/* Dedicated Fleet Section */}
-        <div id="flota" className="pt-10 border-t border-neutral-200/80">
+        {/* Dedicated Operational Backing & Fleet Section */}
+        <div id="respaldo-operativo" className="pt-10 border-t border-neutral-200/80 scroll-mt-24">
           <div className="max-w-2xl mb-8">
             <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#1B5E20]" />
               <Truck className="w-3.5 h-3.5" />
-              <span>Flota Propia de Transporte y Transferencia</span>
+              <span>04. Respaldo Operativo · Flota Propia y Sanidad</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-neutral-950">
-              Unidades de 5 a 12 Toneladas adaptadas a la geografía venezolana.
+              Flota propia de 5 a 12 Toneladas y protocolos de sanidad vigentes.
             </h3>
             <p className="text-xs sm:text-sm text-neutral-600 mt-1.5 font-normal leading-relaxed">
-              Flota vehicular bajo estricto programa de mantenimiento preventivo y seguimiento de ruta GPS.
+              Unidades dedicadas con mantenimiento preventivo, GPS en ruta y estrictos protocolos BPM para alimentos y consumo masivo.
             </p>
           </div>
 
