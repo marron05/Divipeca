@@ -7,6 +7,7 @@ import { StatsSection } from './components/StatsSection';
 import { VirtuousCircleSection } from './components/VirtuousCircleSection';
 import { FacilitiesSection } from './components/FacilitiesSection';
 import { ProyectorSection } from './components/ProyectorSection';
+import { VideoSection } from './components/VideoSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 
@@ -49,6 +50,9 @@ export default function App() {
 
           {/* 05. Proyector Mensual de Capacidad */}
           <ProyectorSection />
+
+          {/* Video institucional */}
+          <VideoSection />
 
           {/* 06. Contacto Ejecutivo */}
           <ContactSection selectedSource={contactSource} />
