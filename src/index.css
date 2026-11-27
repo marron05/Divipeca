@@ -1,16 +1,56 @@
 @import "tailwindcss";
 
+:root {
+  --brand-green: #1B5E20;
+  --brand-green-hover: #2E7D32;
+  --brand-green-dark: #0D3B12;
+  --brand-green-soft: #E8F5E9;
+  --brand-green-muted: #C8E6C9;
+
+  --brand-red: #C8102E;
+  --brand-red-soft: #FFEBEE;
+  --brand-red-muted: #FFCDD2;
+
+  --surface: #FFFFFF;
+  --surface-warm: #FAFAF8;
+  --surface-alt: #F3F7F4;
+
+  --ink: #0A0A0A;
+  --ink-muted: #525252;
+}
+
 @theme {
   --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --color-brand-green: #1B5E20;
+  --color-brand-green-hover: #2E7D32;
+  --color-brand-green-dark: #0D3B12;
+  --color-brand-green-soft: #E8F5E9;
+  --color-brand-green-muted: #C8E6C9;
+
+  --color-brand-red: #C8102E;
+  --color-brand-red-soft: #FFEBEE;
+  --color-brand-red-muted: #FFCDD2;
+
+  --color-surface: #FFFFFF;
+  --color-surface-warm: #FAFAF8;
+  --color-surface-alt: #F3F7F4;
+
+  --color-ink: #0A0A0A;
+  --color-ink-muted: #525252;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    background-color: var(--surface-warm);
+    color: var(--ink);
   }
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-color: var(--surface-warm);
+    color: var(--ink);
   }
 }
 

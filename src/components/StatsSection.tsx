@@ -87,7 +87,6 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
       },
     });
 
-    // Guarantee final exact 0,70 state even if RAF is throttled or delayed
     const safetyTimer = window.setTimeout(() => {
       setFormattedLeadDisplay('0,70');
       setLeadSettled(true);
@@ -107,138 +106,126 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
   const activeLeadIndex = hoveredLeadStep !== null ? hoveredLeadStep : pinnedLeadStep;
   const activeLeadStep = LEAD_TIME_DATA.steps[activeLeadIndex];
 
-  // Scale geometry: 0.0 -> 1.25 (so 0.70 = 56%, 1.00 = 80%, >1.00 = 80%..100%)
   const scaleMax = 1.25;
-  const benchmarkPercent = (1.0 / scaleMax) * 100; // 80%
+  const benchmarkPercent = (1.0 / scaleMax) * 100;
 
   const whatsappUrl = COMPANY_INFO.whatsappUrl;
 
   return (
     <section
       id="trayectoria-kpis"
-      className="pt-16 pb-20 bg-neutral-950 text-white relative scroll-mt-20"
+      className="pt-16 pb-16 sm:pb-20 bg-surface-alt text-ink border-t border-brand-green-muted/60 relative scroll-mt-20"
     >
-      {/* Background Subtle Gradient & Grid Texture clipped safely in background wrapper */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(27,94,32,0.18),rgba(255,255,255,0))]" />
-        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]" />
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header (single clean reveal, no conflicting child variants) */}
+        {/* Section Header */}
         <motion.div
           ref={headerRef}
           initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           animate={headerRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-neutral-800/80"
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-brand-green-muted/80"
         >
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <div className="text-xs font-semibold uppercase tracking-wider text-brand-green mb-2 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-red" />
               <span>01. Trayectoria y KPIs · Desde 1990</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white text-balance">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink text-balance">
               Cifras consolidadas que respaldan cada despacho.
             </h2>
           </div>
-          <p className="text-sm text-neutral-400 max-w-md font-normal leading-relaxed">
+          <p className="text-sm text-ink-muted max-w-md font-normal leading-relaxed">
             Medición continua bajo estándares FMCG. Indicadores auditados con trazabilidad
             por paleta, guía de despacho y punto de venta en los 4 estados.
           </p>
         </motion.div>
 
-        {/* FEATURED INTERACTIVE MODULE: LEAD TIME ANIMADO (1,00 -> 0,70 exact, GPU scaleX + translateX) */}
+        {/* FEATURED INTERACTIVE MODULE: LEAD TIME ANIMADO */}
         <motion.div
           ref={leadBlockRef}
           initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           animate={leadInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
-          className="my-8 rounded-2xl border border-neutral-800 bg-neutral-900/75 p-6 sm:p-8"
+          className="my-8 rounded-2xl border border-brand-green-muted/90 bg-white shadow-sm p-6 sm:p-8"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left Column (A + B + D): Big 0,70 Readout + GPU Horizontal Scale Bar + Fixed Microcopy */}
+            {/* Left Column: Big 0,70 Readout + GPU Horizontal Scale Bar */}
             <div className="lg:col-span-6 flex flex-col justify-between">
               <div>
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                  <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+                  <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-green">
                     <Clock className="w-3.5 h-3.5" />
                     <span>{LEAD_TIME_DATA.label}</span>
                   </div>
-                  <span className="text-xs font-mono text-neutral-300 bg-neutral-950/90 border border-neutral-800 px-2.5 py-1 rounded-md">
+                  <span className="text-xs font-mono text-brand-green bg-brand-green-soft border border-brand-green-muted px-2.5 py-1 rounded-md">
                     {LEAD_TIME_DATA.scaleLabel}
                   </span>
                 </div>
 
-                {/* A) Big Animated Number (1,00 -> 0,70 exact) */}
+                {/* Big Animated Number (1,00 -> 0,70 exact) */}
                 <div className="flex flex-wrap items-baseline gap-4 mb-3">
                   <div className="flex items-baseline gap-2">
-                    <div className="text-5xl sm:text-6xl font-black tracking-tight text-white font-mono tabular-nums leading-none">
+                    <div className="text-5xl sm:text-6xl font-black tracking-tight text-brand-green font-mono tabular-nums leading-none">
                       {formattedLeadDisplay}
                     </div>
-                    <span className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                    <span className="text-base sm:text-lg font-bold text-brand-green font-mono">
                       días
                     </span>
                   </div>
                   <div className="space-y-0.5">
-                    <div className="text-sm font-bold text-emerald-400">
+                    <div className="text-sm font-bold text-ink">
                       {LEAD_TIME_DATA.message}
                     </div>
-                    <div className="text-xs text-neutral-400">
+                    <div className="text-xs text-ink-muted">
                       {LEAD_TIME_DATA.scaleLabel} · Referencia promedio real
                     </div>
                   </div>
                 </div>
 
-                <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed mb-6">
+                <p className="text-xs sm:text-sm text-ink-muted leading-relaxed mb-6">
                   {LEAD_TIME_DATA.definition}
                 </p>
 
-                {/* B) GPU-Composited Horizontal Scale Bar: 1,0 -> 0,70 */}
-                <div className="rounded-xl bg-neutral-950/90 border border-neutral-800/90 p-4 sm:p-5 mb-4">
+                {/* GPU-Composited Horizontal Scale Bar */}
+                <div className="rounded-xl bg-surface-alt border border-brand-green-muted/80 p-4 sm:p-5 mb-4">
                   <div className="flex items-center justify-between text-[11px] font-medium mb-3">
-                    <span className="text-emerald-400 font-semibold">
+                    <span className="text-brand-green font-semibold">
                       Zona &lt; 1,0 · Entregas en menos de 24 h
                     </span>
-                    <span className="text-amber-300/85">
+                    <span className="text-brand-red font-semibold">
                       Zona &gt; 1,0 · Alerta (&gt; 24 h)
                     </span>
                   </div>
 
                   {/* Scale Track */}
                   <div className="relative pt-8 pb-8">
-                    {/* Track Bar Container */}
-                    <div className="relative h-4 w-full rounded-full overflow-hidden bg-neutral-800/90 border border-neutral-700/80 flex">
-                      {/* Green Zone (< 1,0 = 80% of 1,25 scale) */}
+                    <div className="relative h-4 w-full rounded-full overflow-hidden bg-white border border-brand-green-muted flex">
                       <div
                         style={{ width: `${benchmarkPercent}%` }}
-                        className="h-full bg-emerald-950/75 relative overflow-hidden"
+                        className="h-full bg-brand-green-soft relative overflow-hidden"
                       >
-                        {/* GPU-only scaleX fill: 1.0 (100% of green zone) -> 0.70 (70% of green zone) */}
                         <motion.div
                           initial={{ scaleX: shouldReduceMotion ? 0.7 : 1 }}
                           animate={leadInView ? { scaleX: 0.7 } : { scaleX: 1 }}
                           style={{ transformOrigin: 'left' }}
                           transition={{ duration: DUR_SLOW, ease: EASE_PREMIUM }}
-                          className="h-full w-full bg-gradient-to-r from-[#1B5E20] via-emerald-600 to-emerald-400 rounded-l-full"
+                          className="h-full w-full bg-gradient-to-r from-brand-green-dark via-brand-green to-brand-green-hover rounded-l-full"
                         />
                       </div>
 
-                      {/* Soft Alert Zone (> 1,0) */}
                       <div
                         style={{ width: `${100 - benchmarkPercent}%` }}
-                        className="h-full bg-amber-500/20 border-l-2 border-amber-400/70"
+                        className="h-full bg-brand-red-soft border-l-2 border-brand-red/70"
                       />
                     </div>
 
-                    {/* GPU-only translateX wrapper for Floating DIVIPECA Badge + Track Thumb (80% -> 56%) */}
+                    {/* Floating DIVIPECA Badge + Track Thumb */}
                     <motion.div
                       initial={{ x: shouldReduceMotion ? '56%' : '80%' }}
                       animate={leadInView ? { x: '56%' } : { x: '80%' }}
                       transition={{ duration: DUR_SLOW, ease: EASE_PREMIUM }}
                       className="absolute inset-y-0 left-0 right-0 pointer-events-none z-20"
                     >
-                      {/* Floating Label: soft single opacity pulse 0.7 -> 1 upon reaching 0,70 */}
                       <motion.div
                         initial={{ opacity: 0.9 }}
                         animate={
@@ -249,55 +236,51 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
                         transition={{ duration: 0.45, ease: EASE_PREMIUM }}
                         className="absolute top-0 left-0 -translate-x-1/2 flex flex-col items-center"
                       >
-                        <span className="whitespace-nowrap text-[11px] font-bold text-white bg-[#1B5E20] border border-emerald-400/50 px-2.5 py-0.5 rounded-md font-mono tabular-nums">
+                        <span className="whitespace-nowrap text-[11px] font-bold text-white bg-brand-green border border-brand-green-dark/20 px-2.5 py-0.5 rounded-md font-mono tabular-nums shadow-xs">
                           {LEAD_TIME_DATA.displayWithUnit} · {LEAD_TIME_DATA.label}
                         </span>
-                        <span className="w-0.5 h-2.5 bg-emerald-400 mt-0.5" />
+                        <span className="w-0.5 h-2.5 bg-brand-green mt-0.5" />
                       </motion.div>
 
-                      {/* Track Thumb */}
-                      <div className="absolute top-[30px] left-0 -translate-x-1/2 w-5 h-5 rounded-full bg-white border-[3px] border-[#1B5E20]" />
+                      <div className="absolute top-[30px] left-0 -translate-x-1/2 w-5 h-5 rounded-full bg-white border-[3px] border-brand-green shadow-xs" />
                     </motion.div>
 
-                    {/* Fixed 1,0 Benchmark Marker below track */}
+                    {/* Fixed 1,0 Benchmark Marker */}
                     <div
                       style={{ left: `${benchmarkPercent}%` }}
                       className="absolute bottom-0 -translate-x-1/2 flex flex-col items-center"
                     >
-                      <span className="w-0.5 h-2.5 bg-amber-400/80 mb-0.5" />
-                      <span className="whitespace-nowrap text-[11px] font-mono font-semibold text-amber-300">
-                        1,0 · {LEAD_TIME_DATA.benchmarkLabel}
+                      <span className="w-0.5 h-2.5 bg-brand-red/80 mb-0.5" />
+                      <span className="whitespace-nowrap text-[11px] font-mono font-semibold text-brand-red">
+                        {LEAD_TIME_DATA.benchmarkLabel}
                       </span>
                     </div>
 
-                    {/* 0,0 Origin Marker */}
-                    <div className="absolute bottom-0 left-0 text-[10px] font-mono text-neutral-500">
+                    <div className="absolute bottom-0 left-0 text-[10px] font-mono text-ink-muted">
                       0,0
                     </div>
                   </div>
                 </div>
 
-                {/* D) Fixed Microcopy */}
-                <p className="text-xs text-neutral-300 leading-relaxed flex items-start gap-2">
-                  <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                <p className="text-xs text-ink-muted leading-relaxed flex items-start gap-2">
+                  <CheckCircle className="w-3.5 h-3.5 text-brand-green shrink-0 mt-0.5" />
                   <span>{LEAD_TIME_DATA.microcopy}</span>
                 </p>
               </div>
             </div>
 
-            {/* Right Column (C + E): 4 Interactive Operational Steps + Crossfade Detail + Footer CTAs */}
+            {/* Right Column: 4 Interactive Operational Steps + Crossfade Detail */}
             <div className="lg:col-span-6 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between gap-2 mb-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-neutral-300">
+                  <span className="text-xs font-bold uppercase tracking-wider text-ink-muted">
                     Ciclo operativo en 4 pasos (haz clic o pasa el cursor)
                   </span>
-                  <span className="text-[11px] font-mono text-emerald-400">
+                  <span className="text-[11px] font-mono font-semibold text-brand-green">
                     Paso {activeLeadStep.step} de 4
                   </span>
                 </div>
 
-                {/* 4 Interactive Steps: border/background hover only, zero scale */}
                 <div className="space-y-2.5 mb-4">
                   {LEAD_TIME_DATA.steps.map((item, idx) => {
                     const isActive = activeLeadIndex === idx;
@@ -310,25 +293,25 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
                         onFocus={() => setHoveredLeadStep(idx)}
                         onBlur={() => setHoveredLeadStep(null)}
                         onClick={() => setPinnedLeadStep(idx)}
-                        className={`w-full text-left p-3.5 rounded-xl border transition-colors duration-200 flex items-center justify-between gap-3 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 ${
+                        className={`w-full text-left p-3.5 rounded-xl border transition-colors duration-200 flex items-center justify-between gap-3 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/50 ${
                           isActive
-                            ? 'bg-neutral-950 border-emerald-500/80 ring-1 ring-emerald-500/35'
-                            : 'bg-neutral-950/55 border-neutral-800 hover:border-neutral-700 hover:bg-neutral-950/80'
+                            ? 'bg-brand-green-soft/75 border-brand-green ring-1 ring-brand-green/25'
+                            : 'bg-surface-warm border-neutral-200/90 hover:border-brand-green/50 hover:bg-brand-green-soft/35'
                         }`}
                       >
                         <div className="flex items-center gap-3">
                           <span
                             className={`w-6 h-6 rounded-full text-xs font-bold font-mono flex items-center justify-center shrink-0 transition-colors duration-200 ${
                               isActive
-                                ? 'bg-[#1B5E20] text-white'
-                                : 'bg-neutral-800 text-neutral-300'
+                                ? 'bg-brand-green text-white'
+                                : 'bg-brand-green-soft text-brand-green border border-brand-green-muted'
                             }`}
                           >
                             {item.step}
                           </span>
                           <span
                             className={`text-xs sm:text-sm font-semibold transition-colors duration-200 ${
-                              isActive ? 'text-white' : 'text-neutral-300'
+                              isActive ? 'text-ink' : 'text-ink-muted'
                             }`}
                           >
                             {item.title}
@@ -337,7 +320,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
 
                         <span
                           className={`text-[10px] font-mono whitespace-nowrap shrink-0 transition-colors duration-200 ${
-                            isActive ? 'text-emerald-400 font-semibold' : 'text-neutral-500'
+                            isActive ? 'text-brand-green font-semibold' : 'text-ink-muted'
                           }`}
                         >
                           {item.segmentShare}
@@ -347,8 +330,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
                   })}
                 </div>
 
-                {/* Synchronized Step Explanation Box (opacity crossfade ~200ms) */}
-                <div className="rounded-xl bg-neutral-950/90 border border-neutral-800 p-4 mb-5 min-h-[76px]">
+                <div className="rounded-xl bg-brand-green-dark text-white border border-brand-green p-4 mb-5 min-h-[76px]">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={activeLeadStep.step}
@@ -357,10 +339,10 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.2, ease: EASE_PREMIUM }}
                     >
-                      <div className="text-xs font-bold text-emerald-400 mb-1">
+                      <div className="text-xs font-bold text-brand-green-muted mb-1">
                         {activeLeadStep.step}. {activeLeadStep.title}
                       </div>
-                      <p className="text-xs text-neutral-300 leading-relaxed">
+                      <p className="text-xs text-white/90 leading-relaxed">
                         {activeLeadStep.detail}
                       </p>
                     </motion.div>
@@ -368,14 +350,14 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
                 </div>
               </div>
 
-              {/* E) CTAs al pie del bloque Lead Time */}
-              <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-neutral-800/80">
+              {/* CTAs */}
+              <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-brand-green-muted/70">
                 <motion.button
                   type="button"
                   onClick={() => onOpenContact('Trayectoria y KPIs - Lead Time 0,70 días')}
                   whileHover={primaryButtonHover}
                   whileTap={primaryButtonTap}
-                  className={`inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
+                  className={`inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-semibold text-white bg-brand-green hover:bg-brand-green-hover rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                 >
                   <span>Solicitar Evaluación Logística</span>
                   <ArrowRight className="w-4 h-4" />
@@ -387,9 +369,9 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
                   rel="noopener noreferrer"
                   whileHover={secondaryButtonHover}
                   whileTap={secondaryButtonTap}
-                  className={`inline-flex items-center gap-2 px-4 py-3 text-xs sm:text-sm font-semibold text-neutral-200 hover:text-white bg-neutral-950 border border-neutral-700 hover:border-[#1B5E20] rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
+                  className={`inline-flex items-center gap-2 px-4 py-3 text-xs sm:text-sm font-semibold text-ink hover:text-brand-green bg-surface-warm border border-brand-green-muted hover:border-brand-green rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                 >
-                  <MessageCircle className="w-4 h-4 text-emerald-400" />
+                  <MessageCircle className="w-4 h-4 text-brand-green" />
                   <span>Hablar por WhatsApp</span>
                 </motion.a>
               </div>
@@ -397,7 +379,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
           </div>
         </motion.div>
 
-        {/* 5 Consolidated KPI Cards (direct reveal per card, zero parent stagger conflict) */}
+        {/* 5 Consolidated KPI Cards */}
         <div ref={kpiGridRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 my-8">
           {KEY_METRICS.map((metric, idx) => {
             const isSelected = selectedMetric.id === metric.id;
@@ -415,47 +397,71 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
                 onClick={() => setSelectedMetricId(metric.id)}
                 className={`text-left p-4 sm:p-5 rounded-xl border ${BUTTON_TRANSITION_CLASS} relative flex flex-col justify-between cursor-pointer group ${
                   isSelected
-                    ? 'bg-neutral-900/90 border-emerald-500/80 ring-1 ring-emerald-500/40'
-                    : 'bg-neutral-900/40 border-neutral-800/90 hover:border-emerald-500/45 hover:bg-neutral-900/70'
+                    ? 'bg-brand-green-dark text-white border-brand-green shadow-sm'
+                    : 'bg-white border-brand-green-muted/80 hover:border-brand-green hover:bg-brand-green-soft/30'
                 }`}
               >
-                  <div>
-                    <div className="flex items-center justify-between text-xs text-neutral-400 mb-1.5">
-                      <span className="font-medium text-neutral-400 group-hover:text-neutral-300 transition-colors">
-                        {metric.unit}
+                <div>
+                  <div className="flex items-center justify-between text-xs mb-1.5">
+                    <span
+                      className={`font-medium transition-colors ${
+                        isSelected ? 'text-brand-green-muted' : 'text-ink-muted group-hover:text-ink'
+                      }`}
+                    >
+                      {metric.unit}
+                    </span>
+                    {isSelected ? (
+                      <span className="text-[10px] font-semibold text-brand-green-dark bg-brand-green-soft px-1.5 py-0.5 rounded border border-brand-green-muted">
+                        Activo
                       </span>
-                      {isSelected ? (
-                        <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-800/50">
-                          Activo
-                        </span>
-                      ) : (
-                        <span className="text-[10px] text-neutral-500 group-hover:text-neutral-300 transition-colors">
-                          Ver
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-mono tabular-nums">
-                      {metric.value}
-                    </div>
-                    {metric.subtitle && (
-                      <div className="text-[11px] font-medium text-emerald-400 mt-1 leading-snug">
-                        {metric.subtitle}
-                      </div>
+                    ) : (
+                      <span className="text-[10px] text-ink-muted group-hover:text-brand-green transition-colors">
+                        Ver
+                      </span>
                     )}
                   </div>
-
-                  <div className="mt-3.5 pt-3 border-t border-neutral-800/80">
-                    <div className="text-xs font-semibold text-neutral-200 line-clamp-1 group-hover:text-white transition-colors">
-                      {metric.label}
-                    </div>
-                    <div className="text-[11px] text-neutral-400 line-clamp-1 mt-0.5">
-                      {metric.trend}
-                    </div>
+                  <div
+                    className={`text-2xl sm:text-3xl font-extrabold tracking-tight font-mono tabular-nums ${
+                      isSelected ? 'text-white' : 'text-brand-green'
+                    }`}
+                  >
+                    {metric.value}
                   </div>
-                </motion.button>
-              );
-            })}
-          </div>
+                  {metric.subtitle && (
+                    <div
+                      className={`text-[11px] font-medium mt-1 leading-snug ${
+                        isSelected ? 'text-brand-green-muted' : 'text-brand-green'
+                      }`}
+                    >
+                      {metric.subtitle}
+                    </div>
+                  )}
+                </div>
+
+                <div
+                  className={`mt-3.5 pt-3 border-t ${
+                    isSelected ? 'border-white/15' : 'border-brand-green-muted/60'
+                  }`}
+                >
+                  <div
+                    className={`text-xs font-semibold line-clamp-1 transition-colors ${
+                      isSelected ? 'text-white' : 'text-ink'
+                    }`}
+                  >
+                    {metric.label}
+                  </div>
+                  <div
+                    className={`text-[11px] line-clamp-1 mt-0.5 ${
+                      isSelected ? 'text-brand-green-muted/90' : 'text-ink-muted'
+                    }`}
+                  >
+                    {metric.trend}
+                  </div>
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
 
         {/* Contextual Metric Deep-Dive Panel */}
         <motion.div
@@ -463,7 +469,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
           initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           animate={detailRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
-          className="bg-neutral-900/60 border border-neutral-800/90 rounded-2xl p-5 sm:p-7 backdrop-blur-xs"
+          className="bg-white border border-brand-green-muted/90 rounded-2xl p-5 sm:p-7 shadow-xs"
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -474,57 +480,57 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
               transition={{ duration: DUR_FAST, ease: EASE_PREMIUM }}
               className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center"
             >
-              <div className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-neutral-800/80 pb-4 lg:pb-0 lg:pr-6">
-                <div className="text-xs text-emerald-400 font-semibold uppercase tracking-wider mb-1">
+              <div className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-brand-green-muted/70 pb-4 lg:pb-0 lg:pr-6">
+                <div className="text-xs text-brand-green font-semibold uppercase tracking-wider mb-1">
                   Detalle del Indicador Seleccionado
                 </div>
-                <div className="text-xl font-bold text-white mb-1">
+                <div className="text-xl font-bold text-ink mb-1">
                   {selectedMetric.label} ({selectedMetric.value} {selectedMetric.unit})
                 </div>
                 {selectedMetric.subtitle && (
-                  <div className="text-xs font-semibold text-emerald-300 mb-2">
+                  <div className="text-xs font-semibold text-brand-green mb-2">
                     {selectedMetric.subtitle}
                   </div>
                 )}
-                <p className="text-xs text-neutral-300 leading-relaxed font-normal">
+                <p className="text-xs text-ink-muted leading-relaxed font-normal">
                   {selectedMetric.detail}
                 </p>
               </div>
 
               <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-                <div className="p-3.5 rounded-xl bg-neutral-950/70 border border-neutral-800/90 hover:border-neutral-700/80 transition-colors duration-200">
-                  <span className="text-[10px] uppercase font-semibold text-neutral-400 block mb-1">
+                <div className="p-3.5 rounded-xl bg-surface-alt border border-brand-green-muted/80 hover:border-brand-green/50 transition-colors duration-200">
+                  <span className="text-[10px] uppercase font-semibold text-ink-muted block mb-1">
                     Estándar Operativo
                   </span>
-                  <div className="text-xs font-semibold text-white flex items-center gap-1.5">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <div className="text-xs font-semibold text-ink flex items-center gap-1.5">
+                    <CheckCircle className="w-3.5 h-3.5 text-brand-green shrink-0" />
                     <span>{selectedMetric.benchmark}</span>
                   </div>
-                  <p className="text-[11px] text-neutral-400 mt-1 leading-normal">
+                  <p className="text-[11px] text-ink-muted mt-1 leading-normal">
                     Supervisión rigurosa de carga en cada punto de despacho.
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-neutral-950/70 border border-neutral-800/90 hover:border-neutral-700/80 transition-colors duration-200">
-                  <span className="text-[10px] uppercase font-semibold text-neutral-400 block mb-1">
+                <div className="p-3.5 rounded-xl bg-surface-alt border border-brand-green-muted/80 hover:border-brand-green/50 transition-colors duration-200">
+                  <span className="text-[10px] uppercase font-semibold text-ink-muted block mb-1">
                     Consistencia en Ruta
                   </span>
-                  <div className="text-xs font-semibold text-white flex items-center gap-1.5">
-                    <TrendingUp className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <div className="text-xs font-semibold text-ink flex items-center gap-1.5">
+                    <TrendingUp className="w-3.5 h-3.5 text-brand-green shrink-0" />
                     <span>{selectedMetric.trend}</span>
                   </div>
-                  <p className="text-[11px] text-neutral-400 mt-1 leading-normal">
+                  <p className="text-[11px] text-ink-muted mt-1 leading-normal">
                     Monitoreo en 4 estados con ventanas horarias estrictas.
                   </p>
                 </div>
               </div>
 
-              <div className="lg:col-span-3 flex flex-col justify-center bg-neutral-950/90 p-4 rounded-xl border border-neutral-800/90">
-                <div className="text-[11px] font-semibold text-neutral-200 mb-1 flex items-center gap-1.5">
-                  <Shield className="w-3.5 h-3.5 text-emerald-400" />
+              <div className="lg:col-span-3 flex flex-col justify-center bg-brand-green-dark text-white p-4 rounded-xl border border-brand-green">
+                <div className="text-[11px] font-semibold text-brand-green-muted mb-1 flex items-center gap-1.5">
+                  <Shield className="w-3.5 h-3.5 text-white" />
                   Respaldo Operativo DIVIPECA
                 </div>
-                <p className="text-[11px] text-neutral-400 leading-relaxed font-normal">
+                <p className="text-[11px] text-white/90 leading-relaxed font-normal">
                   Despacho auditado desde 3 centros propios (3.200 m² y +1.200 paletas) con
                   protocolos de sanidad y trazabilidad por lote.
                 </p>
@@ -533,7 +539,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
           </AnimatePresence>
         </motion.div>
 
-        {/* Clear Terminology Definitions Strip (3PL · OTIF · Lead time) */}
+        {/* Clear Terminology Definitions Strip */}
         <motion.div
           ref={clarifiersRef}
           initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
@@ -545,51 +551,48 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ onOpenContact }) => 
             <div
               key={item.term}
               title={`${item.term}: ${item.summary}`}
-              className="rounded-xl border border-neutral-800/90 bg-neutral-900/40 px-4 py-3 flex items-start gap-2.5"
+              className="rounded-xl border border-brand-green-muted/80 bg-white px-4 py-3 flex items-start gap-2.5"
             >
-              <Info className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+              <Info className="w-3.5 h-3.5 text-brand-green shrink-0 mt-0.5" />
               <div className="text-xs leading-relaxed">
-                <span className="font-bold text-white">{item.term}: </span>
-                <span className="text-neutral-300">{item.summary}</span>
+                <span className="font-bold text-ink">{item.term}: </span>
+                <span className="text-ink-muted">{item.summary}</span>
               </div>
             </div>
           ))}
         </motion.div>
 
-        {/* Compact Operational Support Photos (2 real operation frames) */}
+        {/* Compact Operational Support Photos (local scrim ONLY over media) */}
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="relative rounded-2xl overflow-hidden border border-neutral-800/90 bg-neutral-900 h-48 sm:h-56">
+          <div className="relative rounded-2xl overflow-hidden border border-brand-green-muted/80 bg-black h-48 sm:h-56 shadow-xs">
             <img
               src={IMAGES.forkliftOps}
               alt="Montacargas Toyota DIVIPECA movilizando estibas de alimentos en centro logístico"
               loading="lazy"
               className="w-full h-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
             <div className="absolute bottom-3.5 left-4 right-4 flex items-center justify-between gap-2 text-xs">
               <span className="font-semibold text-white">Manipulación y estibado mecanizado</span>
-              <span className="text-[11px] font-mono text-emerald-400">Picking & Cross-docking</span>
+              <span className="text-[11px] font-mono text-brand-green-muted">Picking & Cross-docking</span>
             </div>
           </div>
 
-          <div className="relative rounded-2xl overflow-hidden border border-neutral-800/90 bg-neutral-900 h-48 sm:h-56">
+          <div className="relative rounded-2xl overflow-hidden border border-brand-green-muted/80 bg-black h-48 sm:h-56 shadow-xs">
             <img
               src={IMAGES.warehouseRacks}
               alt="Pasillo de almacenamiento paletizado en racks selectivos de DIVIPECA"
               loading="lazy"
               className="w-full h-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
             <div className="absolute bottom-3.5 left-4 right-4 flex items-center justify-between gap-2 text-xs">
               <span className="font-semibold text-white">Almacenamiento seco en racks selectivos</span>
-              <span className="text-[11px] font-mono text-emerald-400">Normas BPM · FMCG</span>
+              <span className="text-[11px] font-mono text-brand-green-muted">Normas BPM · FMCG</span>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Gentle Architectural Transition Gradient toward the light Diagnóstico 3PL section */}
-      <div className="w-full h-10 mt-14 bg-gradient-to-b from-neutral-950 to-neutral-900/40 pointer-events-none" />
     </section>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, CheckCircle2, Building, Mail, Phone, MapPin, Send, ArrowRight } from 'lucide-react';
 import { COMPANY_INFO } from '../data/divipecaData';
+import { PremiumSelect } from './PremiumSelect';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -20,8 +21,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({
     contactName: '',
     email: '',
     phone: '',
-    serviceType: '3PL Integral',
-    monthlyVolume: '50 - 150 Tn/mes',
+    serviceType: '3PL Integral (Almacén + Distribución)',
+    monthlyVolume: '50 - 150 Ton/Mes',
     targetStates: ['Guárico', 'Anzoátegui'],
     notes: ''
   });
@@ -58,7 +59,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-neutral-950/70 backdrop-blur-sm"
+        className="fixed inset-0 bg-brand-green-dark/70 backdrop-blur-sm"
       />
 
       {/* Modal Surface */}
@@ -67,11 +68,11 @@ export const ContactModal: React.FC<ContactModalProps> = ({
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 16 }}
         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-        className="relative bg-white rounded-2xl shadow-2xl border border-neutral-200 w-full max-w-xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8"
+        className="relative bg-white rounded-2xl shadow-2xl border border-brand-green-muted/80 w-full max-w-xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8"
       >
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-1.5 rounded-lg text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 transition-colors"
+          className="absolute top-5 right-5 p-1.5 rounded-lg text-ink-muted hover:text-ink hover:bg-surface-alt transition-colors cursor-pointer"
           aria-label="Cerrar modal"
         >
           <X className="w-5 h-5" />
@@ -79,25 +80,25 @@ export const ContactModal: React.FC<ContactModalProps> = ({
 
         {submitted ? (
           <div className="text-center py-8">
-            <div className="w-14 h-14 rounded-full bg-emerald-100 text-[#1B5E20] flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 rounded-full bg-brand-green-soft text-brand-green flex items-center justify-center mx-auto mb-4">
               <CheckCircle2 className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-bold text-neutral-950 mb-2">
+            <h3 className="text-xl font-bold text-ink mb-2">
               Solicitud de Capacidad Registrada
             </h3>
-            <p className="text-sm text-neutral-600 mb-6 max-w-md mx-auto leading-relaxed">
+            <p className="text-sm text-ink-muted mb-6 max-w-md mx-auto leading-relaxed">
               Gracias, <strong>{formData.contactName || formData.companyName}</strong>. La Gerencia de Operaciones de DIVIPECA analizará las rutas solicitadas ({formData.targetStates.join(', ')}) y te contactará en menos de 24 horas hábiles.
             </p>
 
-            <div className="bg-neutral-50 p-4 rounded-lg border border-neutral-200 text-left text-xs text-neutral-700 mb-6 space-y-1">
-              <div><strong>Empresa:</strong> {formData.companyName}</div>
-              <div><strong>Servicio:</strong> {formData.serviceType} ({formData.monthlyVolume})</div>
-              <div><strong>Contacto:</strong> {formData.phone} · {formData.email}</div>
+            <div className="bg-surface-warm p-4 rounded-lg border border-brand-green-muted/70 text-left text-xs text-ink-muted mb-6 space-y-1">
+              <div><strong className="text-ink">Empresa:</strong> {formData.companyName}</div>
+              <div><strong className="text-ink">Servicio:</strong> {formData.serviceType} ({formData.monthlyVolume})</div>
+              <div><strong className="text-ink">Contacto:</strong> {formData.phone} · {formData.email}</div>
             </div>
 
             <button
               onClick={handleReset}
-              className="px-6 py-2.5 text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors"
+              className="px-6 py-2.5 text-xs font-semibold text-white bg-brand-green hover:bg-brand-green-hover rounded-lg transition-colors cursor-pointer"
             >
               Entendido
             </button>
@@ -105,13 +106,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({
         ) : (
           <div>
             <div className="mb-6">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#1B5E20] block mb-1">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-brand-green block mb-1">
                 Atención Corporativa & Alianzas 3PL
               </span>
-              <h3 className="text-2xl font-bold text-neutral-950">
+              <h3 className="text-2xl font-bold text-ink">
                 Solicitar Alianza o Cotización de Ruta
               </h3>
-              <p className="text-xs text-neutral-500 mt-1">
+              <p className="text-xs text-ink-muted mt-1">
                 Origen de solicitud: {initialSource}. Evaluamos capacidad de almacenamiento y fletes dedicados en los 4 estados.
               </p>
             </div>
@@ -119,7 +120,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-neutral-700 block mb-1">
+                  <label className="text-xs font-semibold text-ink block mb-1">
                     Empresa / Razón Social *
                   </label>
                   <input
@@ -128,12 +129,12 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                     placeholder="Ej. Alimentos del Centro C.A."
                     value={formData.companyName}
                     onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                    className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/40 focus:border-[#1B5E20]"
+                    className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand-green/35 focus:border-brand-green"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-neutral-700 block mb-1">
+                  <label className="text-xs font-semibold text-ink block mb-1">
                     Nombre del Contacto *
                   </label>
                   <input
@@ -142,14 +143,14 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                     placeholder="Ej. Carlos Mendoza (Gerente de Logística)"
                     value={formData.contactName}
                     onChange={(e) => setFormData({ ...formData, contactName: e.target.value })}
-                    className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/40 focus:border-[#1B5E20]"
+                    className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand-green/35 focus:border-brand-green"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-neutral-700 block mb-1">
+                  <label className="text-xs font-semibold text-ink block mb-1">
                     Correo Electrónico Corporativo *
                   </label>
                   <input
@@ -158,12 +159,12 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                     placeholder="logistica@empresa.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/40 focus:border-[#1B5E20]"
+                    className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand-green/35 focus:border-brand-green"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-neutral-700 block mb-1">
+                  <label className="text-xs font-semibold text-ink block mb-1">
                     Teléfono / WhatsApp *
                   </label>
                   <input
@@ -172,47 +173,51 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                     placeholder="+58 416-5480517"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/40 focus:border-[#1B5E20]"
+                    className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand-green/35 focus:border-brand-green"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-neutral-700 block mb-1">
+                  <label className="text-xs font-semibold text-ink block mb-1">
                     Tipo de Operación
                   </label>
-                  <select
+                  <PremiumSelect
+                    size="sm"
                     value={formData.serviceType}
-                    onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
-                    className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/40 focus:border-[#1B5E20] bg-white"
-                  >
-                    <option value="3PL Integral (Almacén + Distribución)">3PL Integral (Almacén + Distribución)</option>
-                    <option value="Distribución Exclusiva / Comercialización">Distribución Exclusiva / Comercialización</option>
-                    <option value="Almacenamiento Seco Dedicado">Almacenamiento Seco Dedicado</option>
-                    <option value="Fletes Troncales & Cross-docking">Fletes Troncales & Cross-docking</option>
-                  </select>
+                    onChange={(val) => setFormData({ ...formData, serviceType: val })}
+                    ariaLabel="Tipo de Operación"
+                    options={[
+                      '3PL Integral (Almacén + Distribución)',
+                      'Distribución Exclusiva / Comercialización',
+                      'Almacenamiento Seco Dedicado',
+                      'Fletes Troncales & Cross-docking',
+                    ]}
+                  />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-neutral-700 block mb-1">
+                  <label className="text-xs font-semibold text-ink block mb-1">
                     Volumen Mensual Estimado
                   </label>
-                  <select
+                  <PremiumSelect
+                    size="sm"
                     value={formData.monthlyVolume}
-                    onChange={(e) => setFormData({ ...formData, monthlyVolume: e.target.value })}
-                    className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/40 focus:border-[#1B5E20] bg-white"
-                  >
-                    <option value="< 50 Tn/mes">Menos de 50 Ton/Mes</option>
-                    <option value="50 - 150 Tn/mes">50 a 150 Ton/Mes</option>
-                    <option value="150 - 550 Tn/mes">150 a 550 Ton/Mes</option>
-                    <option value="+ 550 Tn/mes">+550 Ton/Mes (Escala Regional)</option>
-                  </select>
+                    onChange={(val) => setFormData({ ...formData, monthlyVolume: val })}
+                    ariaLabel="Volumen Mensual Estimado"
+                    options={[
+                      { value: '< 50 Ton/Mes', label: 'Menos de 50 Ton/Mes' },
+                      { value: '50 - 150 Ton/Mes', label: '50 a 150 Ton/Mes' },
+                      { value: '150 - 550 Ton/Mes', label: '150 a 550 Ton/Mes' },
+                      { value: '+550 Ton/Mes', label: '+550 Ton/Mes (Escala Regional)' },
+                    ]}
+                  />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-neutral-700 block mb-1.5">
+                <label className="text-xs font-semibold text-ink block mb-1.5">
                   Estados Requeridos (Selecciona los que apliquen)
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -223,10 +228,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                         type="button"
                         key={st}
                         onClick={() => toggleState(st)}
-                        className={`text-xs py-1.5 px-3 rounded-lg border font-medium transition-colors ${
+                        className={`text-xs py-1.5 px-3 rounded-lg border font-medium transition-colors cursor-pointer ${
                           isSelected
-                            ? 'bg-[#1B5E20] text-white border-[#1B5E20]'
-                            : 'bg-neutral-50 text-neutral-700 border-neutral-200 hover:bg-neutral-100'
+                            ? 'bg-brand-green text-white border-brand-green'
+                            : 'bg-surface-warm text-ink-muted border-brand-green-muted/70 hover:bg-surface-alt hover:text-brand-green'
                         }`}
                       >
                         {st}
@@ -237,7 +242,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-neutral-700 block mb-1">
+                <label className="text-xs font-semibold text-ink block mb-1">
                   Requerimientos Específicos o Frecuencia Deseada
                 </label>
                 <textarea
@@ -245,19 +250,19 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                   placeholder="Indica tipo de producto, si requiere estibado especial o rutas preferenciales..."
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]/40 focus:border-[#1B5E20]"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand-green/35 focus:border-brand-green"
                 />
               </div>
 
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-3 text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
+                  className="w-full py-3 text-xs font-semibold text-white bg-brand-green hover:bg-brand-green-hover rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
                   <span>Enviar Requerimiento Operativo</span>
                 </button>
-                <p className="text-[10px] text-center text-neutral-400 mt-2">
+                <p className="text-[10px] text-center text-ink-muted mt-2">
                   Garantía de confidencialidad comercial · RIF {COMPANY_INFO.rif}
                 </p>
               </div>

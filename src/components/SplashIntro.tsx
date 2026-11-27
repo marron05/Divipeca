@@ -32,7 +32,7 @@ export const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
       onClick={onComplete}
       role="status"
       aria-label="Cargando DIVIPECA"
-      className="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center px-6 select-none cursor-pointer"
+      className="fixed inset-0 z-50 bg-surface-warm flex flex-col items-center justify-center px-6 select-none cursor-pointer"
     >
       <motion.div
         initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
@@ -45,12 +45,12 @@ export const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
         </div>
 
         <div className="flex items-center gap-2 text-xs sm:text-sm">
-          <span className="font-bold text-[#1B5E20]">Desde 1990</span>
-          <span className="text-neutral-300" aria-hidden="true">·</span>
-          <span className="text-neutral-600 font-semibold">Operador Logístico 3PL</span>
+          <span className="font-bold text-brand-green">Desde 1990</span>
+          <span className="text-brand-red font-bold" aria-hidden="true">·</span>
+          <span className="text-ink-muted font-semibold">Operador Logístico 3PL</span>
         </div>
 
-        <div className="mt-5 w-32 h-0.5 bg-neutral-100 rounded-full overflow-hidden">
+        <div className="mt-5 w-32 h-0.5 bg-brand-green-soft rounded-full overflow-hidden">
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
@@ -59,7 +59,7 @@ export const SplashIntro: React.FC<SplashIntroProps> = ({ onComplete }) => {
               duration: shouldReduceMotion ? 0.15 : 0.9,
               ease: EASE_PREMIUM,
             }}
-            className="h-full w-full bg-[#1B5E20] rounded-full"
+            className="h-full w-full bg-brand-green rounded-full"
           />
         </div>
       </motion.div>

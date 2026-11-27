@@ -9,28 +9,28 @@ export const VideoSection: React.FC = () => {
   return (
     <section
       id="video"
-      className="py-20 sm:py-24 bg-white border-t border-neutral-200/80 scroll-mt-20"
+      className="py-20 sm:py-24 bg-surface border-t border-brand-green-muted/60 scroll-mt-20"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="max-w-2xl mb-10 sm:mb-12">
-          <div className="text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-2.5 flex items-center gap-2">
-            <Play className="w-3.5 h-3.5" />
+          <div className="text-xs font-semibold uppercase tracking-wider text-brand-green mb-2.5 flex items-center gap-2">
+            <Play className="w-3.5 h-3.5 text-brand-red" />
             <span>Operación DIVIPECA · Recorrido audiovisual</span>
           </div>
 
-          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 mb-3 text-balance">
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-ink mb-3 text-balance">
             Video institucional
           </h2>
 
-          <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-normal">
+          <p className="text-sm sm:text-base text-ink-muted leading-relaxed font-normal">
             Conozca nuestras instalaciones de almacenamiento, flota propia y operación logística regional.
           </p>
         </div>
 
         {/* Responsive 16:9 Video Frame */}
-        <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-2 sm:p-3 shadow-xs">
-          <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-neutral-950">
+        <div className="rounded-2xl border border-brand-green-muted/80 bg-surface-alt p-2 sm:p-3 shadow-sm">
+          <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-black">
             <iframe
               src={YOUTUBE_EMBED_SRC}
               title="Video institucional DIVIPECA"

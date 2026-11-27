@@ -101,27 +101,27 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
   const activePin = HUB_PINS.find((p) => p.hubId === selectedHubId) || HUB_PINS[0];
 
   return (
-    <div className="mb-12 rounded-3xl border border-neutral-200 bg-neutral-50/70 p-4 sm:p-6 lg:p-8">
+    <div className="mb-12 rounded-3xl border border-brand-green-muted/85 bg-white p-4 sm:p-6 lg:p-8 shadow-xs">
       {/* Map Header Copy */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 mb-6 border-b border-neutral-200/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 mb-6 border-b border-brand-green-muted/70">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#1B5E20] mb-1">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-green mb-1">
             <Navigation className="w-3.5 h-3.5" />
             <span>Cobertura operativa</span>
           </div>
-          <p className="text-sm sm:text-base font-bold text-neutral-950">
+          <p className="text-sm sm:text-base font-bold text-ink">
             3 centros propios · 4 estados · despacho local con flota dedicada
           </p>
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center gap-4 text-xs text-neutral-600">
+        <div className="flex flex-wrap items-center gap-4 text-xs text-ink-muted">
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-xs bg-[#1B5E20] inline-block" />
+            <span className="w-3 h-3 rounded-xs bg-brand-green inline-block" />
             <span className="font-medium">Estados cubiertos (4)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-white border-2 border-[#1B5E20] inline-block" />
+            <span className="w-3 h-3 rounded-full bg-white border-2 border-brand-green inline-block" />
             <span className="font-medium">Sedes propias (3)</span>
           </div>
         </div>
@@ -130,12 +130,12 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
       {/* Interactive Split: Proportional Map Canvas (Left) + Synchronized Hub Ficha (Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Map Canvas Container */}
-        <div className="lg:col-span-7 relative rounded-2xl bg-white border border-neutral-200/90 p-4 sm:p-6 flex flex-col justify-between">
+        <div className="lg:col-span-7 relative rounded-2xl bg-surface-warm border border-brand-green-muted/80 p-4 sm:p-6 flex flex-col justify-between">
           <div className="flex items-center justify-between gap-2 mb-3">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-muted">
               Venezuela · Guárico, Anzoátegui, Sucre y Bolívar
             </span>
-            <span className="text-[11px] text-[#1B5E20] font-medium hidden sm:inline">
+            <span className="text-[11px] text-brand-green font-medium hidden sm:inline">
               Haz clic en un pin o estado
             </span>
           </div>
@@ -267,13 +267,13 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                     <span
                       className={`relative w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full flex items-center justify-center ${BUTTON_TRANSITION_CLASS} ${
                         isActive
-                          ? 'bg-white border-[2.5px] border-[#052E16] ring-4 ring-emerald-400/30'
-                          : 'bg-emerald-50 border-2 border-[#1B5E20] group-hover:ring-4 group-hover:ring-emerald-400/25'
+                          ? 'bg-white border-[2.5px] border-brand-green-dark ring-4 ring-brand-green-muted/60'
+                          : 'bg-brand-green-soft border-2 border-brand-green group-hover:ring-4 group-hover:ring-brand-green-muted/45'
                       }`}
                     >
                       <span
                         className={`w-1.5 h-1.5 rounded-full ${
-                          isActive ? 'bg-[#1B5E20]' : 'bg-[#1B5E20]/80'
+                          isActive ? 'bg-brand-green' : 'bg-brand-green/80'
                         }`}
                       />
                     </span>
@@ -284,12 +284,12 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                         pin.pillPositionClass
                       } ${
                         isActive
-                          ? 'bg-[#1B5E20] text-white border border-emerald-300/40 shadow-sm'
-                          : 'bg-white/95 text-neutral-800 border border-neutral-300/80 hover:border-[#1B5E20]/60 hover:text-[#1B5E20]'
+                          ? 'bg-brand-green text-white border border-brand-green-muted/50 shadow-sm'
+                          : 'bg-white/95 text-ink border border-neutral-300/80 hover:border-brand-green/60 hover:text-brand-green'
                       }`}
                     >
                       {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 shrink-0" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-brand-green-muted shrink-0" />
                       )}
                       <span>{pin.shortLabel}</span>
                     </span>
@@ -300,7 +300,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
           </div>
 
           {/* Quick-tap Pill Bar */}
-          <div className="mt-4 pt-3.5 border-t border-neutral-100 flex flex-wrap gap-2">
+          <div className="mt-4 pt-3.5 border-t border-brand-green-muted/40 flex flex-wrap gap-2">
             {HUB_PINS.map((pin) => {
               const isActive = pin.hubId === selectedHubId;
               return (
@@ -310,8 +310,8 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                   onClick={() => onSelectHub(pin.hubId)}
                   className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer ${
                     isActive
-                      ? 'bg-[#1B5E20] text-white border border-emerald-700'
-                      : 'bg-neutral-100 text-neutral-700 border border-neutral-200/80 hover:border-[#1B5E20]/50'
+                      ? 'bg-brand-green text-white border border-brand-green'
+                      : 'bg-surface-warm text-ink-muted border border-brand-green-muted/70 hover:border-brand-green/60 hover:text-brand-green'
                   }`}
                 >
                   <MapPin className="w-3.5 h-3.5 shrink-0" />
@@ -331,29 +331,29 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: DUR_MED, ease: EASE_PREMIUM }}
-              className="flex-1 rounded-2xl bg-white border border-neutral-200 p-5 sm:p-6 flex flex-col justify-between"
+              className="flex-1 rounded-2xl bg-white border border-brand-green-muted/80 p-5 sm:p-6 flex flex-col justify-between shadow-xs"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-3">
-                  <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#1B5E20] bg-emerald-50 border border-emerald-200/70 px-2.5 py-1 rounded-md">
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-brand-green bg-brand-green-soft border border-brand-green-muted px-2.5 py-1 rounded-md">
                     <MapPin className="w-3 h-3" />
                     {activeHub.state}
                   </span>
-                  <span className="text-xs font-mono font-bold text-neutral-900 bg-neutral-100 px-2.5 py-1 rounded-md">
+                  <span className="text-xs font-mono font-bold text-ink bg-surface-alt border border-brand-green-muted/60 px-2.5 py-1 rounded-md">
                     {activeHub.zoneTag}
                   </span>
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-950 mb-1">
+                <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-ink mb-1">
                   {activeHub.id === 'ciudad-bolivar'
                     ? `${activeHub.city}, ${activeHub.state}`
                     : activeHub.city}
                 </h3>
-                <p className="text-xs sm:text-sm font-semibold text-[#1B5E20] mb-3.5">
+                <p className="text-xs sm:text-sm font-semibold text-brand-green mb-3.5">
                   {activeHub.role}
                 </p>
 
-                <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-neutral-200 bg-neutral-100 mb-4">
+                <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-brand-green-muted/70 bg-surface-alt mb-4">
                   <img
                     src={activeHub.image}
                     alt={`Instalaciones de DIVIPECA en ${activeHub.city}`}
@@ -362,26 +362,26 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                   />
                 </div>
 
-                <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed mb-5">
+                <p className="text-xs sm:text-sm text-ink-muted leading-relaxed mb-5">
                   {activeHub.description}
                 </p>
 
                 <div className="grid grid-cols-2 gap-3 mb-5">
-                  <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/80">
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5">
-                      <Warehouse className="w-3 h-3 text-[#1B5E20]" />
-                      <span>Red Propia Total</span>
+                  <div className="p-3 rounded-xl bg-surface-warm border border-brand-green-muted/70">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-ink-muted mb-0.5">
+                      <Warehouse className="w-3 h-3 text-brand-green" />
+                      <span>Capacidad Sede ({activeHub.capacityShareLabel})</span>
                     </div>
-                    <div className="text-xs sm:text-sm font-bold text-neutral-950 font-mono">
-                      3.200 m² · +1.200 paletas
+                    <div className="text-xs sm:text-sm font-bold text-ink font-mono tabular-nums">
+                      {activeHub.areaM2Label} · {activeHub.palletsLabel}
                     </div>
                   </div>
-                  <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/80">
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5">
-                      <Truck className="w-3 h-3 text-[#1B5E20]" />
+                  <div className="p-3 rounded-xl bg-surface-warm border border-brand-green-muted/70">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-ink-muted mb-0.5">
+                      <Truck className="w-3 h-3 text-brand-green" />
                       <span>Flota Asignada</span>
                     </div>
-                    <div className="text-xs sm:text-sm font-bold text-neutral-950">
+                    <div className="text-xs sm:text-sm font-bold text-ink">
                       {activeHub.fleetStationed}
                     </div>
                   </div>
@@ -389,18 +389,18 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
 
                 <div className="space-y-2 mb-5">
                   {activeHub.features.slice(0, 3).map((feat, idx) => (
-                    <div key={idx} className="flex items-start gap-2 text-xs text-neutral-700">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#1B5E20] shrink-0 mt-0.5" />
+                    <div key={idx} className="flex items-start gap-2 text-xs text-ink-muted">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-brand-green shrink-0 mt-0.5" />
                       <span>{feat}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-2.5">
+              <div className="pt-4 border-t border-brand-green-muted/40 flex flex-wrap items-center justify-between gap-2.5">
                 <a
                   href="#sede-detalle"
-                  className="text-xs font-semibold text-neutral-600 hover:text-neutral-950 transition-colors duration-200"
+                  className="text-xs font-semibold text-ink-muted hover:text-brand-green transition-colors duration-200"
                 >
                   Ver ficha y fotos ↓
                 </a>
@@ -409,9 +409,9 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                     href={COMPANY_INFO.whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-800 hover:text-[#1B5E20] bg-neutral-100 hover:bg-neutral-50 border border-neutral-200 hover:border-[#1B5E20] px-3 py-2.5 rounded-lg ${BUTTON_TRANSITION_CLASS}`}
+                    className={`inline-flex items-center gap-1.5 text-xs font-semibold text-ink hover:text-brand-green bg-surface-warm hover:bg-brand-green-soft border border-brand-green-muted hover:border-brand-green px-3 py-2.5 rounded-lg ${BUTTON_TRANSITION_CLASS}`}
                   >
-                    <MessageCircle className="w-3.5 h-3.5 text-[#1B5E20]" />
+                    <MessageCircle className="w-3.5 h-3.5 text-brand-green" />
                     <span>WhatsApp</span>
                   </a>
                   <motion.button
@@ -419,7 +419,7 @@ export const CoverageMap: React.FC<CoverageMapProps> = ({
                     onClick={() => onOpenContact(`Mapa - Sede ${activeHub.city}`)}
                     whileHover={primaryButtonHover}
                     whileTap={primaryButtonTap}
-                    className={`inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-[#1B5E20] hover:bg-[#2E7D32] px-4 py-2.5 rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
+                    className={`inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-green hover:bg-brand-green-hover px-4 py-2.5 rounded-lg ${BUTTON_TRANSITION_CLASS} cursor-pointer`}
                   >
                     <span>Consultar Disponibilidad</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />

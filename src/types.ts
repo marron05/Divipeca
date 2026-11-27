@@ -15,6 +15,14 @@ export interface LogisticsHub {
   state: string;
   zoneTag: string;
   role: string;
+  areaM2: number;
+  areaM2Label: string;
+  palletsNominal: number;
+  palletsLabel: string;
+  capacityShare: number;
+  capacityShareLabel: string;
+  securityTag: string;
+  cardBullets: string[];
   description: string;
   coverage: string[];
   features: string[];
@@ -29,4 +37,39 @@ export interface FleetSpec {
   category: string;
   useCase: string;
   features: string[];
+}
+
+export interface BottleneckPair {
+  id: string;
+  step: number;
+  bottleneckTitle: string;
+  bottleneckDetail: string;
+  solutionTitle: string;
+  solutionDetail: string;
+}
+
+export interface OperationalPillar {
+  id: string;
+  title: string;
+  description: string;
+  tag: string;
+}
+
+export interface CommercialAlliance {
+  id: string;
+  name: string;
+  status: string;
+  badge: string;
+  description: string;
+  logo: string;
+}
+
+export interface ProjectedLeadData {
+  sedeId: string;
+  sedeLabel: string;
+  toneladasMes: number;
+  paletasDisplay: string;
+  ocupacionDisplay: string;
+  frecuenciaRecomendada: string;
+  timestamp: number;
 }
